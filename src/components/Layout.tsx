@@ -53,9 +53,6 @@ export default function Layout() {
             >
               GONZALO DANIEL VEGA
             </Link>
-            <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-[#1a1a1a]/60 font-medium">
-              Ubicación: SFV Catamarca, Catamarca, AR
-            </span>
           </div>
 
           <div className="md:hidden">

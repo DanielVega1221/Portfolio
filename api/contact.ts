@@ -15,12 +15,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     if (!process.env.RESEND_API_KEY) {
-      console.error('[Contact] RESEND_API_KEY not configured');
       return res.status(500).json({ error: 'RESEND_API_KEY no configurada en Vercel' });
     }
 
     const resend = new Resend(process.env.RESEND_API_KEY);
-    await resend.emails.send({
+    const result = await resend.emails.send({
       from: 'Portfolio GDV <onboarding@resend.dev>',
       to: 'dvega6442@gmail.com',
       subject: `[Portfolio] ${reason || 'Consulta'} — ${name || email}`,
@@ -39,7 +38,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       `,
     });
 
-    return res.status(200).json({ success: true });
+    if (result.error) {
+      console.error('[Contact] Resend error:', result.error);
+      return res.status(500).json({ error: result.error.message || 'Error de Resend' });
+    }
+
+    console.log('[Contact] Email sent:', result.data?.id);
+    return res.status(200).json({ success: true, id: result.data?.id });
   } catch (error) {
     console.error('[Contact] Error:', error);
     return res.status(500).json({

@@ -10,6 +10,7 @@ const REASONS = [
 ];
 
 export default function Contact() {
+  const [contactName, setContactName] = useState('');
   const [contactReason, setContactReason] = useState('');
   const [contactEmail, setContactEmail] = useState('');
   const [contactMessage, setContactMessage] = useState('');
@@ -29,7 +30,7 @@ export default function Contact() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          name: '',
+          name: contactName,
           email: contactEmail,
           reason: contactReason,
           message: contactMessage,
@@ -40,6 +41,7 @@ export default function Contact() {
         throw new Error(data.error || 'Error al enviar');
       }
       setFeedback({ type: 'success', text: 'Mensaje enviado correctamente. ¡Gracias por escribir!' });
+      setContactName('');
       setContactReason('');
       setContactEmail('');
       setContactMessage('');
@@ -101,6 +103,18 @@ export default function Contact() {
                   </button>
                 ))}
               </div>
+            </div>
+
+            <div className="space-y-2">
+              <label htmlFor="contact-name" className="font-mono text-xs text-[#1a1a1a]/50 uppercase tracking-wider block">Tu nombre</label>
+              <input
+                type="text"
+                id="contact-name"
+                value={contactName}
+                onChange={(e) => setContactName(e.target.value)}
+                placeholder="Juan Pérez"
+                className="w-full bg-[#f9f7f2] border border-[#e5e2de] px-4 py-2.5 text-xs font-mono rounded-sm focus:outline-none focus:border-[#a84432] text-[#1a1a1a] transition-colors"
+              />
             </div>
 
             <div className="space-y-2">
