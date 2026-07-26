@@ -1,20 +1,25 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Método no permitido' });
   }
 
-  const { name, email, reason, message } = req.body || {};
-
-  if (!email || !message) {
-    return res.status(400).json({ error: 'Email y mensaje requeridos' });
-  }
-
   try {
+    const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
+    const { name, email, reason, message } = body || {};
+
+    if (!email || !message) {
+      return res.status(400).json({ error: 'Email y mensaje requeridos' });
+    }
+
+    if (!process.env.RESEND_API_KEY) {
+      console.error('[Contact] RESEND_API_KEY not configured');
+      return res.status(500).json({ error: 'RESEND_API_KEY no configurada en Vercel' });
+    }
+
+    const resend = new Resend(process.env.RESEND_API_KEY);
     await resend.emails.send({
       from: 'Portfolio GDV <onboarding@resend.dev>',
       to: 'dvega6442@gmail.com',
@@ -36,7 +41,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     return res.status(200).json({ success: true });
   } catch (error) {
-    console.error('[Contact] Resend error:', error);
-    return res.status(500).json({ error: 'Error al enviar el mensaje' });
+    console.error('[Contact] Error:', error);
+    return res.status(500).json({
+      error: error instanceof Error ? error.message : 'Error al enviar',
+    });
   }
 }
