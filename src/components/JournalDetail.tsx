@@ -114,7 +114,7 @@ export default function JournalDetail() {
           <span className="text-[#a84432] font-semibold tracking-widest">{t(ui.journal.notebook)}</span>
           <span className="opacity-30">•</span>
           <span className="bg-[#1a1a1a]/5 px-2 py-0.5 rounded-xs text-[10px] uppercase font-semibold text-[#1a1a1a]/70">
-            {entry.category}
+            {lang === 'en' && entry.categoryEn ? entry.categoryEn : entry.category}
           </span>
           <span className="opacity-30">•</span>
           <span className="flex items-center gap-1">
@@ -122,12 +122,12 @@ export default function JournalDetail() {
           </span>
           <span className="opacity-30">•</span>
           <span className="flex items-center gap-1">
-            <Clock size={12} className="opacity-70" /> {entry.readingTime}
+            <Clock size={12} className="opacity-70" /> {lang === 'en' && entry.readingTimeEn ? entry.readingTimeEn : entry.readingTime}
           </span>
         </div>
 
         <h1 className="text-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light tracking-tight text-[#1a1a1a] leading-tight pr-4">
-          {entry.title}
+          {lang === 'en' && entry.titleEn ? entry.titleEn : entry.title}
         </h1>
 
         <div className="bg-[#fffef0] border border-[#e5e2de] p-6 rounded-sm mt-8 relative">
@@ -136,7 +136,7 @@ export default function JournalDetail() {
           </div>
           <p className="font-mono text-[10px] uppercase tracking-[0.15em] text-[#a84432] font-bold mb-2">{t(ui.journal.abstract)}</p>
           <p className="text-base text-[#1a1a1a]/85 font-serif italic leading-relaxed">
-            "{entry.tagline}"
+            "{lang === 'en' && entry.taglineEn ? entry.taglineEn : entry.tagline}"
           </p>
         </div>
       </div>

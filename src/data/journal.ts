@@ -65,10 +65,14 @@ export const journalEntries: JournalEntry[] = [
   {
     id: 'como-empece-a-programar',
     title: 'Cómo empecé a programar (y por qué no paré)',
+    titleEn: 'How I started coding (and why I never stopped)',
     date: '2026',
     readingTime: '5 min de lectura',
+    readingTimeEn: '5 min read',
     category: 'Historia Personal',
+    categoryEn: 'Personal Story',
     tagline: 'De ver a un amigo programar a crear nuestra propia agencia. La historia de cómo me metí en el desarrollo web sin planearlo demasiado.',
+    taglineEn: 'From watching a friend code to building our own agency. The story of how I got into web development without planning too much.',
     content: `Arranqué sin querer, en realidad.
 
 A finales de 2024 yo estaba en los primeros años de Ingeniería en Informática y lo único que había visto era Java de escritorio. Nada de front, nada de back, nada de frameworks. Un día veo a Mauro, un amigo, programando cosas web. Se la pasaba todo el día haciendo proyectos, todo el día, todos los días. Era divertido verlo, aunque yo no entendía nada. Me quedaba al lado tratando de descifrar qué hacía mientras él iba y venía entre archivos.

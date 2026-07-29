@@ -27,10 +27,14 @@ export interface CaseStudy {
 export interface JournalEntry {
   id: string;
   title: string;
+  titleEn?: string;
   date: string;
   readingTime: string;
+  readingTimeEn?: string;
   category: string;
+  categoryEn?: string;
   tagline: string;
-  content: string; // In Markdown style or structured text
-  contentEn?: string; // Versión en inglés
+  taglineEn?: string;
+  content: string;
+  contentEn?: string;
 }

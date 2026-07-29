@@ -193,10 +193,10 @@ export default function Home() {
                     {t(ui.home.latestJournal)}
                   </span>
                   <h3 className="text-xl text-serif font-normal text-[#1a1a1a] leading-tight">
-                    {latestJournalEntry.title}
+                    {lang === 'en' && latestJournalEntry.titleEn ? latestJournalEntry.titleEn : latestJournalEntry.title}
                   </h3>
                   <p className="font-sans text-xs text-[#1a1a1a]/70 leading-relaxed font-light">
-                    {latestJournalEntry.tagline}
+                    {lang === 'en' && latestJournalEntry.taglineEn ? latestJournalEntry.taglineEn : latestJournalEntry.tagline}
                   </p>
                   <div className="pt-2">
                     <Link

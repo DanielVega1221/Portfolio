@@ -45,20 +45,20 @@ export default function Journal() {
                 <div className="text-[#a84432] font-bold uppercase tracking-widest flex items-center gap-1.5">
                   <span>{t(ui.journal.noteLabel)}{String(entries.length - idx).padStart(3, '0')}</span>
                 </div>
-                <p className="font-semibold text-[#1a1a1a]/80 uppercase">{entry.category}</p>
+                <p className="font-semibold text-[#1a1a1a]/80 uppercase">{lang === 'en' && entry.categoryEn ? entry.categoryEn : entry.category}</p>
                 <p className="flex items-center gap-1"><Calendar size={11} /> {entry.date}</p>
-                <p className="opacity-60 flex items-center gap-1"><Clock size={11} /> {entry.readingTime}</p>
+                <p className="opacity-60 flex items-center gap-1"><Clock size={11} /> {lang === 'en' && entry.readingTimeEn ? entry.readingTimeEn : entry.readingTime}</p>
               </div>
 
               <div className="lg:col-span-9 space-y-4">
                 <Link to={`/journal/${entry.id}`}>
                   <h3 className="text-serif text-2xl md:text-3xl font-light text-[#1a1a1a] group-hover:text-[#a84432] transition-colors cursor-pointer leading-snug">
-                    {entry.title}
+                    {lang === 'en' && entry.titleEn ? entry.titleEn : entry.title}
                   </h3>
                 </Link>
 
                 <p className="text-[#1a1a1a]/75 font-light leading-relaxed text-sm md:text-base italic border-l border-[#a84432]/30 pl-4">
-                  "{entry.tagline}"
+                  "{lang === 'en' && entry.taglineEn ? entry.taglineEn : entry.tagline}"
                 </p>
 
                 <div className="pt-2">
