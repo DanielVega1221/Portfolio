@@ -153,13 +153,6 @@ export default function JournalDetail() {
           <p className="text-serif text-base font-semibold text-[#1a1a1a]">{t(ui.journal.authorName)}</p>
           <p className="font-mono text-[10px] text-[#1a1a1a]/40 uppercase tracking-widest">{t(ui.journal.authorRole)}</p>
         </div>
-
-        <div className="bg-[#fffef0] border border-[#e5e2de] px-6 py-4 rounded-xs shadow-2xs rotate-1 text-center font-serif">
-          <p className="text-xs text-[#1a1a1a]/40 font-mono uppercase tracking-widest mb-1">{t(ui.journal.conformity)}</p>
-          <p className="text-xl font-bold tracking-tighter text-[#a84432] italic">G.D.Vega</p>
-          <div className="w-16 h-[1px] bg-[#a84432]/40 mx-auto my-1"></div>
-          <p className="font-mono text-[9px] text-[#1a1a1a]/50">SFV Catamarca, Catamarca, AR</p>
-        </div>
       </div>
 
       <div className="border-t border-b border-[#1a1a1a]/10 py-10 my-12 text-center relative">
