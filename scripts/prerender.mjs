@@ -1,8 +1,16 @@
 import { chromium } from 'playwright';
+import { execSync } from 'child_process';
 import http from 'http';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+
+// Ensure Chromium is installed
+try {
+  execSync('npx playwright install chromium', { stdio: 'pipe', timeout: 60000 });
+} catch {
+  console.log('Chromium install skipped (already present or failed).');
+}
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DIST = path.resolve(__dirname, '..', 'dist');
