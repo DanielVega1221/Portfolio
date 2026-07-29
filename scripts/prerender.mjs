@@ -122,4 +122,7 @@ async function prerender() {
   console.log('\nPrerender complete.');
 }
 
-prerender();
+prerender().catch(err => {
+  console.log(`Prerender skipped: ${err.message.split('\n')[0]}`);
+  process.exit(0);
+});
