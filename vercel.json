@@ -1,5 +1,5 @@
 {
-  "buildCommand": "echo 'static'",
+  "buildCommand": "vite build && node scripts/prerender.mjs",
   "outputDirectory": "dist",
   "rewrites": [{ "source": "/api/(.*)", "destination": "/api/$1" }]
 }
