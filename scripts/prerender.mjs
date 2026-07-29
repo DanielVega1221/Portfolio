@@ -96,7 +96,9 @@ async function prerender() {
   const server = await startServer();
   console.log('Prerendering...\n');
 
-  const browser = await chromium.launch();
+  const browser = await chromium.launch({
+    args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'],
+  });
 
   for (let i = 0; i < ROUTES.length; i++) {
     const route = ROUTES[i];
