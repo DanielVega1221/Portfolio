@@ -1,10 +1,14 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { ArrowLeft, Clock, Calendar, Quote, Info, Feather } from 'lucide-react';
+import { useLanguage } from '../i18n/LanguageContext';
+import { ui } from '../i18n/translations';
 import { journalEntries } from '../data/journal';
 import { JournalEntry } from '../types';
 
 export default function JournalDetail() {
+  const { lang } = useLanguage();
+  const t = (p: any) => p[lang];
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const entry = journalEntries.find(e => e.id === id);
@@ -12,12 +16,12 @@ export default function JournalDetail() {
   if (!entry) {
     return (
       <div className="max-w-3xl mx-auto px-6 py-24 text-center">
-        <p className="font-mono text-sm text-[#1a1a1a]/50">Nota de campo no encontrada.</p>
+        <p className="font-mono text-sm text-[#1a1a1a]/50">{t(ui.journal.notFound)}</p>
         <button
           onClick={() => navigate('/journal')}
           className="mt-4 font-mono text-xs text-[#a84432] underline uppercase tracking-wider"
         >
-          Volver al Journal
+          {t(ui.journal.backToJournal)}
         </button>
       </div>
     );
@@ -98,16 +102,16 @@ export default function JournalDetail() {
           className="group inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[#a84432] hover:text-[#1a1a1a] transition-colors cursor-pointer"
         >
           <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
-          Volver a Notas de Campo
+          {t(ui.journal.backToNotes)}
         </button>
         <span className="font-mono text-[9px] text-[#1a1a1a]/40 uppercase tracking-[0.2em]">
-          JOURNAL TÉCNICO // G. D. VEGA
+          {t(ui.journal.journalHeader)}
         </span>
       </div>
 
       <div className="space-y-6 mb-12">
         <div className="flex flex-wrap items-center gap-4 font-mono text-xs text-[#1a1a1a]/50">
-          <span className="text-[#a84432] font-semibold tracking-widest">CUADERNO No. 01</span>
+          <span className="text-[#a84432] font-semibold tracking-widest">{t(ui.journal.notebook)}</span>
           <span className="opacity-30">•</span>
           <span className="bg-[#1a1a1a]/5 px-2 py-0.5 rounded-xs text-[10px] uppercase font-semibold text-[#1a1a1a]/70">
             {entry.category}
@@ -130,7 +134,7 @@ export default function JournalDetail() {
           <div className="absolute top-4 right-4 text-[#a84432]/30">
             <Info size={16} />
           </div>
-          <p className="font-mono text-[10px] uppercase tracking-[0.15em] text-[#a84432] font-bold mb-2">ABSTRACT / SÍNTESIS</p>
+          <p className="font-mono text-[10px] uppercase tracking-[0.15em] text-[#a84432] font-bold mb-2">{t(ui.journal.abstract)}</p>
           <p className="text-base text-[#1a1a1a]/85 font-serif italic leading-relaxed">
             "{entry.tagline}"
           </p>
@@ -138,20 +142,20 @@ export default function JournalDetail() {
       </div>
 
       <div className="prose prose-neutral max-w-none mb-16 font-sans">
-        {renderParagraphs(entry.content)}
+        {renderParagraphs(lang === 'en' && entry.contentEn ? entry.contentEn : entry.content)}
       </div>
 
       <div className="border-t border-[#1a1a1a]/10 pt-8 mt-16 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
         <div className="space-y-1">
           <div className="flex items-center gap-1.5 font-mono text-xs text-[#a84432] font-bold uppercase tracking-wider">
-            <Feather size={14} /> AUTOR DE LA NOTA
+            <Feather size={14} /> {t(ui.journal.author)}
           </div>
-          <p className="text-serif text-base font-semibold text-[#1a1a1a]">Gonzalo Daniel Vega</p>
-          <p className="font-mono text-[10px] text-[#1a1a1a]/40 uppercase tracking-widest">Full Stack Developer & Product Thinker</p>
+          <p className="text-serif text-base font-semibold text-[#1a1a1a]">{t(ui.journal.authorName)}</p>
+          <p className="font-mono text-[10px] text-[#1a1a1a]/40 uppercase tracking-widest">{t(ui.journal.authorRole)}</p>
         </div>
 
         <div className="bg-[#fffef0] border border-[#e5e2de] px-6 py-4 rounded-xs shadow-2xs rotate-1 text-center font-serif">
-          <p className="text-xs text-[#1a1a1a]/40 font-mono uppercase tracking-widest mb-1">CONFORMIDAD TÉCNICA</p>
+          <p className="text-xs text-[#1a1a1a]/40 font-mono uppercase tracking-widest mb-1">{t(ui.journal.conformity)}</p>
           <p className="text-xl font-bold tracking-tighter text-[#a84432] italic">G.D.Vega</p>
           <div className="w-16 h-[1px] bg-[#a84432]/40 mx-auto my-1"></div>
           <p className="font-mono text-[9px] text-[#1a1a1a]/50">SFV Catamarca, Catamarca, AR</p>
@@ -161,7 +165,7 @@ export default function JournalDetail() {
       <div className="border-t border-b border-[#1a1a1a]/10 py-10 my-12 text-center relative">
         <Quote className="text-[#a84432]/5 absolute top-4 left-4" size={48} />
         <p className="text-serif text-lg italic text-[#1a1a1a]/80 max-w-lg mx-auto">
-          "El software más valioso no es el más sofisticado, sino aquel que modela con absoluta honestidad la realidad de quien lo opera."
+          {t(ui.journal.quote)}
         </p>
       </div>
 
@@ -171,9 +175,9 @@ export default function JournalDetail() {
           className="group inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[#a84432] hover:text-[#1a1a1a] transition-colors cursor-pointer"
         >
           <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
-          Volver al Journal
+          {t(ui.journal.backToJournal)}
         </button>
-        <span className="text-[#1a1a1a]/30">CUADERNO DE CAMPO — 2026</span>
+        <span className="text-[#1a1a1a]/30">{t(ui.journal.fieldNotebook)}</span>
       </div>
     </motion.article>
   );

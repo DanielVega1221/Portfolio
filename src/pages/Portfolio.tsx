@@ -3,36 +3,45 @@ import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { Search, HelpCircle } from 'lucide-react';
 import { caseStudies } from '../data/projects';
+import { getProjectEn } from '../data/projects-en-lookup';
 import ProjectImage from '../components/ProjectImage';
 import type { CaseStudy } from '../types';
+import { useLanguage } from '../i18n/LanguageContext';
+import { ui } from '../i18n/translations';
 
 type TypeFilter = 'all' | 'personal' | 'tool' | 'real' | 'particular' | 'career';
-
-const FILTER_OPTIONS = [
-  { id: 'all' as const, label: 'Todos' },
-  { id: 'personal' as const, label: 'Demos conceptuales' },
-  { id: 'tool' as const, label: 'Herramientas' },
-  { id: 'real' as const, label: 'Clientes UXnicorp' },
-  { id: 'particular' as const, label: 'Clientes particulares' },
-  { id: 'career' as const, label: 'Carrera personal' },
-];
-
-function typeLabel(type: CaseStudy['type']) {
-  switch (type) {
-    case 'personal': return 'Demo conceptual';
-    case 'tool': return 'Herramienta';
-    case 'real': return 'Cliente UXnicorp';
-    case 'particular': return 'Cliente particular';
-    case 'career': return 'Carrera personal';
-  }
-}
 
 export default function Portfolio() {
   const [searchQuery, setSearchQuery] = useState('');
   const [typeFilter, setTypeFilter] = useState<TypeFilter>('all');
 
+  const { lang } = useLanguage();
+  const t = (path: any) => path[lang];
+
+  const filterOptions = useMemo(() => [
+    { id: 'all' as const, label: t(ui.portfolio.filters.all) },
+    { id: 'personal' as const, label: t(ui.portfolio.filters.personal) },
+    { id: 'tool' as const, label: t(ui.portfolio.filters.tool) },
+    { id: 'real' as const, label: t(ui.portfolio.filters.real) },
+    { id: 'particular' as const, label: t(ui.portfolio.filters.particular) },
+    { id: 'career' as const, label: t(ui.portfolio.filters.career) },
+  ], [lang]);
+
+  const typeLabelMap: Record<CaseStudy['type'], string> = useMemo(() => ({
+    personal: t(ui.portfolio.filters.personal),
+    tool: t(ui.portfolio.filters.tool),
+    real: t(ui.portfolio.filters.real),
+    particular: t(ui.portfolio.filters.particular),
+    career: t(ui.portfolio.filters.career),
+  }), [lang]);
+
+  const allProjects = useMemo(() =>
+    caseStudies.map(p => lang === 'en' ? (getProjectEn(p.id) || p) : p),
+    [lang]
+  );
+
   const filteredProjects = useMemo(() => {
-    return caseStudies.filter(project => {
+    return allProjects.filter(project => {
       const matchesType = typeFilter === 'all' || project.type === typeFilter;
       const query = searchQuery.toLowerCase();
       const matchesSearch =
@@ -56,12 +65,12 @@ export default function Portfolio() {
     >
       <div id="portfolio-view" className="space-y-16">
         <div className="max-w-3xl space-y-4">
-          <p className="font-mono text-xs uppercase tracking-widest text-[#a84432] font-bold">CAPÍTULO II — ARCHIVOS Y PROYECTOS</p>
+          <p className="font-mono text-xs uppercase tracking-widest text-[#a84432] font-bold">{t(ui.portfolio.chapter)}</p>
           <h2 className="text-serif text-3xl md:text-5xl lg:text-6xl font-light text-[#1a1a1a] tracking-tight leading-tight">
-            Registro de Proyectos Realizados
+            {t(ui.portfolio.title)}
           </h2>
           <p className="text-[#1a1a1a]/70 font-light text-base md:text-lg leading-relaxed">
-            No todos los proyectos nacen del mismo lugar. Algunos surgen de la curiosidad. Otros de problemas reales. Y otros de cosas que necesitaba resolver para mí. Los separo así porque cada uno muestra una forma distinta de pensar.
+            {t(ui.portfolio.desc)}
           </p>
         </div>
 
@@ -72,13 +81,13 @@ export default function Portfolio() {
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Buscar por herramienta, problema, tecnología..."
+              placeholder={t(ui.portfolio.searchPlaceholder)}
               className="w-full bg-[#fffef0] border border-[#e5e2de] pl-10 pr-4 py-2.5 text-xs font-mono rounded-sm focus:outline-none focus:border-[#a84432] text-[#1a1a1a] transition-colors"
             />
           </div>
 
           <div className="md:col-span-7 flex flex-wrap gap-2 justify-start md:justify-end">
-            {FILTER_OPTIONS.map((filter) => (
+            {filterOptions.map((filter) => (
               <button
                 key={filter.id}
                 onClick={() => setTypeFilter(filter.id)}
@@ -98,12 +107,12 @@ export default function Portfolio() {
           {filteredProjects.length === 0 ? (
             <div className="text-center py-20 bg-[#fffef0] border border-dashed border-[#e5e2de] rounded-sm">
               <HelpCircle className="mx-auto text-[#a84432] mb-4" size={32} />
-              <p className="font-mono text-sm text-[#1a1a1a]/55">Ningún proyecto coincide con la búsqueda.</p>
+              <p className="font-mono text-sm text-[#1a1a1a]/55">{t(ui.portfolio.emptyTitle)}</p>
               <button
                 onClick={() => { setSearchQuery(''); setTypeFilter('all'); }}
                 className="mt-4 text-xs font-mono uppercase tracking-wider underline text-[#a84432] hover:opacity-80"
               >
-                Restablecer filtros
+                {t(ui.portfolio.resetButton)}
               </button>
             </div>
           ) : (
@@ -132,11 +141,11 @@ export default function Portfolio() {
 
                 <div className="lg:col-span-6 space-y-6">
                   <div className="flex items-center gap-3 font-mono text-[10px] text-[#1a1a1a]/50 uppercase tracking-widest">
-                    <span className="font-bold text-[#a84432]">CAPÍTULO / {project.chapterNumber}</span>
+                    <span className="font-bold text-[#a84432]">{t(ui.portfolio.chapterLabel)} {project.chapterNumber}</span>
                     <span>•</span>
-                    <span>Año {project.year}</span>
+                    <span>{t(ui.portfolio.yearLabel)} {project.year}</span>
                     <span>•</span>
-                    <span className="text-[#1a1a1a]/80 font-semibold">{typeLabel(project.type)}</span>
+                    <span className="text-[#1a1a1a]/80 font-semibold">{typeLabelMap[project.type]}</span>
                   </div>
 
                   <Link to={`/proyectos/${project.id}`}>
@@ -169,7 +178,7 @@ export default function Portfolio() {
                       to={`/proyectos/${project.id}`}
                       className="inline-flex items-center gap-1 font-mono text-xs uppercase tracking-widest text-[#a84432] hover:text-[#1a1a1a] hover:underline font-bold"
                     >
-                      Estudio Técnico Completo →
+                      {t(ui.portfolio.studyLink)}
                     </Link>
                   </div>
                 </div>

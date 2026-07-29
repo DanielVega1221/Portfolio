@@ -32,4 +32,5 @@ export interface JournalEntry {
   category: string;
   tagline: string;
   content: string; // In Markdown style or structured text
+  contentEn?: string; // Versión en inglés
 }

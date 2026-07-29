@@ -1,21 +1,25 @@
 import { useState, useCallback } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
+import { useLanguage } from '../i18n/LanguageContext';
+import { ui } from '../i18n/translations';
 import {
   Library, Layers, BookOpen, User, Mail,
   Menu, X, Check, Copy,
 } from 'lucide-react';
 import StudioTapes from './StudioTapes';
 
-const NAV_ITEMS = [
-  { path: '/', label: 'Apertura', icon: BookOpen },
-  { path: '/proyectos', label: 'Proyectos', icon: Layers },
-  { path: '/journal', label: 'Journal', icon: Library },
-  { path: '/sobre-mi', label: 'Sobre mí', icon: User },
-  { path: '/dialogo', label: 'Diálogo', icon: Mail },
-] as const;
-
 export default function Layout() {
   const location = useLocation();
+  const { lang, toggleLang } = useLanguage();
+  const t = (p: any) => p[lang];
+
+  const navItems = [
+    { path: '/', label: t(ui.nav.home), icon: BookOpen },
+    { path: '/proyectos', label: t(ui.nav.projects), icon: Layers },
+    { path: '/journal', label: t(ui.nav.journal), icon: Library },
+    { path: '/sobre-mi', label: t(ui.nav.about), icon: User },
+    { path: '/dialogo', label: t(ui.nav.contact), icon: Mail },
+  ] as const;
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
 
@@ -65,7 +69,7 @@ export default function Layout() {
           </div>
 
           <nav className={`${mobileMenuOpen ? 'flex' : 'hidden'} md:flex flex-wrap justify-center gap-1 sm:gap-2`}>
-            {NAV_ITEMS.map((item) => {
+            {navItems.map((item) => {
               const IconComp = item.icon;
               const isActive = location.pathname === item.path;
               return (
@@ -84,6 +88,9 @@ export default function Layout() {
                 </Link>
               );
             })}
+            <button onClick={toggleLang} className="font-mono text-[10px] uppercase tracking-wider text-[#1a1a1a]/40 hover:text-[#a84432] transition-colors cursor-pointer ml-2">
+              {lang === 'es' ? 'EN' : 'ES'}
+            </button>
           </nav>
         </div>
       </header>
@@ -96,18 +103,18 @@ export default function Layout() {
         <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6 text-xs text-[#1a1a1a]/50 font-mono">
           <div>
             <p>
-              © 2026 Gonzalo Daniel Vega. Todos los derechos reservados.
+              {t(ui.footer.copyright)}
             </p>
-            <p className="text-[10px] text-[#1a1a1a]/40 mt-1">Hecho con criterio y desarrollo a medida.</p>
+            <p className="text-[10px] text-[#1a1a1a]/40 mt-1">{t(ui.footer.made)}</p>
           </div>
           <div className="flex gap-4">
             <a href="https://www.linkedin.com/in/gonzalo-daniel-vega/" target="_blank" rel="noopener noreferrer" className="hover:text-[#a84432] transition-colors">LINKEDIN</a>
             <span>•</span>
             <a href="https://github.com/DanielVega1221" target="_blank" rel="noopener noreferrer" className="hover:text-[#a84432] transition-colors">GITHUB</a>
             <span>•</span>
-            <button onClick={() => copyToClipboard('+5493834368748', 'Número copiado')} className="hover:text-[#a84432] transition-colors cursor-pointer">NÚMERO</button>
+            <button onClick={() => copyToClipboard('+5493834368748', t(ui.footer.copyPhone))} className="hover:text-[#a84432] transition-colors cursor-pointer">{t(ui.footer.phone)}</button>
             <span>•</span>
-            <button onClick={() => copyToClipboard('dvega6442@gmail.com', 'Mail copiado')} className="hover:text-[#a84432] transition-colors cursor-pointer">EMAIL</button>
+            <button onClick={() => copyToClipboard('dvega6442@gmail.com', t(ui.footer.copyEmail))} className="hover:text-[#a84432] transition-colors cursor-pointer">EMAIL</button>
           </div>
         </div>
       </footer>

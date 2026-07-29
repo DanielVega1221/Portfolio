@@ -4,45 +4,45 @@ import { motion } from 'motion/react';
 import { ArrowLeft, Calendar, CheckCircle2, AlertTriangle, RefreshCw, Award, Anchor, ExternalLink, Github, FolderKanban, X } from 'lucide-react';
 import { caseStudies } from '../data/projects';
 import { CaseStudy } from '../types';
+import { useLanguage } from '../i18n/LanguageContext';
+import { ui } from '../i18n/translations';
+import { getProjectEn } from '../data/projects-en-lookup';
 import ProjectImage from './ProjectImage';
-
-function getTypeBadge(type: CaseStudy['type']) {
-  switch (type) {
-    case 'personal':
-      return { label: 'Demo conceptual', emoji: '', color: 'border-[#a84432]/20 text-[#a84432] bg-[#a84432]/5' };
-    case 'real':
-      return { label: 'Cliente UXnicorp', emoji: '', color: 'border-[#1a1a1a]/10 text-[#1a1a1a]/80 bg-[#1a1a1a]/5' };
-    case 'tool':
-      return { label: 'Herramienta', emoji: '', color: 'border-[#1a1a1a]/10 text-[#1a1a1a]/80 bg-[#1a1a1a]/5' };
-    case 'particular':
-      return { label: 'Cliente particular', emoji: '', color: 'border-[#1a1a1a]/10 text-[#1a1a1a]/80 bg-[#1a1a1a]/5' };
-    case 'career':
-      return { label: 'Carrera personal', emoji: '', color: 'border-[#1a1a1a]/10 text-[#1a1a1a]/80 bg-[#1a1a1a]/5' };
-  }
-}
 
 export default function ProjectDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const project = caseStudies.find(p => p.id === id);
+  const { lang } = useLanguage();
+  const t = (path: any) => path[lang];
+  const projectData = lang === 'en' ? (getProjectEn(id!) || project) : project;
   const [showGallery, setShowGallery] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
   if (!project) {
     return (
       <div className="max-w-5xl mx-auto px-6 py-24 text-center">
-        <p className="font-mono text-sm text-[#1a1a1a]/50">Proyecto no encontrado.</p>
+        <p className="font-mono text-sm text-[#1a1a1a]/50">{t(ui.projectDetail.notFound)}</p>
         <button
           onClick={() => navigate('/proyectos')}
           className="mt-4 font-mono text-xs text-[#a84432] underline uppercase tracking-wider"
         >
-          Volver a Proyectos
+          {t(ui.projectDetail.back)}
         </button>
       </div>
     );
   }
 
-  const badge = getTypeBadge(project.type);
+  const typeBadgeLabels: Record<CaseStudy['type'], string> = {
+    personal: t(ui.portfolio.filters.personal),
+    real: t(ui.portfolio.filters.real),
+    tool: t(ui.portfolio.filters.tool),
+    particular: t(ui.portfolio.filters.particular),
+    career: t(ui.portfolio.filters.career),
+  };
+  const badgeColor = projectData.type === 'personal'
+    ? 'border-[#a84432]/20 text-[#a84432] bg-[#a84432]/5'
+    : 'border-[#1a1a1a]/10 text-[#1a1a1a]/80 bg-[#1a1a1a]/5';
   const onBack = () => navigate('/proyectos');
 
   return (
@@ -59,53 +59,53 @@ export default function ProjectDetail() {
           className="group inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[#a84432] hover:text-[#1a1a1a] transition-colors cursor-pointer"
         >
           <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
-          Volver a Proyectos
+          {t(ui.projectDetail.back)}
         </button>
         <span className="font-mono text-[10px] text-[#1a1a1a]/40 uppercase tracking-[0.2em]">
-          DIARIO EDITORIAL / VOL. II / {project.year}
+          {t(ui.projectDetail.journal)} {projectData.year}
         </span>
       </div>
 
       <header className="space-y-6 mb-12">
         <div className="flex flex-wrap items-center gap-3 font-mono text-xs text-[#1a1a1a]/50">
-          <span className="text-[#a84432] font-semibold tracking-wider">CAPÍTULO / {project.chapterNumber}</span>
+          <span className="text-[#a84432] font-semibold tracking-wider">{t(ui.portfolio.chapterLabel)} {projectData.chapterNumber}</span>
           <span className="opacity-30">•</span>
           <span className="flex items-center gap-1">
-            <Calendar size={12} className="opacity-70" /> {project.year}
+            <Calendar size={12} className="opacity-70" /> {projectData.year}
           </span>
           <span className="opacity-30">•</span>
-          <span className={`px-2 py-0.5 border rounded-xs text-[9px] uppercase tracking-wider font-semibold ${badge.color}`}>
-            {badge.emoji} {badge.label}
-          </span>
+           <span className={`px-2 py-0.5 border rounded-xs text-[9px] uppercase tracking-wider font-semibold ${badgeColor}`}>
+             {typeBadgeLabels[projectData.type]}
+           </span>
         </div>
 
         <h1 className="text-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light tracking-tight text-[#1a1a1a] leading-[1.05]">
-          {project.title}
+          {projectData.title}
         </h1>
 
         <p className="font-mono text-xs text-[#1a1a1a]/60 uppercase tracking-[0.2em] max-w-xl">
-          {project.subtitle}
+          {projectData.subtitle}
         </p>
 
         <div className="border-l-4 border-[#a84432] pl-6 py-2 my-8">
           <p className="text-xl md:text-2xl font-light text-[#1a1a1a]/90 font-serif italic leading-relaxed">
-            "{project.tagline}"
+            "{projectData.tagline}"
           </p>
         </div>
       </header>
 
       <div className="mb-16">
         <ProjectImage
-          title={project.title}
-          subtitle={project.subtitle}
-          chapterNumber={project.chapterNumber}
-          type={project.type}
-          projectId={project.id}
-          url={project.url}
+          title={projectData.title}
+          subtitle={projectData.subtitle}
+          chapterNumber={projectData.chapterNumber}
+          type={projectData.type}
+          projectId={projectData.id}
+          url={projectData.url}
           className="shadow-xs"
         />
         <div className="flex justify-between items-center mt-3 text-[10px] font-mono text-[#1a1a1a]/40 px-1 uppercase tracking-widest">
-          <span>FIG 01. Representación estructural de la solución</span>
+          <span>{t(ui.projectDetail.figure)}</span>
           <span>© Gonzalo Daniel Vega</span>
         </div>
       </div>
@@ -114,27 +114,27 @@ export default function ProjectDetail() {
         <div className="lg:col-span-8 space-y-16">
           <section className="space-y-4">
             <div className="flex items-center gap-3 mb-2">
-              <span className="font-mono text-xs font-semibold text-[#a84432]">01 / CONTEXTO</span>
+              <span className="font-mono text-xs font-semibold text-[#a84432]">{t(ui.projectDetail.sectionContext)}</span>
               <div className="flex-1 h-[1px] bg-[#1a1a1a]/10"></div>
             </div>
             <h3 className="text-serif text-2xl md:text-3xl font-light text-[#1a1a1a] tracking-tight">
-              El punto de partida del desafío
+              {t(ui.projectDetail.contextTitle)}
             </h3>
             <div className="text-[#1a1a1a]/85 leading-relaxed font-light whitespace-pre-line text-base md:text-lg">
-              {project.pointOfDeparture}
+              {projectData.pointOfDeparture}
             </div>
           </section>
 
           <section className="space-y-4">
             <div className="flex items-center gap-3 mb-2">
-              <span className="font-mono text-xs font-semibold text-[#a84432]">02 / INVESTIGACIÓN</span>
+              <span className="font-mono text-xs font-semibold text-[#a84432]">{t(ui.projectDetail.sectionInvestigation)}</span>
               <div className="flex-1 h-[1px] bg-[#1a1a1a]/10"></div>
             </div>
             <h3 className="text-serif text-2xl md:text-3xl font-light text-[#1a1a1a] tracking-tight">
-              Hurgando bajo la superficie: ¿Qué investigué?
+              {t(ui.projectDetail.investigationTitle)}
             </h3>
             <div className="text-[#1a1a1a]/85 leading-relaxed font-light space-y-4 whitespace-pre-line text-base md:text-lg">
-              {project.investigation.split('\n\n').map((paragraph, index) => {
+              {projectData.investigation.split('\n\n').map((paragraph, index) => {
                 if (paragraph.trim().startsWith('-')) {
                   const items = paragraph.split('\n').map(item => item.replace('-', '').trim());
                   return (
@@ -154,33 +154,33 @@ export default function ProjectDetail() {
 
           <section className="relative bg-[#fffef0] border-l-4 border-[#a84432] border-y border-r border-[#e5e2de] p-8 md:p-10 rounded-r-sm shadow-xs">
             <div className="absolute top-4 right-6 font-mono text-[9px] uppercase tracking-widest text-[#a84432] font-semibold flex items-center gap-1">
-              <Award size={12} /> INSIGHT REVELADO
+              <Award size={12} /> {t(ui.projectDetail.insightRevealed)}
             </div>
-            <span className="font-mono text-[10px] uppercase tracking-widest text-[#1a1a1a]/40 block mb-2">LA SÍNTESIS</span>
+            <span className="font-mono text-[10px] uppercase tracking-widest text-[#1a1a1a]/40 block mb-2">{t(ui.projectDetail.synthesis)}</span>
             <h4 className="text-serif text-xl md:text-2xl font-light text-[#1a1a1a] leading-relaxed italic mb-4">
-              "{project.insight}"
+              "{projectData.insight}"
             </h4>
             <p className="font-sans text-xs text-[#1a1a1a]/60 leading-relaxed">
-              Comprender este pilar transformó por completo la dirección táctica del proyecto, permitiendo depurar el ruido innecesario y enfocarse en valor estricto.
+              {t(ui.projectDetail.synthesisText)}
             </p>
           </section>
 
-          {project.options && project.options.length > 0 && (
+          {projectData.options && projectData.options.length > 0 && (
             <section className="space-y-6">
               <div className="flex items-center gap-3 mb-2">
-                <span className="font-mono text-xs font-semibold text-[#a84432]">03 / TÁCTICAS</span>
+                <span className="font-mono text-xs font-semibold text-[#a84432]">{t(ui.projectDetail.sectionTactics)}</span>
                 <div className="flex-1 h-[1px] bg-[#1a1a1a]/10"></div>
               </div>
               <h3 className="text-serif text-2xl md:text-3xl font-light text-[#1a1a1a] tracking-tight">
-                Análisis de Tradeoffs: Opciones sobre la mesa
+                {t(ui.projectDetail.tacticsTitle)}
               </h3>
               <p className="text-sm text-[#1a1a1a]/70 font-light italic">
-                Construir software a medida requiere evaluar escenarios honestamente. Ninguna arquitectura es perfecta, cada decisión tiene un precio:
+                {t(ui.projectDetail.tacticsSub)}
               </p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
-                {project.options.map((opt, idx) => (
+                {projectData.options.map((opt, idx) => (
                   <div key={idx} className="bg-[#efede8]/40 border border-[#e5e2de]/80 p-5 rounded-xs space-y-2">
-                    <span className="font-mono text-[10px] text-[#a84432] font-bold uppercase tracking-wider block">OPCIÓN {idx + 1}</span>
+                    <span className="font-mono text-[10px] text-[#a84432] font-bold uppercase tracking-wider block">{t(ui.projectDetail.option)} {idx + 1}</span>
                     <h5 className="font-serif text-base font-semibold text-[#1a1a1a]">{opt.title}</h5>
                     <p className="text-[#1a1a1a]/75 font-light text-xs leading-relaxed">{opt.text}</p>
                   </div>
@@ -191,32 +191,32 @@ export default function ProjectDetail() {
 
           <section className="space-y-4">
             <div className="flex items-center gap-3 mb-2">
-              <span className="font-mono text-xs font-semibold text-[#a84432]">04 / DETERMINACIÓN</span>
+              <span className="font-mono text-xs font-semibold text-[#a84432]">{t(ui.projectDetail.sectionDetermination)}</span>
               <div className="flex-1 h-[1px] bg-[#1a1a1a]/10"></div>
             </div>
             <h3 className="text-serif text-2xl md:text-3xl font-light text-[#1a1a1a] tracking-tight">
-              La Decisión: El camino elegido
+              {t(ui.projectDetail.decisionTitle)}
             </h3>
             <div className="text-[#1a1a1a]/85 leading-relaxed font-light space-y-4 whitespace-pre-line text-base md:text-lg">
-              {project.decision}
+              {projectData.decision}
             </div>
           </section>
 
           <section className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-6 border-t border-[#1a1a1a]/10">
             <div className="space-y-3">
               <h4 className="font-mono text-xs uppercase tracking-widest text-emerald-800 font-bold flex items-center gap-1.5">
-                <CheckCircle2 size={14} /> LO QUE FUNCIONÓ DE VERDAD
+                <CheckCircle2 size={14} /> {t(ui.projectDetail.workedWell)}
               </h4>
               <p className="text-sm text-[#1a1a1a]/80 leading-relaxed font-light whitespace-pre-line">
-                {project.workedWell}
+                {projectData.workedWell}
               </p>
             </div>
             <div className="space-y-3">
               <h4 className="font-mono text-xs uppercase tracking-widest text-[#a84432] font-bold flex items-center gap-1.5">
-                <AlertTriangle size={14} /> LIMITACIONES Y TRADEOFFS
+                <AlertTriangle size={14} /> {t(ui.projectDetail.tradeoffs)}
               </h4>
               <p className="text-sm text-[#1a1a1a]/80 leading-relaxed font-light whitespace-pre-line">
-                {project.tradeoffs}
+                {projectData.tradeoffs}
               </p>
             </div>
           </section>
@@ -226,14 +226,14 @@ export default function ProjectDetail() {
             <div className="absolute -bottom-3 right-12 w-20 h-6 bg-[#cbc8bf]/40 border-x border-[#e5e2de]/50 opacity-60 -rotate-3"></div>
 
             <h4 className="font-mono text-[10px] uppercase tracking-widest text-[#a84432] font-bold mb-4 flex items-center gap-2">
-              <RefreshCw size={12} /> BITÁCORA PERSONAL: ¿QUÉ HARÍA DIFERENTE HOY?
+              <RefreshCw size={12} /> {t(ui.projectDetail.differentTitle)}
             </h4>
 
             <p className="font-serif text-base italic text-[#4a4a4a] leading-relaxed whitespace-pre-line">
-              "{project.differentToday}"
+              "{projectData.differentToday}"
             </p>
             <span className="block mt-4 font-mono text-[9px] text-[#1a1a1a]/40 uppercase tracking-widest">
-              Anotación retrospectiva posterior al lanzamiento
+              {t(ui.projectDetail.differentSub)}
             </span>
           </section>
         </div>
@@ -241,34 +241,34 @@ export default function ProjectDetail() {
         <aside className="lg:col-span-4 lg:sticky lg:top-24 space-y-8">
           <div className="bg-[#fffef0] border border-[#e5e2de] p-6 shadow-xs rounded-sm">
             <h4 className="font-mono text-xs font-bold uppercase tracking-widest text-[#1a1a1a]/70 border-b border-[#1a1a1a]/10 pb-3 mb-4 flex items-center gap-2">
-              <Anchor size={14} className="text-[#a84432]" /> FICHA TÉCNICA
+              <Anchor size={14} className="text-[#a84432]" /> {t(ui.projectDetail.ficha)}
             </h4>
 
             <div className="space-y-5 text-xs">
               <div>
-                <span className="font-mono text-[10px] text-[#1a1a1a]/40 uppercase tracking-wider block mb-1">PROYECTO</span>
-                <p className="font-serif text-sm font-semibold text-[#1a1a1a]">{project.title}</p>
+                <span className="font-mono text-[10px] text-[#1a1a1a]/40 uppercase tracking-wider block mb-1">{t(ui.projectDetail.project)}</span>
+                <p className="font-serif text-sm font-semibold text-[#1a1a1a]">{projectData.title}</p>
               </div>
 
               <div>
-                <span className="font-mono text-[10px] text-[#1a1a1a]/40 uppercase tracking-wider block mb-1">RUBRO / PROPÓSITO</span>
-                <p className="font-sans text-[#1a1a1a] font-medium">{project.subtitle}</p>
+                <span className="font-mono text-[10px] text-[#1a1a1a]/40 uppercase tracking-wider block mb-1">{t(ui.projectDetail.rubro)}</span>
+                <p className="font-sans text-[#1a1a1a] font-medium">{projectData.subtitle}</p>
               </div>
 
               <div>
-                <span className="font-mono text-[10px] text-[#1a1a1a]/40 uppercase tracking-wider block mb-1">AÑO DE EJECUCIÓN</span>
-                <p className="font-sans text-[#1a1a1a] font-medium">{project.year}</p>
+                <span className="font-mono text-[10px] text-[#1a1a1a]/40 uppercase tracking-wider block mb-1">{t(ui.projectDetail.year)}</span>
+                <p className="font-sans text-[#1a1a1a] font-medium">{projectData.year}</p>
               </div>
 
               <div>
-                <span className="font-mono text-[10px] text-[#1a1a1a]/40 uppercase tracking-wider block mb-1">ALCANCE DEL PROYECTO</span>
-                <p className="font-sans text-[#a84432] font-semibold uppercase tracking-wider">{project.criteriaLevel}</p>
+                <span className="font-mono text-[10px] text-[#1a1a1a]/40 uppercase tracking-wider block mb-1">{t(ui.projectDetail.scope)}</span>
+                <p className="font-sans text-[#a84432] font-semibold uppercase tracking-wider">{projectData.criteriaLevel}</p>
               </div>
 
               <div className="pt-4 border-t border-[#1a1a1a]/10">
-                <span className="font-mono text-[10px] text-[#1a1a1a]/40 uppercase tracking-wider block mb-2">CONSECUENCIAS TECNOLÓGICAS</span>
+                <span className="font-mono text-[10px] text-[#1a1a1a]/40 uppercase tracking-wider block mb-2">{t(ui.projectDetail.tools)}</span>
                 <div className="flex flex-wrap gap-1.5">
-                  {project.tools.map((tool) => (
+                  {projectData.tools.map((tool) => (
                     <span
                       key={tool}
                       className="font-mono text-[10px] bg-[#efede8] px-2 py-0.5 text-[#1a1a1a]/80 rounded-sm"
@@ -279,25 +279,25 @@ export default function ProjectDetail() {
                 </div>
               </div>
 
-              {(project.url || project.repoFront || project.repoBack) && (
+              {(projectData.url || projectData.repoFront || projectData.repoBack) && (
                 <div className="pt-4 border-t border-[#1a1a1a]/10 space-y-2">
-                  <span className="font-mono text-[10px] text-[#1a1a1a]/40 uppercase tracking-wider block mb-1">ENLACES</span>
-                  {project.url && (
-                    <a href={project.url} target="_blank" rel="noopener noreferrer"
+                  <span className="font-mono text-[10px] text-[#1a1a1a]/40 uppercase tracking-wider block mb-1">{t(ui.projectDetail.links)}</span>
+                  {projectData.url && (
+                    <a href={projectData.url} target="_blank" rel="noopener noreferrer"
                       className="flex items-center gap-1.5 font-mono text-[10px] text-[#a84432] hover:text-[#1a1a1a] font-semibold uppercase tracking-wider transition-colors">
-                      <ExternalLink size={11} /> Ver proyecto
+                      <ExternalLink size={11} /> {t(ui.projectDetail.viewProject)}
                     </a>
                   )}
-                  {project.repoFront && (
-                    <a href={project.repoFront} target="_blank" rel="noopener noreferrer"
+                  {projectData.repoFront && (
+                    <a href={projectData.repoFront} target="_blank" rel="noopener noreferrer"
                       className="flex items-center gap-1.5 font-mono text-[10px] text-[#a84432] hover:text-[#1a1a1a] font-semibold uppercase tracking-wider transition-colors">
-                      <Github size={11} /> Repositorio frontend
+                      <Github size={11} /> {t(ui.projectDetail.repoFront)}
                     </a>
                   )}
-                  {project.repoBack && (
-                    <a href={project.repoBack} target="_blank" rel="noopener noreferrer"
+                  {projectData.repoBack && (
+                    <a href={projectData.repoBack} target="_blank" rel="noopener noreferrer"
                       className="flex items-center gap-1.5 font-mono text-[10px] text-[#a84432] hover:text-[#1a1a1a] font-semibold uppercase tracking-wider transition-colors">
-                      <Github size={11} /> Repositorio backend
+                      <Github size={11} /> {t(ui.projectDetail.repoBack)}
                     </a>
                   )}
                 </div>
@@ -308,21 +308,21 @@ export default function ProjectDetail() {
                   onClick={() => setShowGallery(true)}
                   className="flex items-center gap-1.5 font-mono text-[10px] text-[#a84432] hover:text-[#1a1a1a] font-semibold uppercase tracking-wider transition-colors cursor-pointer"
                 >
-                  <FolderKanban size={11} /> Galería
+                  <FolderKanban size={11} /> {t(ui.projectDetail.gallery)}
                 </button>
               </div>
             </div>
           </div>
 
           <div className="bg-[#efede8]/60 p-6 rounded-sm border-l-2 border-[#a84432] space-y-3">
-            <span className="font-mono text-[9px] uppercase tracking-widest text-[#a84432] font-semibold block">CRITERIO DEL SOFTWARE</span>
+            <span className="font-mono text-[9px] uppercase tracking-widest text-[#a84432] font-semibold block">{t(ui.projectDetail.criteria)}</span>
             <p className="text-xs text-[#1a1a1a]/70 leading-relaxed font-light italic">
-              "{project.criteriaInsight}"
+              "{projectData.criteriaInsight}"
             </p>
           </div>
 
           <div className="font-mono text-[9px] text-[#1a1a1a]/30 uppercase text-center tracking-widest pt-4">
-            REGISTRO: G.D.V. // ARCH-{project.id.toUpperCase()}
+            {t(ui.projectDetail.register)}{projectData.id.toUpperCase()}
           </div>
         </aside>
       </div>
@@ -332,8 +332,8 @@ export default function ProjectDetail() {
           <div className="bg-[#fffef0] border border-[#e5e2de] rounded-sm p-6 md:p-8 max-w-2xl w-full max-h-[85vh] overflow-y-auto shadow-xl" onClick={e => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-6">
               <div>
-                <span className="font-mono text-[9px] uppercase tracking-widest text-[#a84432] font-semibold block">GALERÍA</span>
-                <h3 className="font-serif text-xl font-light text-[#1a1a1a]">{project.title}</h3>
+                <span className="font-mono text-[9px] uppercase tracking-widest text-[#a84432] font-semibold block">{t(ui.projectDetail.galleryTitle)}</span>
+                <h3 className="font-serif text-xl font-light text-[#1a1a1a]">{projectData.title}</h3>
               </div>
               <button onClick={() => setShowGallery(false)} className="text-[#1a1a1a]/40 hover:text-[#1a1a1a] cursor-pointer">
                 <X size={20} />
@@ -349,12 +349,12 @@ export default function ProjectDetail() {
                 >
                   <div className="absolute inset-0 bg-[#1a1a1a]/0 group-hover:bg-[#1a1a1a]/5 transition-colors z-10 flex items-center justify-center">
                     <span className="text-white opacity-0 group-hover:opacity-100 transition-opacity font-mono text-[10px] uppercase tracking-wider bg-[#1a1a1a]/60 px-2 py-1 rounded-xs">
-                      Ampliar
+                      {t(ui.projectDetail.amplify)}
                     </span>
                   </div>
                   <img
-                    src={`/projects/${project.id}/${String(n).padStart(2, '0')}.webp`}
-                    alt={`${project.title} — ${String(n).padStart(2, '0')}`}
+                    src={`/projects/${projectData.id}/${String(n).padStart(2, '0')}.webp`}
+                    alt={`${projectData.title} — ${String(n).padStart(2, '0')}`}
                     className="absolute inset-0 w-full h-full object-cover object-top"
                     loading="lazy"
                     onError={(e) => {
@@ -366,7 +366,7 @@ export default function ProjectDetail() {
                   <div className="text-center space-y-2 hidden">
                     <FolderKanban size={24} className="text-[#1a1a1a]/15 mx-auto" />
                     <p className="font-mono text-[9px] text-[#1a1a1a]/20 uppercase tracking-wider">
-                      {project.title} — {String(n).padStart(2, '0')}
+                      {projectData.title} — {String(n).padStart(2, '0')}
                     </p>
                   </div>
                 </div>
@@ -374,7 +374,7 @@ export default function ProjectDetail() {
             </div>
 
             <p className="mt-5 font-mono text-[9px] text-[#1a1a1a]/30 text-center uppercase tracking-wider">
-              Capturas reales del proyecto
+              {t(ui.projectDetail.galleryCaption)}
             </p>
           </div>
         </div>
@@ -401,8 +401,8 @@ export default function ProjectDetail() {
           </button>
 
           <img
-            src={`/projects/${project.id}/${String(lightboxIndex + 1).padStart(2, '0')}.webp`}
-            alt={`${project.title} — ${String(lightboxIndex + 1).padStart(2, '0')}`}
+            src={`/projects/${projectData.id}/${String(lightboxIndex + 1).padStart(2, '0')}.webp`}
+            alt={`${projectData.title} — ${String(lightboxIndex + 1).padStart(2, '0')}`}
             className="max-w-[90vw] max-h-[85vh] object-contain rounded-sm shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           />
@@ -427,11 +427,11 @@ export default function ProjectDetail() {
           className="group inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[#a84432] hover:text-[#1a1a1a] transition-colors cursor-pointer"
         >
           <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
-          Volver a Proyectos
+          {t(ui.projectDetail.back)}
         </button>
-        <span className="font-mono text-xs text-[#1a1a1a]/30">
-          Gonzalo Daniel Vega — {project.year} — SFV Catamarca, Catamarca
-        </span>
+<span className="font-mono text-xs text-[#1a1a1a]/30">
+            {t(ui.projectDetail.footer)} {projectData.year} — SFV Catamarca, Catamarca
+          </span>
       </div>
     </motion.article>
   );

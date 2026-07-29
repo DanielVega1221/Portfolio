@@ -1,3 +1,6 @@
+import { useLanguage } from '../i18n/LanguageContext';
+import { ui } from '../i18n/translations';
+
 interface ProjectImageProps {
   title: string;
   subtitle: string;
@@ -8,17 +11,19 @@ interface ProjectImageProps {
   className?: string;
 }
 
-function getTypeLabel(type: ProjectImageProps['type']) {
-  switch (type) {
-    case 'real': return 'CLIENTE';
-    case 'tool': return 'HERRAMIENTA';
-    case 'personal': return 'DEMO';
-    case 'particular': return 'PARTICULAR';
-    case 'career': return 'CARRERA';
-  }
+function getTypeLabel(type: ProjectImageProps['type'], lang: 'es' | 'en') {
+  const labels: Record<string, { es: string; en: string }> = {
+    real: { es: 'CLIENTE', en: 'CLIENT' },
+    tool: { es: 'HERRAMIENTA', en: 'TOOL' },
+    personal: { es: 'DEMO', en: 'DEMO' },
+    particular: { es: 'PARTICULAR', en: 'PRIVATE' },
+    career: { es: 'CARRERA', en: 'CAREER' },
+  };
+  return labels[type]?.[lang] || type.toUpperCase();
 }
 
 export default function ProjectImage({ title, subtitle, chapterNumber, type, projectId, url, className = '' }: ProjectImageProps) {
+  const { lang } = useLanguage();
   const screenshotPath = url ? `/projects/${projectId}.jpg` : null;
 
   return (
@@ -45,7 +50,7 @@ export default function ProjectImage({ title, subtitle, chapterNumber, type, pro
       )}
 
       <div className="absolute top-3 left-3 font-mono text-[9px] uppercase tracking-[0.2em] text-[#1a1a1a]/50 bg-[#f9f7f2]/90 backdrop-blur-xs px-2 py-1 border border-[#e5e2de] rounded-xs">
-        {getTypeLabel(type)}
+        {getTypeLabel(type, lang)}
       </div>
 
       <div className="absolute top-3 right-3 font-mono text-xs font-bold text-[#a84432] bg-[#f9f7f2]/90 backdrop-blur-xs w-7 h-7 rounded-full border border-[#e5e2de] flex items-center justify-center">

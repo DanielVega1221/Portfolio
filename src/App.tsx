@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { LanguageProvider } from './i18n/LanguageContext';
 import Layout from './components/Layout';
 import Home from './pages/Home';
 import Portfolio from './pages/Portfolio';
@@ -10,18 +11,20 @@ import JournalDetail from './components/JournalDetail';
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route element={<Layout />}>
-          <Route index element={<Home />} />
-          <Route path="proyectos" element={<Portfolio />} />
-          <Route path="proyectos/:id" element={<ProjectDetail />} />
-          <Route path="journal" element={<Journal />} />
-          <Route path="journal/:id" element={<JournalDetail />} />
-          <Route path="sobre-mi" element={<About />} />
-          <Route path="dialogo" element={<Contact />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+    <LanguageProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route element={<Layout />}>
+            <Route index element={<Home />} />
+            <Route path="proyectos" element={<Portfolio />} />
+            <Route path="proyectos/:id" element={<ProjectDetail />} />
+            <Route path="journal" element={<Journal />} />
+            <Route path="journal/:id" element={<JournalDetail />} />
+            <Route path="sobre-mi" element={<About />} />
+            <Route path="dialogo" element={<Contact />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </LanguageProvider>
   );
 }

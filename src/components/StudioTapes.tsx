@@ -1,4 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { useLanguage } from '../i18n/LanguageContext';
+import { ui } from '../i18n/translations';
 import { motion, AnimatePresence } from 'motion/react';
 import { studioTapes, Tape } from '../data/studioTapes';
 
@@ -207,6 +209,9 @@ export default function StudioTapes({ currentTab }: StudioTapesProps) {
   const sourceRef = useRef<MediaElementAudioSourceNode | null>(null);
 
   const [isMobile, setIsMobile] = useState(false);
+
+  const { lang } = useLanguage();
+  const t = (p: any) => p[lang];
 
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 768);
@@ -555,7 +560,7 @@ export default function StudioTapes({ currentTab }: StudioTapesProps) {
           </div>
           
           <span className="font-mono text-[9px] md:text-[10px] tracking-widest text-[#1a1a1a] font-medium">
-            {isPlaying ? 'PLAYING' : 'TAPES'}
+            {isPlaying ? t(ui.studioTapes.playing) : t(ui.studioTapes.tapes)}
           </span>
 
           {activeTape && (
@@ -593,7 +598,7 @@ export default function StudioTapes({ currentTab }: StudioTapesProps) {
                     </h3>
                   </div>
                   <p className="hidden md:block font-mono text-[8px] text-[#1a1a1a]/50 uppercase tracking-widest">
-                    Colección analógica de estados de ánimo y procesos creativos // G.D.V.
+                    {t(ui.studioTapes.subtitle)}
                   </p>
                 </div>
 
@@ -617,7 +622,7 @@ export default function StudioTapes({ currentTab }: StudioTapesProps) {
                 {/* Mobile-first: Player Deck first (so drop target is visible) */}
                 <div className="md:col-span-5 md:order-last space-y-3.5">
                   <span className="font-mono text-[9px] text-[#a84432] font-semibold tracking-wider block">
-                    REPRODUCTOR ANALÓGICO
+                    {t(ui.studioTapes.player)}
                   </span>
 
                   {/* Physical Walkman/Deck Body */}
@@ -633,7 +638,7 @@ export default function StudioTapes({ currentTab }: StudioTapesProps) {
                         <span>SIGNAL SYSTEM</span>
                         <span className="flex items-center gap-1">
                           <span className={`w-1.5 h-1.5 rounded-full ${isPlaying ? 'bg-amber-400 animate-pulse shadow-[0_0_6px_#f59e0b]' : 'bg-neutral-800'}`} />
-                          {isPlaying ? 'PLAY' : 'STANDBY'}
+                          {isPlaying ? t(ui.studioTapes.play) : t(ui.studioTapes.standby)}
                         </span>
                       </div>
                       
@@ -650,13 +655,13 @@ export default function StudioTapes({ currentTab }: StudioTapesProps) {
                           </div>
                           {audioError && (
                             <div className="text-[8px] text-red-400 font-mono uppercase tracking-wider mt-1">
-                              ⚠ Archivo no encontrado — simulando
+                              ⚠ {t(ui.studioTapes.noFile)}
                             </div>
                           )}
                         </div>
                       ) : (
                         <div className="text-center text-amber-700/40 py-2 uppercase tracking-widest text-[9px] font-bold">
-                          [ SIN CINTA CARGADA ]
+                            {t(ui.studioTapes.noTape)}
                         </div>
                       )}
 
@@ -693,7 +698,7 @@ export default function StudioTapes({ currentTab }: StudioTapesProps) {
                             exit={{ y: 50, opacity: 0 }}
                             className="text-[#a84432] font-mono text-[10px] uppercase font-bold tracking-widest"
                           >
-                            INSERTANDO...
+                            {t(ui.studioTapes.inserting)}
                           </motion.div>
                         ) : activeTape ? (
                           <motion.div 
@@ -736,10 +741,10 @@ export default function StudioTapes({ currentTab }: StudioTapesProps) {
                         ) : (
                           <div className="text-center space-y-1 text-[#666] select-none px-2">
                             <p className="font-mono text-[8px] md:text-[9px] uppercase tracking-widest text-amber-600/30 font-bold">
-                              RANURA DE ENTRADA
+                              {t(ui.studioTapes.slot)}
                             </p>
                             <p className="text-[8px] md:text-[9px] font-sans text-neutral-500 italic">
-                              Selecciona una cinta de abajo
+                              {t(ui.studioTapes.slotHint)}
                             </p>
                           </div>
                         )}
@@ -750,8 +755,8 @@ export default function StudioTapes({ currentTab }: StudioTapesProps) {
                     {activeTape && (
                       <div className="space-y-1 pt-0.5 md:pt-1">
                         <div className="flex justify-between font-mono text-[7px] md:text-[8px] text-neutral-500 tracking-wider">
-                          <span>TIME ELAPSED</span>
-                          <span>TIME REMAINING</span>
+                          <span>{t(ui.studioTapes.timeElapsed)}</span>
+                          <span>{t(ui.studioTapes.timeRemaining)}</span>
                         </div>
                         <div className="relative h-1 bg-[#1c1a18] rounded-full overflow-hidden border border-neutral-900 shadow-inner">
                           <div 
@@ -774,7 +779,7 @@ export default function StudioTapes({ currentTab }: StudioTapesProps) {
                           : activeTape ? 'bg-[#282522] text-[#e5e2de] border-[#3d3732] hover:bg-[#332e2a] hover:border-[#4d443b] active:translate-y-0.5 shadow-md hover:text-white' 
                           : 'bg-[#151413] text-neutral-700 border-[#1c1a19] cursor-not-allowed'
                         }`}
-                      ><span className={`text-[7px] md:text-[8px] ${isPlaying ? 'text-amber-400' : 'text-[#a84432]'}`}>▲</span> Play</button>
+                      ><span className={`text-[7px] md:text-[8px] ${isPlaying ? 'text-amber-400' : 'text-[#a84432]'}`}>▲</span> {t(ui.studioTapes.playBtn)}</button>
 
                       <button onClick={handlePause} disabled={!activeTape || !isPlaying}
                         className={`py-1.5 md:py-2 px-1.5 md:px-2.5 rounded-xs font-mono text-[8px] md:text-[9px] font-semibold tracking-wider border uppercase transition-all flex items-center justify-center gap-0.5 md:gap-1 ${
@@ -782,21 +787,21 @@ export default function StudioTapes({ currentTab }: StudioTapesProps) {
                           : activeTape && isPlaying ? 'bg-[#282522] text-[#e5e2de] border-[#3d3732] hover:bg-[#332e2a] hover:border-[#4d443b] active:translate-y-0.5 shadow-md hover:text-white'
                           : 'bg-[#151413] text-neutral-700 border-[#1c1a19] cursor-not-allowed'
                         }`}
-                      ><span className="text-[7px] md:text-[8px] text-amber-500">❚❚</span> Pause</button>
+                      ><span className="text-[7px] md:text-[8px] text-amber-500">❚❚</span> {t(ui.studioTapes.pauseBtn)}</button>
 
                       <button onClick={handleStop} disabled={!activeTape}
                         className={`py-1.5 md:py-2 px-1.5 md:px-2.5 rounded-xs font-mono text-[8px] md:text-[9px] font-semibold tracking-wider border uppercase transition-all flex items-center justify-center gap-0.5 md:gap-1 ${
                           activeTape ? 'bg-[#282522] text-[#e5e2de] border-[#3d3732] hover:bg-[#332e2a] hover:border-[#4d443b] active:translate-y-0.5 shadow-md hover:text-white' 
                           : 'bg-[#151413] text-neutral-700 border-[#1c1a19] cursor-not-allowed'
                         }`}
-                      ><span className="text-[6px] md:text-[7px]">■</span> Stop</button>
+                      ><span className="text-[6px] md:text-[7px]">■</span> {t(ui.studioTapes.stopBtn)}</button>
 
                       <button onClick={handleEject} disabled={!activeTape}
                         className={`py-1.5 md:py-2 px-1.5 md:px-2.5 rounded-xs font-mono text-[8px] md:text-[9px] font-semibold tracking-wider border uppercase transition-all flex items-center justify-center gap-0.5 md:gap-1 ${
                           activeTape ? 'bg-[#3a1a16] text-[#ffa399] border-[#5d2b22] hover:bg-[#4d211c] hover:border-[#703328] active:translate-y-0.5 shadow-md' 
                           : 'bg-[#151413] text-neutral-700 border-[#1c1a19] cursor-not-allowed'
                         }`}
-                      ><span className="text-[7px] md:text-[8px]">⏏</span> Eject</button>
+                      ><span className="text-[7px] md:text-[8px]">⏏</span> {t(ui.studioTapes.ejectBtn)}</button>
                     </div>
 
                     {/* Volume Slider */}
@@ -818,8 +823,8 @@ export default function StudioTapes({ currentTab }: StudioTapesProps) {
                 <div className="md:col-span-7 space-y-3">
                   <div className="flex justify-between items-center">
                     <span className="font-mono text-[9px] text-[#a84432] font-semibold tracking-wider">
-                      <span className="hidden md:inline">BANDEJA DE CASSETTES (ARRÁSTRALO O HAZ CLICK)</span>
-                      <span className="md:hidden">BANDEJA DE CASSETTES (TOCÁ PARA CARGAR)</span>
+                      <span className="hidden md:inline">{t(ui.studioTapes.tray)}</span>
+                      <span className="md:hidden">{t(ui.studioTapes.trayMobile)}</span>
                     </span>
                     <span className="font-mono text-[8px] text-[#1a1a1a]/40">
                       {studioTapes.length}
@@ -901,7 +906,7 @@ export default function StudioTapes({ currentTab }: StudioTapesProps) {
                             </motion.div>
 
                             <p className="text-[9px] md:text-[10px] text-[#1a1a1a]/70 font-light leading-snug italic">
-                              {tape.description}
+                              {lang === 'en' && tape.descriptionEn ? tape.descriptionEn : tape.description}
                             </p>
                           </div>
                         </div>

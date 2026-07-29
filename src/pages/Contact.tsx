@@ -1,13 +1,8 @@
 import { useState, FormEvent } from 'react';
 import { motion } from 'motion/react';
 import { Check, AlertTriangle } from 'lucide-react';
-
-const REASONS = [
-  'Tengo un problema complejo',
-  'Quiero conversar sobre producto',
-  'Quiero sumar tu criterio a un equipo',
-  'Solo quería saludar',
-];
+import { useLanguage } from '../i18n/LanguageContext';
+import { ui } from '../i18n/translations';
 
 export default function Contact() {
   const [contactName, setContactName] = useState('');
@@ -16,11 +11,13 @@ export default function Contact() {
   const [contactMessage, setContactMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [feedback, setFeedback] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const { lang } = useLanguage();
+  const t = (path: any) => path[lang];
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!contactReason) {
-      setFeedback({ type: 'error', text: 'Seleccioná un motivo para escribir.' });
+      setFeedback({ type: 'error', text: t(ui.contact.errorReason) });
       return;
     }
     setIsSubmitting(true);
@@ -38,15 +35,15 @@ export default function Contact() {
       });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
-        throw new Error(data.error || 'Error al enviar');
+        throw new Error(data.error || t(ui.contact.errorFallback));
       }
-      setFeedback({ type: 'success', text: 'Mensaje enviado correctamente. ¡Gracias por escribir!' });
+      setFeedback({ type: 'success', text: t(ui.contact.success) });
       setContactName('');
       setContactReason('');
       setContactEmail('');
       setContactMessage('');
     } catch (err) {
-      setFeedback({ type: 'error', text: err instanceof Error ? err.message : 'Error al enviar el mensaje. Intentá de nuevo.' });
+      setFeedback({ type: 'error', text: err instanceof Error ? err.message : t(ui.contact.errorGeneric) });
     } finally {
       setIsSubmitting(false);
       setTimeout(() => setFeedback(null), 6000);
@@ -63,12 +60,12 @@ export default function Contact() {
     >
       <div id="contact-view" className="max-w-xl mx-auto space-y-12">
         <div className="space-y-4 text-center">
-          <p className="font-mono text-xs uppercase tracking-widest text-[#a84432] font-bold">CAPÍTULO V — DIÁLOGO HONESTO</p>
+          <p className="font-mono text-xs uppercase tracking-widest text-[#a84432] font-bold">{t(ui.contact.chapter)}</p>
           <h2 className="text-serif text-3xl md:text-4xl font-light text-[#1a1a1a] tracking-tight leading-tight">
-            Establezcamos una conversación
+            {t(ui.contact.title)}
           </h2>
           <p className="text-[#1a1a1a]/70 font-light text-sm md:text-base leading-relaxed">
-            Si tenés una idea, un problema complejo de negocio, o simplemente una forma parecida de ver el desarrollo de producto, escribime. Leo todo personalmente.
+            {t(ui.contact.desc)}
           </p>
         </div>
 
@@ -86,59 +83,59 @@ export default function Contact() {
 
           <form onSubmit={handleSubmit} className="space-y-8">
             <div className="space-y-3">
-              <label className="font-mono text-xs text-[#1a1a1a]/50 uppercase tracking-wider block">Quiero escribir porque:</label>
+              <label className="font-mono text-xs text-[#1a1a1a]/50 uppercase tracking-wider block">{t(ui.contact.reasonLabel)}</label>
               <div className="flex flex-wrap gap-2">
-                {REASONS.map((reason) => (
+                {ui.contact.reasons.map((reason) => (
                   <button
-                    key={reason}
+                    key={reason.es}
                     type="button"
-                    onClick={() => setContactReason(reason)}
+                    onClick={() => setContactReason(t(reason))}
                     className={`px-3 py-1.5 rounded-sm text-xs font-mono border tracking-wide transition-all cursor-pointer ${
-                      contactReason === reason
+                      contactReason === t(reason)
                         ? 'bg-[#a84432] border-[#a84432] text-[#f9f7f2]'
                         : 'bg-[#fffef0] border-[#e5e2de] text-[#1a1a1a]/60 hover:border-[#a84432]/40'
                     }`}
                   >
-                    {reason}
+                    {t(reason)}
                   </button>
                 ))}
               </div>
             </div>
 
             <div className="space-y-2">
-              <label htmlFor="contact-name" className="font-mono text-xs text-[#1a1a1a]/50 uppercase tracking-wider block">Tu nombre</label>
+              <label htmlFor="contact-name" className="font-mono text-xs text-[#1a1a1a]/50 uppercase tracking-wider block">{t(ui.contact.nameLabel)}</label>
               <input
                 type="text"
                 id="contact-name"
                 value={contactName}
                 onChange={(e) => setContactName(e.target.value)}
-                placeholder="Juan Pérez"
+                placeholder={t(ui.contact.namePlaceholder)}
                 className="w-full bg-[#f9f7f2] border border-[#e5e2de] px-4 py-2.5 text-xs font-mono rounded-sm focus:outline-none focus:border-[#a84432] text-[#1a1a1a] transition-colors"
               />
             </div>
 
             <div className="space-y-2">
-              <label htmlFor="contact-email" className="font-mono text-xs text-[#1a1a1a]/50 uppercase tracking-wider block">Tu correo de contacto</label>
+              <label htmlFor="contact-email" className="font-mono text-xs text-[#1a1a1a]/50 uppercase tracking-wider block">{t(ui.contact.emailLabel)}</label>
               <input
                 type="email"
                 id="contact-email"
                 required
                 value={contactEmail}
                 onChange={(e) => setContactEmail(e.target.value)}
-                placeholder="nombre@ejemplo.com"
+                placeholder={t(ui.contact.emailPlaceholder)}
                 className="w-full bg-[#f9f7f2] border border-[#e5e2de] px-4 py-2.5 text-xs font-mono rounded-sm focus:outline-none focus:border-[#a84432] text-[#1a1a1a] transition-colors"
               />
             </div>
 
             <div className="space-y-2">
-              <label htmlFor="contact-message" className="font-mono text-xs text-[#1a1a1a]/50 uppercase tracking-wider block">¿Cuál es el problema, contexto o idea?</label>
+              <label htmlFor="contact-message" className="font-mono text-xs text-[#1a1a1a]/50 uppercase tracking-wider block">{t(ui.contact.messageLabel)}</label>
               <textarea
                 id="contact-message"
                 required
                 rows={5}
                 value={contactMessage}
                 onChange={(e) => setContactMessage(e.target.value)}
-                placeholder="Descríbeme qué quieres resolver, cómo funciona actualmente o sobre qué quieres intercambiar opiniones..."
+                placeholder={t(ui.contact.messagePlaceholder)}
                 className="w-full bg-[#f9f7f2] border border-[#e5e2de] px-4 py-2.5 text-sm font-light rounded-sm focus:outline-none focus:border-[#a84432] text-[#1a1a1a] transition-colors leading-relaxed"
               />
             </div>
@@ -149,7 +146,7 @@ export default function Contact() {
                 disabled={isSubmitting}
                 className="w-full bg-[#a84432] text-[#f9f7f2] font-mono text-xs uppercase tracking-widest py-3 hover:bg-[#a84432]/90 transition-colors disabled:opacity-50 cursor-pointer"
               >
-                {isSubmitting ? 'Enviando...' : 'Enviar mensaje'}
+                {isSubmitting ? t(ui.contact.submitting) : t(ui.contact.submit)}
               </button>
             </div>
           </form>
@@ -157,10 +154,10 @@ export default function Contact() {
 
         <div className="bg-[#fffef0] border border-[#e5e2de] p-8 rounded-sm shadow-xs text-center space-y-4">
           <p className="font-serif text-xl text-[#1a1a1a] font-light leading-relaxed">
-            ¿Querés charlar de manera casual o simplemente intercambiar ideas?
+            {t(ui.contact.casualTitle)}
           </p>
           <p className="font-sans text-sm text-[#1a1a1a]/60 leading-relaxed">
-            Me encanta conversar. Si te pinta hablar de tecnología, de proyectos, de la vida o de lo que sea, escribime sin compromiso.
+            {t(ui.contact.casualDesc)}
           </p>
           <a
             href="https://wa.me/5493834368748"
@@ -169,23 +166,23 @@ export default function Contact() {
             className="inline-flex items-center gap-2 bg-[#25D366] text-white px-6 py-3 rounded-sm font-mono text-xs uppercase tracking-wider font-semibold hover:bg-[#20bd5a] transition-colors"
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-            Charlar por WhatsApp
+            {t(ui.contact.casualBtn)}
           </a>
         </div>
 
         <div className="text-center space-y-4 pt-8 border-t border-[#1a1a1a]/10">
           <h3 className="font-serif text-2xl md:text-3xl font-light text-[#a84432] tracking-tight">
-            Si llegaste hasta acá
+            {t(ui.contact.bottomTitle)}
           </h3>
           <div className="space-y-2">
             <p className="font-sans text-sm text-[#1a1a1a]/70 leading-relaxed">
-              Capaz tenemos una forma parecida de pensar.
+              {t(ui.contact.bottom1)}
             </p>
             <p className="font-sans text-sm text-[#1a1a1a]/70 leading-relaxed">
-              O capaz no, pero igual estaría bueno hablar.
+              {t(ui.contact.bottom2)}
             </p>
             <p className="font-sans text-sm text-[#1a1a1a]/70 leading-relaxed pt-2">
-              Si tenés una idea, un problema, o simplemente querés intercambiar cómo vemos las cosas, podemos charlar.
+              {t(ui.contact.bottom3)}
             </p>
           </div>
         </div>

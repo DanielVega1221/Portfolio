@@ -5,6 +5,7 @@ export interface Tape {
   duration: string;
   durationSeconds: number; // For fallback simulation of progress if audio fails to load or for direct calculation
   description: string;
+  descriptionEn?: string;
   coverColor: string; // Tailored beautiful terracotta, slate, warm amber, moss green shades
   labelColor: string; // Contrasting ink text color
   audioFile: string;
@@ -19,6 +20,7 @@ export const studioTapes: Tape[] = [
     duration: '3:14',
     durationSeconds: 194,
     description: 'Textura lo-fi, sintetizadores lentos y un pulso constante diseñado para sostener la concentración en la oscuridad.',
+    descriptionEn: 'Lo-fi textures, slow synthesizers, and a steady pulse designed to sustain concentration in the dark.',
     coverColor: '#a84432', // Terracotta
     labelColor: '#f9f7f2',
     audioFile: '/audio/field-notes-01.mp3',
@@ -31,6 +33,7 @@ export const studioTapes: Tape[] = [
     duration: '2:54',
     durationSeconds: 174,
     description: 'Guitarras acústicas con sutil eco y grabaciones de campo que invitan a la lectura lenta y la asimilación conceptual.',
+    descriptionEn: 'Acoustic guitars with subtle echo and field recordings that invite slow reading and conceptual absorption.',
     coverColor: '#2b3a4a', // Slate Blue
     labelColor: '#f9f7f2',
     audioFile: '/audio/field-notes-02.mp3',
@@ -42,7 +45,8 @@ export const studioTapes: Tape[] = [
     subtitle: 'Building Products',
     duration: '4:28',
     durationSeconds: 268,
-    description: 'Ritmo electrónico minimalista con un tempo elevado para mantener la inercia durante sesiones de prototipado intenso.',
+    description: 'Piano relajado y melodías con saxofón que combinan calma y movimiento. Perfecta para sesiones de prototipado con ritmo pero sin ansiedad.',
+    descriptionEn: 'Relaxed piano and saxophone melodies that blend calm and movement. Perfect for prototyping sessions with rhythm but without anxiety.',
     coverColor: '#cbc8bf', // Warm Gray
     labelColor: '#1a1a1a',
     audioFile: '/audio/field-notes-03.mp3',
@@ -55,6 +59,7 @@ export const studioTapes: Tape[] = [
     duration: '4:33',
     durationSeconds: 273,
     description: 'Jazz ambiental melancólico y piano pausado. Ideal para asimilar retrospectivas y escribir notas personales.',
+    descriptionEn: 'Melancholic ambient jazz and paused piano. Ideal for assimilating retrospectives and writing personal notes.',
     coverColor: '#e0ccb6', // Sand Warm
     labelColor: '#1a1a1a',
     audioFile: '/audio/field-notes-04.mp3',
@@ -67,6 +72,7 @@ export const studioTapes: Tape[] = [
     duration: '3:12',
     durationSeconds: 192,
     description: 'Bachata instrumental cálida y envolvente. La banda sonora perfecta para cerrar la semana productiva y recibir el fin de semana con buena energía.',
+    descriptionEn: 'Warm and enveloping instrumental bachata. The perfect soundtrack to close a productive week and welcome the weekend with good energy.',
     coverColor: '#c47a38', // Warm amber/orange
     labelColor: '#f9f7f2',
     audioFile: '/audio/field-notes-05.mp3',

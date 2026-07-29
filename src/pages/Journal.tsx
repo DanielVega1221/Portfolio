@@ -2,9 +2,13 @@ import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { Calendar, Clock } from 'lucide-react';
+import { useLanguage } from '../i18n/LanguageContext';
+import { ui } from '../i18n/translations';
 import { journalEntries } from '../data/journal';
 
 export default function Journal() {
+  const { lang } = useLanguage();
+  const t = (p: any) => p[lang];
   const entries = useMemo(() =>
     [...journalEntries].sort((a, b) =>
       new Date(b.date).getTime() - new Date(a.date).getTime()
@@ -22,12 +26,12 @@ export default function Journal() {
     >
       <div id="journal-view" className="space-y-16">
         <div className="max-w-3xl space-y-4">
-          <p className="font-mono text-xs uppercase tracking-widest text-[#a84432] font-bold">CAPÍTULO III — NOTAS DE CAMPO</p>
+          <p className="font-mono text-xs uppercase tracking-widest text-[#a84432] font-bold">{t(ui.journal.chapter)}</p>
           <h2 className="text-serif text-3xl md:text-5xl lg:text-6xl font-light text-[#1a1a1a] tracking-tight leading-tight">
-            Notas de Campo & Ensayos
+            {t(ui.journal.title)}
           </h2>
           <p className="text-[#1a1a1a]/70 font-light text-base md:text-lg leading-relaxed">
-            Una compilación de reflexiones técnicas honestas, análisis heurísticos y aprendizajes sobre arquitectura de software, experiencia de usuario habitable y dirección de arte digital.
+            {t(ui.journal.desc)}
           </p>
         </div>
 
@@ -39,7 +43,7 @@ export default function Journal() {
             >
               <div className="lg:col-span-3 font-mono text-xs text-[#1a1a1a]/50 space-y-1.5">
                 <div className="text-[#a84432] font-bold uppercase tracking-widest flex items-center gap-1.5">
-                  <span>NOTE #{String(entries.length - idx).padStart(3, '0')}</span>
+                  <span>{t(ui.journal.noteLabel)}{String(entries.length - idx).padStart(3, '0')}</span>
                 </div>
                 <p className="font-semibold text-[#1a1a1a]/80 uppercase">{entry.category}</p>
                 <p className="flex items-center gap-1"><Calendar size={11} /> {entry.date}</p>
@@ -62,7 +66,7 @@ export default function Journal() {
                     to={`/journal/${entry.id}`}
                     className="inline-flex items-center gap-1 font-mono text-xs uppercase tracking-widest text-[#a84432] hover:text-[#1a1a1a] font-bold"
                   >
-                    Leer nota de campo →
+                    {t(ui.journal.readMore)}
                   </Link>
                 </div>
               </div>

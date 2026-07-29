@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://gonzalodanielvega.com.ar/sitemap.xml

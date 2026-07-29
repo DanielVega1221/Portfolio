@@ -1,6 +1,11 @@
 import { motion } from 'motion/react';
+import { useLanguage } from '../i18n/LanguageContext';
+import { ui } from '../i18n/translations';
 
 export default function About() {
+  const { lang } = useLanguage();
+  const t = (path: any) => path[lang];
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 15 }}
@@ -13,14 +18,14 @@ export default function About() {
 
         {/* Left Column: Headline and Polaroid Stamp */}
         <div className="lg:col-span-5 space-y-8 lg:sticky lg:top-24">
-          <p className="font-mono text-xs uppercase tracking-widest text-[#a84432] font-bold">CAPÍTULO IV — PERFIL INTERNO</p>
+          <p className="font-mono text-xs uppercase tracking-widest text-[#a84432] font-bold">{t(ui.about.chapter)}</p>
 
           <h2 className="text-serif text-4xl sm:text-5xl font-light text-[#1a1a1a] tracking-tight leading-[1.1]">
-            No me interesa ser el que <span className="text-[#a84432] italic font-semibold">"sabe más"</span>. Me interesa ser el que entiende mejor el problema.
+            {t(ui.about.headline)}
           </h2>
 
           <p className="text-sm font-mono text-[#1a1a1a]/60 uppercase tracking-wider leading-relaxed">
-            ENSAYO AUTOBIOGRÁFICO Y CRITERIO PROFESIONAL. NO EMPIEZO POR EL CÓDIGO. EMPIEZO POR HACER PREGUNTAS.
+            {t(ui.about.tag)}
           </p>
 
           {/* Polaroid Styled Stamp */}
@@ -41,7 +46,7 @@ export default function About() {
         <div className="lg:col-span-7 space-y-12">
 
           <div className="border-b border-[#1a1a1a]/10 pb-4">
-            <span className="font-mono text-[10px] text-[#a84432] font-bold uppercase tracking-widest">CUADERNO DE BITÁCORA // PERSPECTIVA OPERATIVA</span>
+            <span className="font-mono text-[10px] text-[#a84432] font-bold uppercase tracking-widest">{t(ui.about.logbook)}</span>
           </div>
 
           {/* Section 0: De dónde vengo */}
@@ -49,30 +54,18 @@ export default function About() {
             <div className="flex items-center gap-2 font-mono text-[10px] text-[#a84432] font-semibold">
               <span>§ 00</span>
               <span className="opacity-30">/</span>
-              <span>DE DÓNDE VENGO</span>
+              <span>{t(ui.about.section00)}</span>
             </div>
             <h3 className="text-serif text-2xl md:text-3xl font-light text-[#1a1a1a] tracking-tight">
-              Catamarca, ingeniería y muchas ganas de aprender
+              {t(ui.about.section00Title)}
             </h3>
             <div className="text-[#1a1a1a]/85 font-light leading-relaxed text-sm md:text-base space-y-4">
-              <p>
-                Soy de Catamarca. Ahí nací, crecí y ahí vivo hoy. Desde chico me gustó la tecnología y siempre tuve curiosidad por encontrarle la vuelta a los problemas, no solo desde el código sino desde cualquier lado que pudiera ayudar a alguien.
-              </p>
-              <p>
-                Estudio Ingeniería en Informática en la Universidad Nacional de Catamarca. Ya voy por tercer año. La facultad me dio un montón de bases sólidas que valoro muchísimo, metodologías de trabajo, fundamentos teóricos, criterio para analizar antes de hacer. Pero nunca me alcanzó con lo que veía en clase. Siempre quise más. Así que empecé a investigar por mi cuenta. Leí libros, miré videos, tomé cursos, leí artículos y, sobre todo, aprendí de colegas. Gente que en algún momento me explicó algo, por más chico que fuera, y que yo todavía tengo presente cada vez que me siento a trabajar.
-              </p>
-              <p>
-                Arranqué haciendo proyectos chicos para la facultad. Después fui escalando de a poco hasta construir productos digitales para profesionales y empresas. Pero lo que más me movió siempre no fue la tecnología en sí. Fue entender a las personas. Me gusta saber cómo trabaja la gente, qué procesos siguen, qué les complica el día a día. Hasta las cosas más burocráticas o las tareas más simples me interesan, porque ahí está la clave de todo. Entender eso es lo que separa una solución que funciona de una que realmente le sirve a alguien.
-              </p>
-              <p>
-                No me interesa ser solo el que escribe código. Quiero entender para quién trabajo. Que lo que construyo no deje a nadie afuera por ningún sesgo, por ninguna suposición apurada. Eso me llevó a desarrollar algo que para mí es central, la capacidad de escuchar, de hacer preguntas antes de proponer, de no asumir que ya sé lo que el otro necesita.
-              </p>
-              <p>
-                También aprendí a comunicar sin vueltas. Si algo no se puede explicar fácil, probablemente no lo entendí bien del todo. Y si no lo entendí, no debería estar construyéndolo. Prefiero frenar, volver a preguntar y recién ahí avanzar.
-              </p>
-              <p>
-                Hoy trabajo remoto desde Catamarca. Pero si hay algo que me apasiona, voy a donde haga falta. Porque al final lo que me mueve no es el lugar. Es la gente con la que trabajo y los problemas que puedo ayudar a resolver.
-              </p>
+              <p>{t(ui.about.section00p1)}</p>
+              <p>{t(ui.about.section00p2)}</p>
+              <p>{t(ui.about.section00p3)}</p>
+              <p>{t(ui.about.section00p4)}</p>
+              <p>{t(ui.about.section00p5)}</p>
+              <p>{t(ui.about.section00p6)}</p>
             </div>
           </div>
 
@@ -81,40 +74,36 @@ export default function About() {
             <div className="flex items-center gap-2 font-mono text-[10px] text-[#a84432] font-semibold">
               <span>§ 01</span>
               <span className="opacity-30">/</span>
-              <span>UXNICORP</span>
+              <span>{t(ui.about.section01)}</span>
             </div>
             <h3 className="text-serif text-2xl md:text-3xl font-light text-[#1a1a1a] tracking-tight">
-              Donde hago de todo. Y me gusta.
+              {t(ui.about.section01Title)}
             </h3>
             <div className="text-[#1a1a1a]/85 font-light leading-relaxed text-sm md:text-base space-y-4">
+              <p>{t(ui.about.section01p1)}</p>
               <p>
-                UXnicorp es una agencia de desarrollo web chica. En una agencia chica no hay "departamento de diseño" ni "equipo de ventas". Hay que hacer lo que haga falta. Y eso fue exactamente lo que hice desde que entré.
+                <span className="font-semibold text-[#a84432] bg-[#a84432]/5 px-1 py-0.5 rounded-xs">{t(ui.about.section01Design)}</span> {t(ui.about.section01DesignText)}
               </p>
               <p>
-                <span className="font-semibold text-[#a84432] bg-[#a84432]/5 px-1 py-0.5 rounded-xs">Diseño y maqueto.</span> Antes de escribir una línea de código, pienso cómo va a verse y sentirse lo que estamos construyendo. Defino paletas, tipografías, jerarquías visuales. Maqueto las interfaces completas. No soy diseñador de formación, pero aprendí a diseñar con criterio porque alguien tenía que hacerlo y porque me importaba que lo que entregáramos se viera bien de verdad.
+                <span className="font-semibold text-[#a84432] bg-[#a84432]/5 px-1 py-0.5 rounded-xs">{t(ui.about.section01Dev)}</span> {t(ui.about.section01DevText)}
               </p>
               <p>
-                <span className="font-semibold text-[#a84432] bg-[#a84432]/5 px-1 py-0.5 rounded-xs">Programo.</span> React, Next.js, Astro, Tailwind, TypeScript. Lo que el proyecto necesite. Construyo frontends, backends cuando hace falta, integraciones con APIs, sistemas de autenticación, bases de datos. Desde una landing page simple hasta un sistema de reservas con concurrencia atómica.
+                <span className="font-semibold text-[#a84432] bg-[#a84432]/5 px-1 py-0.5 rounded-xs">{t(ui.about.section01Clients)}</span> {t(ui.about.section01ClientsText)}
               </p>
               <p>
-                <span className="font-semibold text-[#a84432] bg-[#a84432]/5 px-1 py-0.5 rounded-xs">Hablo con los clientes.</span> No hay intermediarios. El que diseña y el que programa está en la llamada. Escucho lo que necesitan, pregunto lo que no me quedó claro, explico por qué tomamos cada decisión en términos que cualquiera pueda entender.
+                <span className="font-semibold text-[#a84432] bg-[#a84432]/5 px-1 py-0.5 rounded-xs">{t(ui.about.section01Leads)}</span> {t(ui.about.section01LeadsText)}
               </p>
               <p>
-                <span className="font-semibold text-[#a84432] bg-[#a84432]/5 px-1 py-0.5 rounded-xs">Busco leads y vendo.</span> Identifico negocios que podrían beneficiarse de lo que hacemos, los contacto, les explico qué ofrecemos y por qué les puede servir. Aprendí a escuchar, a entender qué necesita cada uno y a ofrecer soluciones que tengan sentido, no a vender por vender.
+                <span className="font-semibold text-[#a84432] bg-[#a84432]/5 px-1 py-0.5 rounded-xs">{t(ui.about.section01Team)}</span> {t(ui.about.section01TeamText)}
               </p>
-              <p>
-                <span className="font-semibold text-[#a84432] bg-[#a84432]/5 px-1 py-0.5 rounded-xs">Gestiono el equipo.</span> Coordino tareas, defino prioridades, me aseguro de que todos sepamos qué hay que hacer y para cuándo. Cuando algo se traba, lo destrabo. No es un rol formal de liderazgo, es lo que pasa cuando te importa que las cosas salgan bien.
-              </p>
-              <p>
-                En UXnicorp no aprendí a ser "un desarrollador". Aprendí a estar presente en cada parte del proceso. A no decir "eso no me toca". A querer que al proyecto le vaya bien, de verdad. Porque cuando algo te importa, no te fijás en qué dice tu puesto. Te fijás en qué necesita el proyecto.
-              </p>
+              <p>{t(ui.about.section01Close)}</p>
             </div>
           </div>
 
           {/* Pull Quote */}
           <div className="bg-[#fffef0] border-l-4 border-[#a84432] border-y border-r border-[#e5e2de] py-6 px-6 my-8 rounded-r-sm shadow-2xs">
             <p className="text-serif text-lg md:text-xl italic text-[#1a1a1a]/90 font-light leading-relaxed">
-              "Cuando algo te importa, no te fijás en qué dice tu puesto. Te fijás en qué necesita el proyecto."
+              "{t(ui.about.pullQuote)}"
             </p>
           </div>
 
@@ -123,58 +112,27 @@ export default function About() {
             <div className="flex items-center gap-2 font-mono text-[10px] text-[#a84432] font-semibold">
               <span>§ 02</span>
               <span className="opacity-30">/</span>
-              <span>CÓMO PIENSO</span>
+              <span>{t(ui.about.section02)}</span>
             </div>
             <h3 className="text-serif text-2xl md:text-3xl font-light text-[#1a1a1a] tracking-tight">
-              No tengo una única forma de resolver problemas
+              {t(ui.about.section02Title)}
             </h3>
             <p className="text-sm text-[#1a1a1a]/70 font-light italic">
-              Pero sí hay algunas cosas que siempre están.
+              {t(ui.about.section02Sub)}
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="bg-[#fffef0] border border-[#e5e2de] p-5 rounded-xs space-y-2">
-                <span className="font-mono text-[9px] text-[#a84432] font-bold uppercase tracking-wider block">PRINCIPIO 01</span>
-                <h4 className="font-serif text-base font-semibold text-[#1a1a1a]">Entender antes de hacer</h4>
-                <p className="text-xs text-[#1a1a1a]/75 font-light leading-relaxed">
-                  Si no entiendo bien el problema, no empiezo. Prefiero hacer más preguntas, aunque parezcan obvias, antes que construir algo que no hacía falta.
-                </p>
-              </div>
-              <div className="bg-[#fffef0] border border-[#e5e2de] p-5 rounded-xs space-y-2">
-                <span className="font-mono text-[9px] text-[#a84432] font-bold uppercase tracking-wider block">PRINCIPIO 02</span>
-                <h4 className="font-serif text-base font-semibold text-[#1a1a1a]">Separar lo importante del ruido</h4>
-                <p className="text-xs text-[#1a1a1a]/75 font-light leading-relaxed">
-                  Muchas ideas vienen mezcladas. Mi trabajo es desarmarlas, ver qué realmente importa y qué se puede simplificar.
-                </p>
-              </div>
-              <div className="bg-[#fffef0] border border-[#e5e2de] p-5 rounded-xs space-y-2">
-                <span className="font-mono text-[9px] text-[#a84432] font-bold uppercase tracking-wider block">PRINCIPIO 03</span>
-                <h4 className="font-serif text-base font-semibold text-[#1a1a1a]">No asumir que hay una sola solución</h4>
-                <p className="text-xs text-[#1a1a1a]/75 font-light leading-relaxed">
-                  Casi nunca la hay. Siempre intento pensar varias opciones, entender sus límites y elegir la que tenga más sentido en ese contexto.
-                </p>
-              </div>
-              <div className="bg-[#fffef0] border border-[#e5e2de] p-5 rounded-xs space-y-2">
-                <span className="font-mono text-[9px] text-[#a84432] font-bold uppercase tracking-wider block">PRINCIPIO 04</span>
-                <h4 className="font-serif text-base font-semibold text-[#1a1a1a]">Evitar la complejidad innecesaria</h4>
-                <p className="text-xs text-[#1a1a1a]/75 font-light leading-relaxed">
-                  No todo necesita un sistema grande. A veces la mejor solución es la más simple que resuelve bien el problema.
-                </p>
-              </div>
-              <div className="bg-[#fffef0] border border-[#e5e2de] p-5 rounded-xs space-y-2">
-                <span className="font-mono text-[9px] text-[#a84432] font-bold uppercase tracking-wider block">PRINCIPIO 05</span>
-                <h4 className="font-serif text-base font-semibold text-[#1a1a1a]">Dudar para mejorar</h4>
-                <p className="text-xs text-[#1a1a1a]/75 font-light leading-relaxed">
-                  No me interesa tener razón rápido. Me interesa cuestionar lo suficiente como para llegar a una mejor solución.
-                </p>
-              </div>
-              <div className="bg-[#fffef0] border border-[#e5e2de] p-5 rounded-xs space-y-2">
-                <span className="font-mono text-[9px] text-[#a84432] font-bold uppercase tracking-wider block">PRINCIPIO 06</span>
-                <h4 className="font-serif text-base font-semibold text-[#1a1a1a]">Explicar simple</h4>
-                <p className="text-xs text-[#1a1a1a]/75 font-light leading-relaxed">
-                  Si no puedo explicarlo fácil, probablemente no lo entendí bien. Y si no lo entendí bien, no debería construirlo todavía.
-                </p>
-              </div>
+              {(['p01', 'p02', 'p03', 'p04', 'p05', 'p06'] as const).map((key, idx) => {
+                const n = idx + 1;
+                const pk = ui.about.principles as Record<string, { es: string; en: string }>;
+                return (
+                  <div key={key} className="bg-[#fffef0] border border-[#e5e2de] p-5 rounded-xs space-y-2">
+                    <span className="font-mono text-[9px] text-[#a84432] font-bold uppercase tracking-wider block">{`${t(ui.about.principleLabel)} ${String(n).padStart(2, '0')}`}</span>
+                    <h4 className="font-serif text-base font-semibold text-[#1a1a1a]">{t(pk[`${key}Title`])}</h4>
+                    <p className="text-xs text-[#1a1a1a]/75 font-light leading-relaxed">{t(pk[`${key}Text`])}</p>
+                  </div>
+                );
+              })}
             </div>
           </div>
 
@@ -183,21 +141,15 @@ export default function About() {
             <div className="flex items-center gap-2 font-mono text-[10px] text-[#a84432] font-semibold">
               <span>§ 03</span>
               <span className="opacity-30">/</span>
-              <span>CÓMO ES TRABAJAR CONMIGO</span>
+              <span>{t(ui.about.section03)}</span>
             </div>
             <h3 className="text-serif text-2xl md:text-3xl font-light text-[#1a1a1a] tracking-tight">
-              Arranco entendiendo, no construyendo
+              {t(ui.about.section03Title)}
             </h3>
             <div className="text-[#1a1a1a]/85 font-light leading-relaxed text-sm md:text-base space-y-4">
-              <p>
-                No propongo lo más grande, propongo lo que tiene sentido. Prefiero avanzar en partes, validar y mejorar sobre algo real, antes que prometer algo perfecto desde el inicio. Las cosas se van ajustando en el camino y eso está bien.
-              </p>
-              <p>
-                Trabajo de forma cercana. Me gusta que del otro lado entiendan lo que estamos haciendo, <span className="font-semibold text-[#a84432] bg-[#a84432]/5 px-1 py-0.5 rounded-xs">por qué lo hacemos y hasta dónde tiene sentido llegar</span>. Sin tecnicismos innecesarios, sin vueltas.
-              </p>
-              <p>
-                No me interesa imponer una solución. Me interesa que tenga sentido para quien la va a usar. Si algo no convence, lo charlamos y buscamos otra vuelta.
-              </p>
+              <p>{t(ui.about.section03p1)}</p>
+              <p>{t(ui.about.section03p2)}</p>
+              <p>{t(ui.about.section03p3)}</p>
             </div>
           </div>
 
@@ -206,16 +158,16 @@ export default function About() {
             <div className="flex items-center gap-2 font-mono text-[10px] text-[#a84432] font-semibold mb-4">
               <span>§ 04</span>
               <span className="opacity-30">/</span>
-              <span>CÓMO EXPLICO LAS COSAS</span>
+              <span>{t(ui.about.section04)}</span>
             </div>
             <p className="text-[#1a1a1a]/85 font-light leading-relaxed text-sm md:text-base">
-              No me interesa hablar complicado. Si una idea no se puede explicar fácil, probablemente no esté bien entendida. Intento que cualquiera pueda entender lo que estoy proponiendo, sin importar si es técnico o no. Porque construir algo que nadie entiende, no sirve.
+              {t(ui.about.section04Text)}
             </p>
           </div>
 
           {/* Footer */}
           <div className="pt-8 border-t border-[#1a1a1a]/10 flex justify-between items-center text-xs font-mono text-[#1a1a1a]/40">
-            <span>BIOGRAFÍA DE CAMPO // VOL. II</span>
+            <span>{t(ui.about.footerBiography)}</span>
             <span className="text-[#a84432] font-bold">G. D. V.</span>
           </div>
 
