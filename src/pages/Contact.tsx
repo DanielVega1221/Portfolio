@@ -58,13 +58,13 @@ export default function Contact() {
       transition={{ duration: 0.3 }}
       className="max-w-6xl mx-auto px-6 py-12 md:py-16"
     >
-      <div id="contact-view" className="max-w-xl mx-auto space-y-12">
+      <section id="contact-view" className="max-w-xl mx-auto space-y-12">
         <div className="space-y-4 text-center">
           <p className="font-mono text-xs uppercase tracking-widest text-[#a84432] font-bold">{t(ui.contact.chapter)}</p>
           <h2 className="text-serif text-3xl md:text-4xl font-light text-[#1a1a1a] tracking-tight leading-tight">
             {t(ui.contact.title)}
           </h2>
-          <p className="text-[#1a1a1a]/70 font-light text-sm md:text-base leading-relaxed">
+          <p className="text-[#555] font-light text-sm md:text-base leading-relaxed">
             {t(ui.contact.desc)}
           </p>
         </div>
@@ -83,7 +83,7 @@ export default function Contact() {
 
           <form onSubmit={handleSubmit} className="space-y-8">
             <div className="space-y-3">
-              <label className="font-mono text-xs text-[#1a1a1a]/50 uppercase tracking-wider block">{t(ui.contact.reasonLabel)}</label>
+              <label className="font-mono text-sm text-[#666] uppercase tracking-wider block">{t(ui.contact.reasonLabel)}</label>
               <div className="flex flex-wrap gap-2">
                 {ui.contact.reasons.map((reason) => (
                   <button
@@ -93,7 +93,7 @@ export default function Contact() {
                     className={`px-3 py-1.5 rounded-sm text-xs font-mono border tracking-wide transition-all cursor-pointer ${
                       contactReason === t(reason)
                         ? 'bg-[#a84432] border-[#a84432] text-[#f9f7f2]'
-                        : 'bg-[#fffef0] border-[#e5e2de] text-[#1a1a1a]/60 hover:border-[#a84432]/40'
+                        : 'bg-[#fffef0] border-[#e5e2de] text-[#666] hover:border-[#a84432]/40'
                     }`}
                   >
                     {t(reason)}
@@ -103,19 +103,19 @@ export default function Contact() {
             </div>
 
             <div className="space-y-2">
-              <label htmlFor="contact-name" className="font-mono text-xs text-[#1a1a1a]/50 uppercase tracking-wider block">{t(ui.contact.nameLabel)}</label>
+              <label htmlFor="contact-name" className="font-mono text-sm text-[#666] uppercase tracking-wider block">{t(ui.contact.nameLabel)}</label>
               <input
                 type="text"
                 id="contact-name"
                 value={contactName}
                 onChange={(e) => setContactName(e.target.value)}
                 placeholder={t(ui.contact.namePlaceholder)}
-                className="w-full bg-[#f9f7f2] border border-[#e5e2de] px-4 py-2.5 text-xs font-mono rounded-sm focus:outline-none focus:border-[#a84432] text-[#1a1a1a] transition-colors"
+                className="w-full bg-[#f9f7f2] border border-[#e5e2de] px-4 py-2.5 text-sm font-mono rounded-sm focus:outline-none focus:border-[#a84432] text-[#1a1a1a] transition-colors"
               />
             </div>
 
             <div className="space-y-2">
-              <label htmlFor="contact-email" className="font-mono text-xs text-[#1a1a1a]/50 uppercase tracking-wider block">{t(ui.contact.emailLabel)}</label>
+              <label htmlFor="contact-email" className="font-mono text-sm text-[#666] uppercase tracking-wider block">{t(ui.contact.emailLabel)}</label>
               <input
                 type="email"
                 id="contact-email"
@@ -123,12 +123,12 @@ export default function Contact() {
                 value={contactEmail}
                 onChange={(e) => setContactEmail(e.target.value)}
                 placeholder={t(ui.contact.emailPlaceholder)}
-                className="w-full bg-[#f9f7f2] border border-[#e5e2de] px-4 py-2.5 text-xs font-mono rounded-sm focus:outline-none focus:border-[#a84432] text-[#1a1a1a] transition-colors"
+                className="w-full bg-[#f9f7f2] border border-[#e5e2de] px-4 py-2.5 text-sm font-mono rounded-sm focus:outline-none focus:border-[#a84432] text-[#1a1a1a] transition-colors"
               />
             </div>
 
             <div className="space-y-2">
-              <label htmlFor="contact-message" className="font-mono text-xs text-[#1a1a1a]/50 uppercase tracking-wider block">{t(ui.contact.messageLabel)}</label>
+              <label htmlFor="contact-message" className="font-mono text-sm text-[#666] uppercase tracking-wider block">{t(ui.contact.messageLabel)}</label>
               <textarea
                 id="contact-message"
                 required
@@ -156,7 +156,7 @@ export default function Contact() {
           <p className="font-serif text-xl text-[#1a1a1a] font-light leading-relaxed">
             {t(ui.contact.casualTitle)}
           </p>
-          <p className="font-sans text-sm text-[#1a1a1a]/60 leading-relaxed">
+          <p className="font-sans text-sm text-[#666] leading-relaxed">
             {t(ui.contact.casualDesc)}
           </p>
           <a
@@ -175,18 +175,18 @@ export default function Contact() {
             {t(ui.contact.bottomTitle)}
           </h3>
           <div className="space-y-2">
-            <p className="font-sans text-sm text-[#1a1a1a]/70 leading-relaxed">
+            <p className="font-sans text-sm text-[#555] leading-relaxed">
               {t(ui.contact.bottom1)}
             </p>
-            <p className="font-sans text-sm text-[#1a1a1a]/70 leading-relaxed">
+            <p className="font-sans text-sm text-[#555] leading-relaxed">
               {t(ui.contact.bottom2)}
             </p>
-            <p className="font-sans text-sm text-[#1a1a1a]/70 leading-relaxed pt-2">
+            <p className="font-sans text-sm text-[#555] leading-relaxed pt-2">
               {t(ui.contact.bottom3)}
             </p>
           </div>
         </div>
-      </div>
+      </section>
     </motion.div>
   );
 }

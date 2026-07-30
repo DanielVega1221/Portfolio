@@ -4,7 +4,6 @@ import { ArrowLeft, Clock, Calendar, Quote, Info, Feather } from 'lucide-react';
 import { useLanguage } from '../i18n/LanguageContext';
 import { ui } from '../i18n/translations';
 import { journalEntries } from '../data/journal';
-import { JournalEntry } from '../types';
 
 export default function JournalDetail() {
   const { lang } = useLanguage();
@@ -16,7 +15,7 @@ export default function JournalDetail() {
   if (!entry) {
     return (
       <div className="max-w-3xl mx-auto px-6 py-24 text-center">
-        <p className="font-mono text-sm text-[#1a1a1a]/50">{t(ui.journal.notFound)}</p>
+        <p className="font-mono text-sm text-[#777]">{t(ui.journal.notFound)}</p>
         <button
           onClick={() => navigate('/journal')}
           className="mt-4 font-mono text-xs text-[#a84432] underline uppercase tracking-wider"
@@ -33,10 +32,10 @@ export default function JournalDetail() {
     return text.split('\n\n').map((paragraph, index) => {
       const trimmed = paragraph.trim();
 
-      if (trimmed.startsWith('*')) {
+      if (trimmed.startsWith('*') && !trimmed.startsWith('**')) {
         const items = paragraph.split('\n').map(item => item.replace('*', '').trim());
         return (
-          <ul key={index} className="list-disc pl-6 space-y-3 text-[#1a1a1a]/85 leading-relaxed font-light my-8">
+          <ul key={index} className="list-disc pl-6 space-y-3 text-[#333] leading-relaxed font-light my-8">
             {items.map((item, i) => (
               <li key={i} className="pl-1">
                 {item.split('**').map((chunk, j) => {
@@ -62,7 +61,7 @@ export default function JournalDetail() {
 
       if (trimmed.startsWith('>')) {
         return (
-          <blockquote key={index} className="border-l-4 border-[#a84432] bg-[#fffef0] p-6 md:p-8 my-10 rounded-r-sm italic font-serif text-[#1a1a1a]/90 text-lg shadow-xs leading-relaxed relative">
+          <blockquote key={index} className="border-l-4 border-[#a84432] bg-[#fffef0] p-6 md:p-8 my-10 rounded-r-sm italic font-serif text-[#2a2a2a] text-lg shadow-xs leading-relaxed relative">
             <Quote className="text-[#a84432]/5 absolute -top-2 right-4 w-12 h-12" />
             {trimmed.replace('>', '').trim()}
           </blockquote>
@@ -81,7 +80,7 @@ export default function JournalDetail() {
       });
 
       return (
-        <p key={index} className="text-[#1a1a1a]/85 leading-relaxed font-light text-base md:text-lg mb-6 first-letter:font-serif">
+        <p key={index} className="text-[#333] leading-relaxed font-light text-base md:text-lg mb-6 first-letter:font-serif">
           {formattedText}
         </p>
       );
@@ -104,16 +103,16 @@ export default function JournalDetail() {
           <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
           {t(ui.journal.backToNotes)}
         </button>
-        <span className="font-mono text-[9px] text-[#1a1a1a]/40 uppercase tracking-[0.2em]">
+        <span className="font-mono text-[10px] text-[#888] uppercase tracking-[0.2em]">
           {t(ui.journal.journalHeader)}
         </span>
       </div>
 
       <div className="space-y-6 mb-12">
-        <div className="flex flex-wrap items-center gap-4 font-mono text-xs text-[#1a1a1a]/50">
+        <div className="flex flex-wrap items-center gap-4 font-mono text-xs text-[#777]">
           <span className="text-[#a84432] font-semibold tracking-widest">{t(ui.journal.notebook)}</span>
           <span className="opacity-30">•</span>
-          <span className="bg-[#1a1a1a]/5 px-2 py-0.5 rounded-xs text-[10px] uppercase font-semibold text-[#1a1a1a]/70">
+          <span className="bg-[#1a1a1a]/5 px-2 py-0.5 rounded-xs text-[11px] uppercase font-semibold text-[#555]">
             {lang === 'en' && entry.categoryEn ? entry.categoryEn : entry.category}
           </span>
           <span className="opacity-30">•</span>
@@ -134,8 +133,8 @@ export default function JournalDetail() {
           <div className="absolute top-4 right-4 text-[#a84432]/30">
             <Info size={16} />
           </div>
-          <p className="font-mono text-[10px] uppercase tracking-[0.15em] text-[#a84432] font-bold mb-2">{t(ui.journal.abstract)}</p>
-          <p className="text-base text-[#1a1a1a]/85 font-serif italic leading-relaxed">
+          <p className="font-mono text-[11px] uppercase tracking-[0.15em] text-[#a84432] font-bold mb-2">{t(ui.journal.abstract)}</p>
+          <p className="text-base text-[#333] font-serif italic leading-relaxed">
             "{lang === 'en' && entry.taglineEn ? entry.taglineEn : entry.tagline}"
           </p>
         </div>
@@ -151,13 +150,13 @@ export default function JournalDetail() {
             <Feather size={14} /> {t(ui.journal.author)}
           </div>
           <p className="text-serif text-base font-semibold text-[#1a1a1a]">{t(ui.journal.authorName)}</p>
-          <p className="font-mono text-[10px] text-[#1a1a1a]/40 uppercase tracking-widest">{t(ui.journal.authorRole)}</p>
+          <p className="font-mono text-[11px] text-[#555] uppercase tracking-widest">{t(ui.journal.authorRole)}</p>
         </div>
       </div>
 
       <div className="border-t border-b border-[#1a1a1a]/10 py-10 my-12 text-center relative">
         <Quote className="text-[#a84432]/5 absolute top-4 left-4" size={48} />
-        <p className="text-serif text-lg italic text-[#1a1a1a]/80 max-w-lg mx-auto">
+        <p className="text-serif text-lg italic text-[#444] max-w-lg mx-auto">
           {t(ui.journal.quote)}
         </p>
       </div>
@@ -170,7 +169,7 @@ export default function JournalDetail() {
           <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
           {t(ui.journal.backToJournal)}
         </button>
-        <span className="text-[#1a1a1a]/30">{t(ui.journal.fieldNotebook)}</span>
+        <span className="text-[#999]">{t(ui.journal.fieldNotebook)}</span>
       </div>
     </motion.article>
   );

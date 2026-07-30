@@ -19,6 +19,7 @@ export interface CaseStudy {
   demonstrates?: string; // Qué demuestra o Aprendizajes
   criteriaLevel?: string; // Nivel de entrega: Demo, Producción, etc.
   criteriaInsight?: string; // Frase de criterio única por proyecto
+  metric?: string; // Resultado en formato Antes/Después (solo si aplica)
   repoFront?: string; // Repositorio frontend
   repoBack?: string; // Repositorio backend (si aplica)
   tools: string[]; // Herramientas elegidas

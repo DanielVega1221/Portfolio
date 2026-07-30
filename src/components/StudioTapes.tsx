@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useLanguage } from '../i18n/LanguageContext';
 import { ui } from '../i18n/translations';
 import { motion, AnimatePresence } from 'motion/react';
@@ -531,7 +531,7 @@ export default function StudioTapes({ currentTab }: StudioTapesProps) {
           setAudioError(true);
           console.warn('[StudioTapes] Audio file not found or unplayable');
         }}
-        preload="auto"
+        preload="none"
       />
 
       {/* 1. BOTTOM RIGHT FLOATING BUTTON */}
@@ -597,7 +597,7 @@ export default function StudioTapes({ currentTab }: StudioTapesProps) {
                       STUDIO TAPES
                     </h3>
                   </div>
-                  <p className="hidden md:block font-mono text-[8px] text-[#1a1a1a]/50 uppercase tracking-widest">
+                  <p className="hidden md:block font-mono text-[8px] text-[#777] uppercase tracking-widest">
                     {t(ui.studioTapes.subtitle)}
                   </p>
                 </div>
@@ -608,7 +608,7 @@ export default function StudioTapes({ currentTab }: StudioTapesProps) {
                       synth.playClick();
                       setIsOpen(false);
                     }}
-                    className="w-5 h-5 md:w-6 md:h-6 rounded-full border border-[#1a1a1a]/10 flex items-center justify-center text-[#1a1a1a]/60 hover:text-[#1a1a1a] hover:bg-[#1a1a1a]/5 text-[9px] md:text-[10px] transition-all"
+                    className="w-5 h-5 md:w-6 md:h-6 rounded-full border border-[#1a1a1a]/10 flex items-center justify-center text-[#666] hover:text-[#1a1a1a] hover:bg-[#1a1a1a]/5 text-[9px] md:text-[10px] transition-all"
                     id="close-drawer-btn"
                   >
                     ✕
@@ -826,7 +826,7 @@ export default function StudioTapes({ currentTab }: StudioTapesProps) {
                       <span className="hidden md:inline">{t(ui.studioTapes.tray)}</span>
                       <span className="md:hidden">{t(ui.studioTapes.trayMobile)}</span>
                     </span>
-                    <span className="font-mono text-[8px] text-[#1a1a1a]/40">
+                    <span className="font-mono text-[8px] text-[#888]">
                       {studioTapes.length}
                     </span>
                   </div>
@@ -891,7 +891,7 @@ export default function StudioTapes({ currentTab }: StudioTapesProps) {
                                     className="w-2.5 md:w-3 h-2.5 md:h-3 rounded-full border-t border-b border-l border-[#1a1a1a]/50"
                                   />
                                 </div>
-                                <span className="font-mono text-[6px] md:text-[7px] text-[#1a1a1a]/70 tracking-tighter">
+                                <span className="font-mono text-[6px] md:text-[7px] text-[#555] tracking-tighter">
                                   STEREO
                                 </span>
                                 {/* Right Reel */}
@@ -905,7 +905,7 @@ export default function StudioTapes({ currentTab }: StudioTapesProps) {
                               </div>
                             </motion.div>
 
-                            <p className="text-[9px] md:text-[10px] text-[#1a1a1a]/70 font-light leading-snug italic">
+                            <p className="text-[9px] md:text-[10px] text-[#555] font-light leading-snug italic">
                               {lang === 'en' && tape.descriptionEn ? tape.descriptionEn : tape.description}
                             </p>
                           </div>

@@ -1,4 +1,5 @@
 import { motion } from 'motion/react';
+import { Palette, Code, Users, Megaphone, GraduationCap, Briefcase, MapPin, Check } from 'lucide-react';
 import { useLanguage } from '../i18n/LanguageContext';
 import { ui } from '../i18n/translations';
 
@@ -24,7 +25,7 @@ export default function About() {
             {t(ui.about.headline)}
           </h2>
 
-          <p className="text-sm font-mono text-[#1a1a1a]/60 uppercase tracking-wider leading-relaxed">
+          <p className="text-sm font-mono text-[#666] uppercase tracking-wider leading-relaxed">
             {t(ui.about.tag)}
           </p>
 
@@ -34,11 +35,13 @@ export default function About() {
               <img
                 src="/foto.png"
                 alt="Gonzalo Daniel Vega"
+                width={400}
+                height={400}
                 className="absolute inset-0 w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-105 group-hover:saturate-110"
               />
               <div className="absolute inset-0 bg-[#1a1a1a]/0 group-hover:bg-[#1a1a1a]/5 transition-colors duration-500" />
             </div>
-            <p className="font-mono text-[10px] text-center text-[#1a1a1a]/50 mt-4">Gonzalo Daniel Vega — SFV Catamarca, AR</p>
+            <p className="font-mono text-[11px] text-center text-[#777] mt-4">Gonzalo Daniel Vega — SFV Catamarca, AR</p>
           </div>
         </div>
 
@@ -46,12 +49,12 @@ export default function About() {
         <div className="lg:col-span-7 space-y-12">
 
           <div className="border-b border-[#1a1a1a]/10 pb-4">
-            <span className="font-mono text-[10px] text-[#a84432] font-bold uppercase tracking-widest">{t(ui.about.logbook)}</span>
+            <span className="font-mono text-[11px] text-[#a84432] font-bold uppercase tracking-widest">{t(ui.about.logbook)}</span>
           </div>
 
           {/* Section 0: De dónde vengo */}
-          <div className="space-y-4">
-            <div className="flex items-center gap-2 font-mono text-[10px] text-[#a84432] font-semibold">
+          <section className="space-y-4">
+            <div className="flex items-center gap-2 font-mono text-[11px] text-[#a84432] font-semibold">
               <span>§ 00</span>
               <span className="opacity-30">/</span>
               <span>{t(ui.about.section00)}</span>
@@ -59,19 +62,40 @@ export default function About() {
             <h3 className="text-serif text-2xl md:text-3xl font-light text-[#1a1a1a] tracking-tight">
               {t(ui.about.section00Title)}
             </h3>
-            <div className="text-[#1a1a1a]/85 font-light leading-relaxed text-sm md:text-base space-y-4">
+            <div className="text-[#333] font-light leading-relaxed text-sm md:text-base">
               <p>{t(ui.about.section00p1)}</p>
-              <p>{t(ui.about.section00p2)}</p>
-              <p>{t(ui.about.section00p3)}</p>
-              <p>{t(ui.about.section00p4)}</p>
-              <p>{t(ui.about.section00p5)}</p>
-              <p>{t(ui.about.section00p6)}</p>
             </div>
-          </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
+              <div className="bg-[#fffef0] border border-[#e5e2de] p-5 rounded-xs space-y-2">
+                <div className="flex items-center gap-2">
+                  <GraduationCap size={14} className="text-[#a84432]" />
+                  <span className="font-mono text-[11px] text-[#a84432] font-bold uppercase tracking-wider">{t(ui.about.section00Card1Title)}</span>
+                </div>
+                <p className="text-xs text-[#555] font-light leading-relaxed">{t(ui.about.section00Card1Text)}</p>
+              </div>
+
+              <div className="bg-[#fffef0] border border-[#e5e2de] p-5 rounded-xs space-y-2">
+                <div className="flex items-center gap-2">
+                  <Briefcase size={14} className="text-[#a84432]" />
+                  <span className="font-mono text-[11px] text-[#a84432] font-bold uppercase tracking-wider">{t(ui.about.section00Card2Title)}</span>
+                </div>
+                <p className="text-xs text-[#555] font-light leading-relaxed">{t(ui.about.section00Card2Text)}</p>
+              </div>
+
+              <div className="bg-[#fffef0] border border-[#e5e2de] p-5 rounded-xs space-y-2">
+                <div className="flex items-center gap-2">
+                  <MapPin size={14} className="text-[#a84432]" />
+                  <span className="font-mono text-[11px] text-[#a84432] font-bold uppercase tracking-wider">{t(ui.about.section00Card3Title)}</span>
+                </div>
+                <p className="text-xs text-[#555] font-light leading-relaxed">{t(ui.about.section00Card3Text)}</p>
+              </div>
+            </div>
+          </section>
 
           {/* Section 1: UXnicorp */}
-          <div className="space-y-4">
-            <div className="flex items-center gap-2 font-mono text-[10px] text-[#a84432] font-semibold">
+          <section className="space-y-4">
+            <div className="flex items-center gap-2 font-mono text-[11px] text-[#a84432] font-semibold">
               <span>§ 01</span>
               <span className="opacity-30">/</span>
               <span>{t(ui.about.section01)}</span>
@@ -79,37 +103,62 @@ export default function About() {
             <h3 className="text-serif text-2xl md:text-3xl font-light text-[#1a1a1a] tracking-tight">
               {t(ui.about.section01Title)}
             </h3>
-            <div className="text-[#1a1a1a]/85 font-light leading-relaxed text-sm md:text-base space-y-4">
+            <div className="text-[#333] font-light leading-relaxed text-sm md:text-base space-y-4">
               <p>{t(ui.about.section01p1)}</p>
-              <p>
-                <span className="font-semibold text-[#a84432] bg-[#a84432]/5 px-1 py-0.5 rounded-xs">{t(ui.about.section01Design)}</span> {t(ui.about.section01DesignText)}
-              </p>
-              <p>
-                <span className="font-semibold text-[#a84432] bg-[#a84432]/5 px-1 py-0.5 rounded-xs">{t(ui.about.section01Dev)}</span> {t(ui.about.section01DevText)}
-              </p>
-              <p>
-                <span className="font-semibold text-[#a84432] bg-[#a84432]/5 px-1 py-0.5 rounded-xs">{t(ui.about.section01Clients)}</span> {t(ui.about.section01ClientsText)}
-              </p>
-              <p>
-                <span className="font-semibold text-[#a84432] bg-[#a84432]/5 px-1 py-0.5 rounded-xs">{t(ui.about.section01Leads)}</span> {t(ui.about.section01LeadsText)}
-              </p>
-              <p>
-                <span className="font-semibold text-[#a84432] bg-[#a84432]/5 px-1 py-0.5 rounded-xs">{t(ui.about.section01Team)}</span> {t(ui.about.section01TeamText)}
-              </p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+              <div className="bg-[#fffef0] border border-[#e5e2de] p-5 rounded-xs space-y-2">
+                <div className="flex items-center gap-2">
+                  <Palette size={14} className="text-[#a84432]" />
+                  <span className="font-mono text-[11px] text-[#a84432] font-bold uppercase tracking-wider">{t(ui.about.section01Design)}</span>
+                </div>
+                <p className="text-xs text-[#555] font-light leading-relaxed">{t(ui.about.section01DesignText)}</p>
+              </div>
+
+              <div className="bg-[#fffef0] border border-[#e5e2de] p-5 rounded-xs space-y-2">
+                <div className="flex items-center gap-2">
+                  <Code size={14} className="text-[#a84432]" />
+                  <span className="font-mono text-[11px] text-[#a84432] font-bold uppercase tracking-wider">{t(ui.about.section01Dev)}</span>
+                </div>
+                <p className="text-xs text-[#555] font-light leading-relaxed">{t(ui.about.section01DevText)}</p>
+              </div>
+
+              <div className="bg-[#fffef0] border border-[#e5e2de] p-5 rounded-xs space-y-2">
+                <div className="flex items-center gap-2">
+                  <Megaphone size={14} className="text-[#a84432]" />
+                  <span className="font-mono text-[11px] text-[#a84432] font-bold uppercase tracking-wider">{t(ui.about.section01Clients)}</span>
+                </div>
+                <p className="text-xs text-[#555] font-light leading-relaxed">
+                  {t(ui.about.section01ClientsText)}
+                  <span className="block mt-1 text-[#a84432] font-medium">{t(ui.about.section01Leads)} {t(ui.about.section01LeadsText)}</span>
+                </p>
+              </div>
+
+              <div className="bg-[#fffef0] border border-[#e5e2de] p-5 rounded-xs space-y-2">
+                <div className="flex items-center gap-2">
+                  <Users size={14} className="text-[#a84432]" />
+                  <span className="font-mono text-[11px] text-[#a84432] font-bold uppercase tracking-wider">{t(ui.about.section01Team)}</span>
+                </div>
+                <p className="text-xs text-[#555] font-light leading-relaxed">{t(ui.about.section01TeamText)}</p>
+              </div>
+            </div>
+
+            <div className="text-[#333] font-light leading-relaxed text-sm md:text-base">
               <p>{t(ui.about.section01Close)}</p>
             </div>
-          </div>
+          </section>
 
           {/* Pull Quote */}
           <div className="bg-[#fffef0] border-l-4 border-[#a84432] border-y border-r border-[#e5e2de] py-6 px-6 my-8 rounded-r-sm shadow-2xs">
-            <p className="text-serif text-lg md:text-xl italic text-[#1a1a1a]/90 font-light leading-relaxed">
+            <p className="text-serif text-lg md:text-xl italic text-[#2a2a2a] font-light leading-relaxed">
               "{t(ui.about.pullQuote)}"
             </p>
           </div>
 
           {/* Section 2: Cómo pienso */}
-          <div className="space-y-6 pt-6 border-t border-[#1a1a1a]/10">
-            <div className="flex items-center gap-2 font-mono text-[10px] text-[#a84432] font-semibold">
+          <section className="space-y-6 pt-6 border-t border-[#1a1a1a]/10">
+            <div className="flex items-center gap-2 font-mono text-[11px] text-[#a84432] font-semibold">
               <span>§ 02</span>
               <span className="opacity-30">/</span>
               <span>{t(ui.about.section02)}</span>
@@ -117,28 +166,27 @@ export default function About() {
             <h3 className="text-serif text-2xl md:text-3xl font-light text-[#1a1a1a] tracking-tight">
               {t(ui.about.section02Title)}
             </h3>
-            <p className="text-sm text-[#1a1a1a]/70 font-light italic">
+            <p className="text-sm text-[#555] font-light italic">
               {t(ui.about.section02Sub)}
             </p>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {(['p01', 'p02', 'p03', 'p04', 'p05', 'p06'] as const).map((key, idx) => {
+            <div className="grid grid-cols-1 gap-4">
+              {(['p01', 'p02', 'p03'] as const).map((key, idx) => {
                 const n = idx + 1;
                 const pk = ui.about.principles as Record<string, { es: string; en: string }>;
                 return (
                   <div key={key} className="bg-[#fffef0] border border-[#e5e2de] p-5 rounded-xs space-y-2">
-                    <span className="font-mono text-[9px] text-[#a84432] font-bold uppercase tracking-wider block">{`${t(ui.about.principleLabel)} ${String(n).padStart(2, '0')}`}</span>
+                    <span className="font-mono text-[10px] text-[#a84432] font-bold uppercase tracking-wider block">{`${t(ui.about.principleLabel)} ${String(n).padStart(2, '0')}`}</span>
                     <h4 className="font-serif text-base font-semibold text-[#1a1a1a]">{t(pk[`${key}Title`])}</h4>
-                    <p className="text-xs text-[#1a1a1a]/75 font-light leading-relaxed">{t(pk[`${key}Text`])}</p>
+                    <p className="text-sm text-[#444] font-light leading-relaxed">{t(pk[`${key}Text`])}</p>
                   </div>
                 );
               })}
             </div>
-          </div>
+          </section>
 
-          {/* Section 3: Cómo es trabajar conmigo */}
-          <div className="space-y-4">
-            <div className="flex items-center gap-2 font-mono text-[10px] text-[#a84432] font-semibold">
+          <section className="space-y-4">
+            <div className="flex items-center gap-2 font-mono text-[11px] text-[#a84432] font-semibold">
               <span>§ 03</span>
               <span className="opacity-30">/</span>
               <span>{t(ui.about.section03)}</span>
@@ -146,27 +194,33 @@ export default function About() {
             <h3 className="text-serif text-2xl md:text-3xl font-light text-[#1a1a1a] tracking-tight">
               {t(ui.about.section03Title)}
             </h3>
-            <div className="text-[#1a1a1a]/85 font-light leading-relaxed text-sm md:text-base space-y-4">
+            <div className="text-[#333] font-light leading-relaxed text-sm md:text-base">
               <p>{t(ui.about.section03p1)}</p>
-              <p>{t(ui.about.section03p2)}</p>
-              <p>{t(ui.about.section03p3)}</p>
             </div>
-          </div>
+          </section>
 
-          {/* Section 4: Cómo explico las cosas */}
-          <div className="relative bg-[#fffef0] border-l-4 border-[#a84432] border-y border-r border-[#e5e2de] p-8 rounded-r-sm shadow-xs">
-            <div className="flex items-center gap-2 font-mono text-[10px] text-[#a84432] font-semibold mb-4">
+          <section className="bg-[#fffef0] border border-[#e5e2de] p-8 rounded-sm shadow-xs space-y-4 mt-8">
+            <div className="flex items-center gap-2 font-mono text-[11px] text-[#a84432] font-semibold">
+              <span>{t(ui.about.philosophyTitle)}</span>
+            </div>
+            <p className="font-serif text-lg md:text-xl text-[#1a1a1a] font-light leading-snug">
+              {t(ui.about.philosophyText)}
+            </p>
+          </section>
+
+          <section className="relative bg-[#fffef0] border-l-4 border-[#a84432] border-y border-r border-[#e5e2de] p-8 rounded-r-sm shadow-xs">
+            <div className="flex items-center gap-2 font-mono text-[11px] text-[#a84432] font-semibold mb-4">
               <span>§ 04</span>
               <span className="opacity-30">/</span>
               <span>{t(ui.about.section04)}</span>
             </div>
-            <p className="text-[#1a1a1a]/85 font-light leading-relaxed text-sm md:text-base">
+            <p className="text-[#333] font-light leading-relaxed text-sm md:text-base">
               {t(ui.about.section04Text)}
             </p>
-          </div>
+          </section>
 
           {/* Footer */}
-          <div className="pt-8 border-t border-[#1a1a1a]/10 flex justify-between items-center text-xs font-mono text-[#1a1a1a]/40">
+          <div className="pt-8 border-t border-[#1a1a1a]/10 flex justify-between items-center text-xs font-mono text-[#888]">
             <span>{t(ui.about.footerBiography)}</span>
             <span className="text-[#a84432] font-bold">G. D. V.</span>
           </div>

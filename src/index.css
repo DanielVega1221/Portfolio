@@ -1,4 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+@import '@fontsource/fraunces/index.css';
+@import '@fontsource/fraunces/400-italic.css';
+@import '@fontsource/plus-jakarta-sans/index.css';
+@import '@fontsource/ibm-plex-mono/index.css';
 @import "tailwindcss";
 
 @theme {
@@ -84,5 +87,21 @@ body {
   animation: fadeIn 0.2s ease-out;
   left: 50%;
   transform: translateX(-50%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+:focus-visible {
+  outline: 2px solid #a84432;
+  outline-offset: 2px;
 }
 
