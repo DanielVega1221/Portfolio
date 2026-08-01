@@ -102,7 +102,7 @@ export default function Layout() {
             <span>•</span>
             <a href="https://github.com/DanielVega1221" target="_blank" rel="noopener noreferrer" className="hover:text-[#a84432] transition-colors">GITHUB</a>
             <span>•</span>
-            <a href="/cv.pdf" className="hover:text-[#a84432] transition-colors">{t(ui.footer.cv)}</a>
+            <a href={lang === 'es' ? '/cv-es.pdf' : '/cv-en.pdf'} target="_blank" className="hover:text-[#a84432] transition-colors">{t(ui.footer.cv)}</a>
             <span>•</span>
             <a href="mailto:dvega6442@gmail.com" className="hover:text-[#a84432] transition-colors">EMAIL</a>
           </div>

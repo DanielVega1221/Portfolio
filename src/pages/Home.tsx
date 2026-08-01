@@ -78,7 +78,8 @@ export default function Home() {
 
             <div className="flex flex-wrap gap-3">
               <a
-                href="/cv.pdf"
+                href={lang === 'es' ? '/cv-es.pdf' : '/cv-en.pdf'}
+                target="_blank"
                 className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[#f9f7f2] bg-[#a84432] hover:bg-[#a84432]/90 px-4 py-2.5 rounded-sm transition-colors"
               >
                 <Download size={14} />

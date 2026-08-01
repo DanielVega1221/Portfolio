@@ -21,7 +21,7 @@ export const ui = {
     editorial: { es: 'Full Stack Developer', en: 'Full Stack Developer' },
     heroTitle: { es: 'Construyo software que resuelve problemas reales.', en: 'I build software that solves real problems.' },
     heroTag: { es: 'Full Stack Developer', en: 'Full Stack Developer' },
-    heroBody: { es: '15 proyectos. 5 clientes reales. Resultados medibles.', en: '15 projects. 5 real clients. Measurable results.' },
+    heroBody: { es: '5 clientes reales. Resultados medibles. Desarrollo a medida.', en: '5 real clients. Measurable results. Custom development.' },
     exchange: { es: 'PROYECTOS DESTACADOS', en: 'FEATURED PROJECTS' },
     exchangeDesc: { es: 'Tres proyectos que muestran mi forma de trabajar.', en: 'Three projects that show how I work.' },
     featuredViewAll: { es: 'Ver todos los proyectos (15) →', en: 'View all projects (15) →' },
@@ -59,7 +59,7 @@ export const ui = {
     downloadCV: { es: 'Descargar CV', en: 'Download CV' },
     available: { es: 'Disponible para trabajar', en: 'Available for work' },
     experience: { es: 'Experiencia', en: 'Experience' },
-    experienceText: { es: 'UXnicorp — 2024 al presente — 15 proyectos. Full Stack Developer.', en: 'UXnicorp — 2024 to present — 15 projects. Full Stack Developer.' },
+    experienceText: { es: 'UXnicorp — 2024 al presente — 5 clientes reales. Full Stack Developer.', en: 'UXnicorp — 2024 to present — 5 real clients. Full Stack Developer.' },
   },
 
   // ── About ──
