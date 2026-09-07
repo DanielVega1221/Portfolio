@@ -1,4 +1,4 @@
-import { useState, FormEvent } from 'react';
+import { useState, useRef, useEffect, FormEvent } from 'react';
 import { motion } from 'motion/react';
 import { Check, AlertTriangle } from 'lucide-react';
 import { useT } from '../i18n/useT';
@@ -11,7 +11,16 @@ export default function Contact() {
   const [contactMessage, setContactMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [feedback, setFeedback] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const feedbackTimerRef = useRef<number | null>(null);
   const t = useT();
+
+  useEffect(() => {
+    return () => {
+      if (feedbackTimerRef.current !== null) {
+        clearTimeout(feedbackTimerRef.current);
+      }
+    };
+  }, []);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -45,7 +54,10 @@ export default function Contact() {
       setFeedback({ type: 'error', text: err instanceof Error ? err.message : t(ui.contact.errorGeneric) });
     } finally {
       setIsSubmitting(false);
-      setTimeout(() => setFeedback(null), 6000);
+      if (feedbackTimerRef.current !== null) {
+        clearTimeout(feedbackTimerRef.current);
+      }
+      feedbackTimerRef.current = window.setTimeout(() => setFeedback(null), 6000);
     }
   };
 

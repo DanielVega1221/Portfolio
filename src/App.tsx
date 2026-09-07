@@ -1,6 +1,7 @@
 import { lazy, Suspense, type ReactNode } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { LanguageProvider } from './i18n/LanguageContext';
+import ErrorBoundary from './components/ErrorBoundary';
 import Layout from './components/Layout';
 import Home from './pages/Home';
 import PageMeta from './components/PageMeta';
@@ -27,10 +28,11 @@ function LazyPage({ children }: { children: ReactNode }) {
 
 export default function App() {
   return (
-    <LanguageProvider>
-      <BrowserRouter>
-        <PageMeta />
-        <Routes>
+    <ErrorBoundary>
+      <LanguageProvider>
+        <BrowserRouter>
+          <PageMeta />
+          <Routes>
           <Route element={<Layout />}>
             <Route index element={<Home />} />
             <Route path="proyectos" element={<LazyPage><Portfolio /></LazyPage>} />
@@ -42,7 +44,8 @@ export default function App() {
             <Route path="*" element={<LazyPage><NotFound /></LazyPage>} />
           </Route>
         </Routes>
-      </BrowserRouter>
-    </LanguageProvider>
+        </BrowserRouter>
+      </LanguageProvider>
+    </ErrorBoundary>
   );
 }

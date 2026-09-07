@@ -19,6 +19,7 @@ export default function ProjectDetail() {
   const projectData = (lang === 'en' ? (getProjectEn(id!) || project) : project) ?? null;
   const [showGallery, setShowGallery] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const [failedImages, setFailedImages] = useState<Set<number>>(new Set());
 
   if (!project || !projectData) {
     return (
@@ -364,7 +365,9 @@ export default function ProjectDetail() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-              {[1, 2, 3].map((n) => (
+              {[1, 2, 3].map((n) => {
+                const failed = failedImages.has(n);
+                return (
                 <div
                   key={n}
                   className="aspect-[4/3] bg-[#efede8] border border-[#e5e2de] rounded-xs flex items-center justify-center relative overflow-hidden cursor-pointer hover:border-[#a84432]/40 transition-colors group"
@@ -375,28 +378,35 @@ export default function ProjectDetail() {
                       {t(ui.projectDetail.amplify)}
                     </span>
                   </div>
-                  <img
-                    src={`/projects/${projectData.id}/${String(n).padStart(2, '0')}.webp`}
-                    alt={`${projectData.title} — ${String(n).padStart(2, '0')}`}
-                    width={640}
-                    height={480}
-                    className="absolute inset-0 w-full h-full object-cover object-top"
-                    loading="lazy"
-                    decoding="async"
-                    onError={(e) => {
-                      const target = e.currentTarget;
-                      target.style.display = 'none';
-                      target.nextElementSibling?.classList.remove('hidden');
-                    }}
-                  />
-                  <div className="text-center space-y-2 hidden">
-                    <FolderKanban size={24} className="text-[#1a1a1a]/15 mx-auto" />
-                    <p className="font-mono text-[10px] text-[#1a1a1a]/20 uppercase tracking-wider">
-                      {projectData.title} — {String(n).padStart(2, '0')}
-                    </p>
-                  </div>
+                  {!failed && (
+                    <img
+                      src={`/projects/${projectData.id}/${String(n).padStart(2, '0')}.webp`}
+                      alt={`${projectData.title} — ${String(n).padStart(2, '0')}`}
+                      width={640}
+                      height={480}
+                      className="absolute inset-0 w-full h-full object-cover object-top"
+                      loading="lazy"
+                      decoding="async"
+                      onError={() =>
+                        setFailedImages(prev => {
+                          const next = new Set(prev);
+                          next.add(n);
+                          return next;
+                        })
+                      }
+                    />
+                  )}
+                  {failed && (
+                    <div className="text-center space-y-2">
+                      <FolderKanban size={24} className="text-[#1a1a1a]/15 mx-auto" />
+                      <p className="font-mono text-[10px] text-[#1a1a1a]/20 uppercase tracking-wider">
+                        {projectData.title} — {String(n).padStart(2, '0')}
+                      </p>
+                    </div>
+                  )}
                 </div>
-              ))}
+                );
+              })}
             </div>
 
             <p className="mt-5 font-mono text-[10px] text-[#555] text-center uppercase tracking-wider">
