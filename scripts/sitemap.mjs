@@ -1,35 +1,31 @@
-import { writeFileSync } from 'fs';
+import { writeFileSync, existsSync } from 'fs';
+import { PAGES, PROJECTS, JOURNAL, NO_COVER_PROJECTS } from './routes.mjs';
 
 const BASE = 'https://gonzalodanielvega.com.ar';
 const LASTMOD = new Date().toISOString().slice(0, 10);
 
-const pages = [
-  '',
-  '/proyectos',
-  '/journal',
-  '/sobre-mi',
-  '/dialogo',
-];
+// Guard: every project must have a cover .jpg or an explicit no-cover fallback,
+// otherwise its og:image would 404 in the prerendered HTML.
+function verifyCovers() {
+  const dir = 'public/projects';
+  const missing = PROJECTS.filter(id => {
+    if (NO_COVER_PROJECTS.has(id)) return false;
+    return !existsSync(`${dir}/${id}.jpg`);
+  });
+  if (missing.length > 0) {
+    console.log(`ERROR: project cover(s) missing or not declared in NO_COVER_PROJECTS: ${missing.join(', ')}`);
+    console.log('Add the cover as public/projects/<id>.jpg, or declare it in scripts/routes.mjs NO_COVER_PROJECTS.');
+    process.exit(1);
+  }
+}
 
-const projects = [
-  'brunn-studio', 'lumen', 'marea', 'stro-atelier', 'zabira-studio',
-  'content-studio', 'uxnicorp-academy', 'la-pagina-de-uxnicorp', 'myvisor',
-  'electropower', 'jimena-vilte', 'patagenda', 'ducksale', 'comercial-rio-hondo', 'isdep',
-];
-
-const journal = [
-  'como-empece-a-programar',
-  'de-la-facultad-a-productos',
-  'hablar-con-clientes',
-];
+verifyCovers();
 
 const esPaths = [
-  ...pages,
-  ...projects.map(p => `/proyectos/${p}`),
-  ...journal.map(j => `/journal/${j}`),
+  ...PAGES,
+  ...PROJECTS.map(p => `/proyectos/${p}`),
+  ...JOURNAL.map(j => `/journal/${j}`),
 ];
-
-const enPaths = esPaths.map(p => (p === '' ? '/en' : `/en${p}`));
 
 function hangul(path) {
   const basePath = path === '' ? '' : path;

@@ -6,6 +6,9 @@ import { journalEntries } from '../data/journal';
 
 const BASE_URL = 'https://gonzalodanielvega.com.ar';
 
+// Projects whose cover .jpg is not published; fall back to the portrait photo.
+const NO_COVER_PROJECTS = new Set(['content-studio']);
+
 type Lang = 'es' | 'en';
 
 interface PageMetaInfo {
@@ -134,12 +137,13 @@ function getMeta(pathname: string, lang: Lang): PageMetaInfo {
     const id = base.replace('/proyectos/', '');
     const project = lang === 'en' ? (getProjectEn(id) || caseStudies.find(p => p.id === id)) : caseStudies.find(p => p.id === id);
     if (project) {
+      const hasCover = !NO_COVER_PROJECTS.has(id);
       return {
         title: `${project.title} — Gonzalo Daniel Vega`,
         description: `${project.tagline} | ${project.tools.join(', ')}`,
-        image: `${BASE_URL}/projects/${id}.jpg`,
-        imageWidth: 640,
-        imageHeight: 400,
+        image: hasCover ? `${BASE_URL}/projects/${id}.jpg` : `${BASE_URL}/foto.png`,
+        imageWidth: hasCover ? 1280 : 400,
+        imageHeight: hasCover ? 800 : 400,
         type: 'website',
       };
     }
@@ -207,7 +211,7 @@ function upsertJsonLd(json: object) {
 }
 
 function buildJsonLd(pathname: string, lang: Lang, meta: PageMetaInfo) {
-  const url = `${BASE_URL}${pathname}`;
+  const url = pathname === '/' ? BASE_URL : `${BASE_URL}${pathname}`;
   const base = roundPath(pathname);
 
   if (base.startsWith('/journal/')) {
@@ -258,8 +262,8 @@ export default function PageMeta() {
     const pathname = location.pathname;
     const meta = getMeta(pathname, lang);
     const base = roundPath(pathname);
-    const canonicalUrl = `${BASE_URL}${pathname}`;
-    const alternateEs = base === '/' ? `${BASE_URL}/` : `${BASE_URL}${base}`;
+    const canonicalUrl = pathname === '/' ? BASE_URL : `${BASE_URL}${pathname}`;
+    const alternateEs = base === '/' ? BASE_URL : `${BASE_URL}${base}`;
     const alternateEn = base === '/' ? `${BASE_URL}/en` : `${BASE_URL}/en${base}`;
 
     document.documentElement.lang = lang;

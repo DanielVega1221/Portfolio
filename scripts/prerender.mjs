@@ -3,49 +3,12 @@ import http from 'http';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { ROUTES } from './routes.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DIST = path.resolve(__dirname, '..', 'dist');
 const PORT = 4173;
 const BASE = `http://localhost:${PORT}`;
-
-const PROJECTS = [
-  'brunn-studio',
-  'lumen',
-  'marea',
-  'stro-atelier',
-  'zabira-studio',
-  'content-studio',
-  'uxnicorp-academy',
-  'la-pagina-de-uxnicorp',
-  'myvisor',
-  'electropower',
-  'jimena-vilte',
-  'patagenda',
-  'ducksale',
-  'comercial-rio-hondo',
-  'isdep',
-];
-
-const JOURNAL = [
-  'como-empece-a-programar',
-  'de-la-facultad-a-productos',
-  'hablar-con-clientes',
-];
-
-const PAGES = [
-  '',
-  '/proyectos',
-  '/journal',
-  '/sobre-mi',
-  '/dialogo',
-];
-
-const ROUTES = [
-  ...PAGES,
-  ...PROJECTS.map(p => `/proyectos/${p}`),
-  ...JOURNAL.map(j => `/journal/${j}`),
-];
 
 const MIME = {
   '.html': 'text/html',
@@ -115,6 +78,8 @@ async function prerender() {
     { prefix: '/en', lang: 'en', locale: 'en-US' },
   ];
 
+  const failures = [];
+
   for (const variant of variants) {
     for (const route of ROUTES) {
       const fullRoute = `${variant.prefix}${route}`;
@@ -123,24 +88,32 @@ async function prerender() {
       try {
         await page.goto(`${BASE}${fullRoute}`, { waitUntil: 'networkidle', timeout: 30000 });
         await page.waitForSelector('#app-root', { timeout: 10000 });
-        await page.waitForFunction(() => {
-          const root = document.getElementById('app-root');
-          return root && root.textContent && root.textContent.trim().length > 100;
-        }, { timeout: 10000 });
         await page.waitForFunction(
-          (expectedLang) => document.documentElement.lang === expectedLang,
+          (expectedLang) => {
+            const root = document.getElementById('app-root');
+            return (
+              root &&
+              root.textContent &&
+              root.textContent.trim().length > 200 &&
+              document.documentElement.lang === expectedLang &&
+              document.title.trim().length > 10
+            );
+          },
           variant.lang,
-          { timeout: 10000 }
+          { timeout: 15000 }
         );
         await page.waitForTimeout(500);
 
         const html = await page.content();
+        if (!html.includes('</html>')) throw new Error('Incomplete HTML output');
+
         const outDir = path.join(DIST, fullRoute);
         fs.mkdirSync(outDir, { recursive: true });
         fs.writeFileSync(path.join(outDir, 'index.html'), html);
 
         console.log(`  ✓ ${fullRoute}`);
       } catch (err) {
+        failures.push(fullRoute);
         console.log(`  ✗ ${fullRoute}: ${err.message}`);
       } finally {
         await page.close();
@@ -150,6 +123,11 @@ async function prerender() {
 
   await browser.close();
   server.close();
+
+  if (failures.length > 0) {
+    console.error(`\nPrerender failed for ${failures.length} route(s): ${failures.join(', ')}`);
+    process.exit(1);
+  }
   console.log('\nPrerender complete.');
 }
 
