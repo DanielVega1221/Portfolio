@@ -5,11 +5,12 @@
   "type": "module",
   "scripts": {
     "dev": "vite --port=3000 --host=0.0.0.0",
-    "build": "node scripts/sitemap.mjs && vite build && node scripts/prerender.mjs",
+    "build": "node scripts/sitemap.mjs && node scripts/optimize-foto.mjs && vite build && node scripts/prerender.mjs",
     "preview": "vite preview",
     "lint": "eslint . && tsc --noEmit",
     "format": "prettier --write \"src/**/*.{ts,tsx}\"",
     "screenshots": "tsx scripts/screenshots.ts",
+    "optimize:foto": "node scripts/optimize-foto.mjs",
     "postinstall": "npx playwright install chromium"
   },
   "dependencies": {

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { lazy, Suspense, useState } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { useLanguage, localizePath } from '../i18n/useLanguage';
 import { useT } from '../i18n/useT';
@@ -7,7 +7,8 @@ import {
   Library, Layers, BookOpen, User, Mail,
   Menu, X,
 } from 'lucide-react';
-import StudioTapes from './StudioTapes';
+
+const StudioTapes = lazy(() => import('./StudioTapes'));
 
 export default function Layout() {
   const location = useLocation();
@@ -100,7 +101,9 @@ export default function Layout() {
         </div>
       </footer>
 
-      <StudioTapes />
+      <Suspense fallback={null}>
+        <StudioTapes />
+      </Suspense>
     </div>
   );
 }

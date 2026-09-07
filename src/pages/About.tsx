@@ -32,7 +32,7 @@ export default function About() {
           <div className="bg-[#fffef0] border border-[#e5e2de] p-5 shadow-xs max-w-sm mx-auto lg:mx-0 rotate-1 hover:rotate-0 transition-transform duration-500 ease-out">
             <div className="aspect-square bg-[#efede8] border border-[#e5e2de]/50 flex items-center justify-center relative overflow-hidden group">
               <img
-                src="/foto.png"
+                src="/foto.webp"
                 alt="Gonzalo Daniel Vega"
                 width={400}
                 height={400}
