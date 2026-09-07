@@ -1,13 +1,14 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { ArrowLeft, Clock, Calendar, Quote, Info, Feather } from 'lucide-react';
-import { useLanguage } from '../i18n/LanguageContext';
+import { useLanguage } from '../i18n/useLanguage';
+import { useT } from '../i18n/useT';
 import { ui } from '../i18n/translations';
 import { journalEntries } from '../data/journal';
 
 export default function JournalDetail() {
   const { lang } = useLanguage();
-  const t = (p: any) => p[lang];
+  const t = useT();
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const entry = journalEntries.find(e => e.id === id);

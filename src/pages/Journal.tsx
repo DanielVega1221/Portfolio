@@ -2,13 +2,14 @@ import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { Calendar, Clock, BookOpen } from 'lucide-react';
-import { useLanguage } from '../i18n/LanguageContext';
+import { useLanguage } from '../i18n/useLanguage';
+import { useT } from '../i18n/useT';
 import { ui } from '../i18n/translations';
 import { journalEntries } from '../data/journal';
 
 export default function Journal() {
   const { lang } = useLanguage();
-  const t = (p: any) => p[lang];
+  const t = useT();
   const entries = useMemo(() =>
     [...journalEntries].sort((a, b) =>
       new Date(b.date).getTime() - new Date(a.date).getTime()
@@ -41,17 +42,15 @@ export default function Journal() {
           <div className="border-t border-[#1a1a1a]/10 pt-20 pb-24 text-center">
             <BookOpen className="mx-auto text-[#a84432]/30 mb-4" size={40} />
             <p className="font-serif text-xl text-[#777] font-light">
-              {lang === 'es' ? 'Próximamente' : 'Coming soon'}
+              {t(ui.journal.comingSoon)}
             </p>
             <p className="font-mono text-sm text-[#888] mt-2">
-              {lang === 'es'
-                ? 'Estoy preparando las primeras notas de campo.'
-                : 'I\'m preparing the first field notes.'}
+              {t(ui.journal.comingSoonSub)}
             </p>
           </div>
         ) : entries.length === 1 ? (
           <div className="border-t border-[#1a1a1a]/10">
-            {entries.map((entry, idx) => (
+            {entries.map(entry => (
               <article
                 key={entry.id}
                 className="py-12 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start group"
@@ -90,9 +89,7 @@ export default function Journal() {
             <div className="py-16 border-t border-dashed border-[#1a1a1a]/10 text-center">
               <BookOpen className="mx-auto text-[#a84432]/20 mb-3" size={32} />
               <p className="font-mono text-xs text-[#555] uppercase tracking-wider">
-                {lang === 'es'
-                  ? 'Más notas de campo en camino'
-                  : 'More field notes on the way'}
+                {t(ui.journal.moreNotes)}
               </p>
             </div>
           </div>

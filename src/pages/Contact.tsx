@@ -1,7 +1,7 @@
 import { useState, FormEvent } from 'react';
 import { motion } from 'motion/react';
 import { Check, AlertTriangle } from 'lucide-react';
-import { useLanguage } from '../i18n/LanguageContext';
+import { useT } from '../i18n/useT';
 import { ui } from '../i18n/translations';
 
 export default function Contact() {
@@ -11,8 +11,7 @@ export default function Contact() {
   const [contactMessage, setContactMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [feedback, setFeedback] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
-  const { lang } = useLanguage();
-  const t = (path: any) => path[lang];
+  const t = useT();
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();

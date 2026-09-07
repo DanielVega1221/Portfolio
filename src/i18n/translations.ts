@@ -38,7 +38,6 @@ export const ui = {
     },
     testimonial2Name: { es: 'Comercial Río Hondo', en: 'Comercial Río Hondo' },
     testimonial2Role: { es: 'Cantera · Áridos · Construcción', en: 'Quarry · Aggregates · Construction' },
-    fieldNote: { es: 'RESPUESTA #', en: 'ANSWER #' },
     base: { es: 'Base operativa y física', en: 'Operating base' },
     location: { es: 'San Fernando del Valle de Catamarca, Catamarca, Argentina', en: 'San Fernando del Valle de Catamarca, Catamarca, Argentina' },
     index: { es: 'ÍNDICE DE CONTENIDOS', en: 'TABLE OF CONTENTS' },
@@ -48,17 +47,11 @@ export const ui = {
     indexContact: { es: 'Contacto', en: 'Contact' },
     latestJournal: { es: 'LO ÚLTIMO EN EL JOURNAL', en: 'LATEST IN THE JOURNAL' },
     readNote: { es: 'Leer nota de campo →', en: 'Read field note →' },
-    philosophy: { es: 'FILOSOFÍA DE TRABAJO', en: 'WORK PHILOSOPHY' },
-    philosophyText: {
-      es: `No me contratan por escribir rápido. Me contratan por entender el problema antes de tocar el teclado. Por elegir la herramienta correcta para cada caso. Y por construir interfaces que la gente entiende sin manual.`,
-      en: `People don't hire me for writing fast. They hire me for understanding the problem before touching the keyboard. For choosing the right tool for each case. And for building interfaces people understand without a manual.`,
-    },
     register: { es: 'Gonzalo Daniel Vega', en: 'Gonzalo Daniel Vega' },
     registerSub: { es: 'Full Stack Developer', en: 'Full Stack Developer' },
     heroTech: { es: 'React · Next.js · TypeScript · Node.js · Tailwind CSS', en: 'React · Next.js · TypeScript · Node.js · Tailwind CSS' },
     downloadCV: { es: 'Descargar CV', en: 'Download CV' },
     available: { es: 'Disponible para trabajar', en: 'Available for work' },
-    experience: { es: 'Experiencia', en: 'Experience' },
     experienceText: { es: 'UXnicorp — 2024 al presente — 5 clientes reales. Full Stack Developer.', en: 'UXnicorp — 2024 to present — 5 real clients. Full Stack Developer.' },
   },
 
@@ -70,8 +63,6 @@ export const ui = {
       en: `I'm not interested in being the one who "knows the most." I'm interested in being the one who best understands the problem.`,
     },
     tag: { es: 'ENSAYO AUTOBIOGRÁFICO Y CRITERIO PROFESIONAL.', en: 'BIOGRAPHICAL ESSAY AND PROFESSIONAL JUDGMENT.' },
-    stamp: { es: 'El código es la consecuencia', en: 'Code is the consequence' },
-    stampSub: { es: 'Cuaderno de bocetos No. 04', en: 'Sketchbook No. 04' },
     logbook: { es: 'CUADERNO DE BITÁCORA // PERSPECTIVA OPERATIVA', en: 'LOGBOOK // OPERATIONAL PERSPECTIVE' },
     section00: { es: 'DE DÓNDE VENGO', en: 'WHERE I COME FROM' },
     section00Title: { es: 'Catamarca, ingeniería y muchas ganas de aprender', en: 'Catamarca, engineering, and a hunger to learn' },
@@ -138,7 +129,7 @@ export const ui = {
     section02Sub: { es: 'Pero sí hay algunas cosas que siempre están. Con ejemplos reales.', en: 'But some things are always present. With real examples.' },
     principles: {
       p01Title: { es: 'Entender antes de hacer', en: 'Understand before doing' },
-      p01Text: { es: 'ElectroPower llegó pidiendo \"una página web\". Si les hacía caso sin preguntar, entregaba un sitio genérico que nadie iba a usar. Escuchando entendí que todo su negocio pasaba por WhatsApp. La web no reemplazó el canal. Lo alimentó.', en: 'ElectroPower came asking for "a website." If I had just done what they said without asking, I would have delivered a generic site no one would use. By listening, I understood that their entire business ran through WhatsApp. The website didn\'t replace the channel. It fed it.' },
+      p01Text: { es: 'ElectroPower llegó pidiendo "una página web". Si les hacía caso sin preguntar, entregaba un sitio genérico que nadie iba a usar. Escuchando entendí que todo su negocio pasaba por WhatsApp. La web no reemplazó el canal. Lo alimentó.', en: 'ElectroPower came asking for "a website." If I had just done what they said without asking, I would have delivered a generic site no one would use. By listening, I understood that their entire business ran through WhatsApp. The website didn\'t replace the channel. It fed it.' },
       p02Title: { es: 'Explicar simple', en: 'Explain simply' },
       p02Text: { es: 'La clienta de PATAgenda es docente, no programadora. El sistema modela conceptos legales del Ministerio de Educación. Si ella no entendía lo que estaba viendo, el proyecto fracasaba. Por eso cada pantalla y cada término está pensado para alguien sin formación técnica.', en: 'The PATAgenda client is a teacher, not a programmer. The system models legal concepts from the Ministry of Education. If she didn\'t understand what she was looking at, the project would fail. That\'s why every screen and every term is designed for someone with no technical background.' },
       p03Title: { es: 'Evitar la complejidad innecesaria', en: 'Avoid unnecessary complexity' },
@@ -212,6 +203,7 @@ export const ui = {
     studyLink: { es: 'Estudio Técnico Completo →', en: 'Full Technical Study →' },
     before: { es: 'Antes', en: 'Before' },
     after: { es: 'Después', en: 'After' },
+    loadMore: { es: 'Cargar más proyectos', en: 'Load more projects' },
   },
 
   // ── Project Detail ──
@@ -290,6 +282,12 @@ export const ui = {
     desc: { es: 'Una compilación de reflexiones técnicas honestas, análisis heurísticos y aprendizajes sobre arquitectura de software, experiencia de usuario habitable y dirección de arte digital.', en: 'A collection of honest technical reflections, heuristic analysis, and learnings about software architecture, livable user experience, and digital art direction.' },
     readMore: { es: 'Leer nota de campo →', en: 'Read field note →' },
     noteLabel: { es: 'NOTE #', en: 'NOTE #' },
+    comingSoon: { es: 'Próximamente', en: 'Coming soon' },
+    comingSoonSub: {
+      es: 'Estoy preparando las primeras notas de campo.',
+      en: "I'm preparing the first field notes.",
+    },
+    moreNotes: { es: 'Más notas de campo en camino', en: 'More field notes on the way' },
     notFound: { es: 'Nota de campo no encontrada.', en: 'Field note not found.' },
     backToJournal: { es: 'Volver al Journal', en: 'Back to Journal' },
     backToNotes: { es: 'Volver a Notas de Campo', en: 'Back to Field Notes' },
@@ -304,6 +302,13 @@ export const ui = {
     fieldNotebook: { es: 'CUADERNO DE CAMPO — 2026', en: 'FIELD NOTEBOOK — 2026' },
   },
 
-  // ── Language Toggle ──
-  langLabel: { es: 'Idioma', en: 'Language' },
+  // ── Not Found ──
+  notFound: {
+    title: { es: 'Página no encontrada', en: 'Page not found' },
+    desc: {
+      es: 'La página que buscás no existe o fue movida.',
+      en: "The page you're looking for doesn't exist or has been moved.",
+    },
+    backHome: { es: 'Volver al inicio', en: 'Back to home' },
+  },
 } as const;

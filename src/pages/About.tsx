@@ -1,11 +1,10 @@
 import { motion } from 'motion/react';
-import { Palette, Code, Users, Megaphone, GraduationCap, Briefcase, MapPin, Check } from 'lucide-react';
-import { useLanguage } from '../i18n/LanguageContext';
+import { Palette, Code, Users, Megaphone, GraduationCap, Briefcase, MapPin } from 'lucide-react';
+import { useT } from '../i18n/useT';
 import { ui } from '../i18n/translations';
 
 export default function About() {
-  const { lang } = useLanguage();
-  const t = (path: any) => path[lang];
+  const t = useT();
 
   return (
     <motion.div

@@ -4,7 +4,8 @@ import { motion } from 'motion/react';
 import { ArrowLeft, Calendar, CheckCircle2, AlertTriangle, RefreshCw, Award, Anchor, ExternalLink, Github, FolderKanban, X } from 'lucide-react';
 import { caseStudies } from '../data/projects';
 import { CaseStudy } from '../types';
-import { useLanguage } from '../i18n/LanguageContext';
+import { useLanguage } from '../i18n/useLanguage';
+import { useT } from '../i18n/useT';
 import { ui } from '../i18n/translations';
 import { getProjectEn } from '../data/projects-en-lookup';
 import ProjectImage from './ProjectImage';
@@ -14,12 +15,12 @@ export default function ProjectDetail() {
   const navigate = useNavigate();
   const project = caseStudies.find(p => p.id === id);
   const { lang } = useLanguage();
-  const t = (path: any) => path[lang];
-  const projectData = lang === 'en' ? (getProjectEn(id!) || project) : project;
+  const t = useT();
+  const projectData = (lang === 'en' ? (getProjectEn(id!) || project) : project) ?? null;
   const [showGallery, setShowGallery] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
-  if (!project) {
+  if (!project || !projectData) {
     return (
       <div className="max-w-5xl mx-auto px-6 py-24 text-center">
         <p className="font-mono text-sm text-[#777]">{t(ui.projectDetail.notFound)}</p>

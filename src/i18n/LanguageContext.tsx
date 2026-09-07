@@ -1,20 +1,5 @@
-import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from 'react';
-
-type Lang = 'es' | 'en';
-
-interface LangContextType {
-  lang: Lang;
-  toggleLang: () => void;
-}
-
-const LangContext = createContext<LangContextType>({
-  lang: 'es',
-  toggleLang: () => {},
-});
-
-export function useLanguage() {
-  return useContext(LangContext);
-}
+import { useState, useEffect, useCallback, type ReactNode } from 'react';
+import { LangContext, type Lang } from './useLanguage';
 
 function detectLanguage(): Lang {
   try {

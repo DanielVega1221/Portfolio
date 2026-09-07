@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
-import { useLanguage } from '../i18n/LanguageContext';
+import { useLanguage } from '../i18n/useLanguage';
+import { useT } from '../i18n/useT';
 import { ui } from '../i18n/translations';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence, type PanInfo } from 'motion/react';
 import { studioTapes, Tape } from '../data/studioTapes';
 
 // Procedural Analog Sound Synthesizer for buttons, tapes, and ambient warm tape hiss
@@ -13,9 +14,10 @@ class AnalogSynth {
 
   private initCtx() {
     if (!this.ctx) {
-      this.ctx = new (window.AudioContext || (window as any).webkitAudioContext)();
+      const AudioCtor = window.AudioContext ?? (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+      if (AudioCtor) this.ctx = new AudioCtor();
     }
-    if (this.ctx.state === 'suspended') {
+    if (this.ctx && this.ctx.state === 'suspended') {
       this.ctx.resume();
     }
   }
@@ -40,7 +42,7 @@ class AnalogSynth {
       
       osc.start();
       osc.stop(ctx.currentTime + 0.05);
-    } catch (e) {}
+    } catch { /* ignore */ }
   }
 
   playHeavyClick() {
@@ -63,7 +65,7 @@ class AnalogSynth {
       
       osc.start();
       osc.stop(ctx.currentTime + 0.12);
-    } catch (e) {}
+    } catch { /* ignore */ }
   }
 
   playInsert() {
@@ -94,7 +96,7 @@ class AnalogSynth {
       osc2.start();
       osc1.stop(ctx.currentTime + 0.15);
       osc2.stop(ctx.currentTime + 0.15);
-    } catch (e) {}
+    } catch { /* ignore */ }
   }
 
   playEject() {
@@ -117,7 +119,7 @@ class AnalogSynth {
       
       osc.start();
       osc.stop(ctx.currentTime + 0.1);
-    } catch (e) {}
+    } catch { /* ignore */ }
   }
 
   startHiss() {
@@ -157,14 +159,14 @@ class AnalogSynth {
       
       noiseNode.start();
       this.hissSource = noiseNode;
-    } catch (e) {}
+    } catch { /* ignore */ }
   }
 
   stopHiss() {
     if (this.hissSource) {
       try {
         this.hissSource.stop();
-      } catch (e) {}
+      } catch { /* ignore */ }
       this.hissSource = null;
       this.hissGain = null;
     }
@@ -172,19 +174,12 @@ class AnalogSynth {
 }
 
 // Module-level: survive React Strict Mode double-mount in dev
-let _audioCtx: AudioContext | null = null;
-let _source: MediaElementAudioSourceNode | null = null;
-let _analyser: AnalyserNode | null = null;
 let _setupAttempted = false;
 
 // Global single instance of our synthesizer
 const synth = new AnalogSynth();
 
-interface StudioTapesProps {
-  currentTab: string;
-}
-
-export default function StudioTapes({ currentTab }: StudioTapesProps) {
+export default function StudioTapes() {
   const [isOpen, setIsOpen] = useState(false);
   const [activeTape, setActiveTape] = useState<Tape | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -192,14 +187,10 @@ export default function StudioTapes({ currentTab }: StudioTapesProps) {
   const [audioDuration, setAudioDuration] = useState(0);
   const [volume, setVolume] = useState(0.7);
   const [audioError, setAudioError] = useState(false);
-  const soundEffectsEnabled = true;
-  
+
   // Drag overlap alert
   const [isOverSlot, setIsOverSlot] = useState(false);
   const [isInserting, setIsInserting] = useState(false);
-
-  // Suggested tape logic
-  const [suggestedTape, setSuggestedTape] = useState<Tape | null>(null);
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -207,11 +198,12 @@ export default function StudioTapes({ currentTab }: StudioTapesProps) {
   const audioCtxRef = useRef<AudioContext | null>(null);
   const analyserRef = useRef<AnalyserNode | null>(null);
   const sourceRef = useRef<MediaElementAudioSourceNode | null>(null);
+  const insertTimerRef = useRef<number | null>(null);
 
   const [isMobile, setIsMobile] = useState(false);
 
   const { lang } = useLanguage();
-  const t = (p: any) => p[lang];
+  const t = useT();
 
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 768);
@@ -220,10 +212,14 @@ export default function StudioTapes({ currentTab }: StudioTapesProps) {
     return () => window.removeEventListener('resize', check);
   }, []);
 
-  // Sync synthesizer state
+  // Clear insertion timer on unmount
   useEffect(() => {
-    synth.enabled = soundEffectsEnabled;
-  }, [soundEffectsEnabled]);
+    return () => {
+      if (insertTimerRef.current !== null) {
+        window.clearTimeout(insertTimerRef.current);
+      }
+    };
+  }, []);
 
   // Load state from localStorage on init
   useEffect(() => {
@@ -243,20 +239,7 @@ export default function StudioTapes({ currentTab }: StudioTapesProps) {
     if (savedVolume) {
       setVolume(parseFloat(savedVolume));
     }
-
-    // Suggested tape matching the initial route
-    updateSuggestedTape(currentTab);
   }, []);
-
-  // Update suggestions whenever currentTab changes
-  useEffect(() => {
-    updateSuggestedTape(currentTab);
-  }, [currentTab]);
-
-  const updateSuggestedTape = (tab: string) => {
-    const suggested = studioTapes.find(t => t.suggestedPages.includes(tab));
-    setSuggestedTape(suggested || null);
-  };
 
   // Persist values on change
   useEffect(() => {
@@ -285,7 +268,7 @@ export default function StudioTapes({ currentTab }: StudioTapesProps) {
     _setupAttempted = true;
 
     try {
-      const ctx = new (window.AudioContext || (window as any).webkitAudioContext)();
+      const ctx = new (window.AudioContext || (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext)();
       const source = ctx.createMediaElementSource(audio);
       const analyser = ctx.createAnalyser();
       analyser.fftSize = 128;
@@ -293,9 +276,6 @@ export default function StudioTapes({ currentTab }: StudioTapesProps) {
       source.connect(analyser);
       analyser.connect(ctx.destination);
 
-      _audioCtx = ctx;
-      _source = source;
-      _analyser = analyser;
       audioCtxRef.current = ctx;
       sourceRef.current = source;
       analyserRef.current = analyser;
@@ -323,7 +303,7 @@ export default function StudioTapes({ currentTab }: StudioTapesProps) {
         animFrameRef.current = null;
       }
       const canvasCtx = canvas?.getContext('2d');
-      if (canvasCtx) canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
+      if (canvas && canvasCtx) canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
       return;
     }
 
@@ -408,6 +388,8 @@ export default function StudioTapes({ currentTab }: StudioTapesProps) {
       synth.stopHiss();
       audio.pause();
     }
+    // Intentional: volume/currentTime restore only on (re)start, not on every timeupdate/volume change
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isPlaying, activeTape]);
 
   // Action Handlers
@@ -423,7 +405,7 @@ export default function StudioTapes({ currentTab }: StudioTapesProps) {
       audioRef.current.pause();
       audioRef.current.removeAttribute('src');
     }
-    setTimeout(() => {
+    insertTimerRef.current = window.setTimeout(() => {
       setActiveTape(tape);
       setCurrentTime(0);
       setAudioDuration(tape.durationSeconds);
@@ -479,7 +461,7 @@ export default function StudioTapes({ currentTab }: StudioTapesProps) {
   };
 
   // Drag logic
-  const handleDragEnd = (info: any, tape: Tape) => {
+  const handleDragEnd = (info: PanInfo, tape: Tape) => {
     setIsOverSlot(false);
     const slotElement = document.getElementById('cassette-slot');
     if (!slotElement) return;
@@ -493,7 +475,7 @@ export default function StudioTapes({ currentTab }: StudioTapesProps) {
     }
   };
 
-  const handleDragUpdate = (event: any, info: any) => {
+  const handleDragUpdate = (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
     const slotElement = document.getElementById('cassette-slot');
     if (!slotElement) return;
 
@@ -529,7 +511,7 @@ export default function StudioTapes({ currentTab }: StudioTapesProps) {
         }}
         onError={() => {
           setAudioError(true);
-          console.warn('[StudioTapes] Audio file not found or unplayable');
+          if (import.meta.env.DEV) console.warn('[StudioTapes] Audio file not found or unplayable');
         }}
         preload="none"
       />

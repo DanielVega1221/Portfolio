@@ -6,7 +6,8 @@ import { caseStudies } from '../data/projects';
 import { getProjectEn } from '../data/projects-en-lookup';
 import ProjectImage from '../components/ProjectImage';
 import type { CaseStudy } from '../types';
-import { useLanguage } from '../i18n/LanguageContext';
+import { useLanguage } from '../i18n/useLanguage';
+import { useT } from '../i18n/useT';
 import { ui } from '../i18n/translations';
 
 type TypeFilter = 'all' | 'personal' | 'tool' | 'real' | 'particular' | 'career';
@@ -17,7 +18,7 @@ export default function Portfolio() {
   const [displayCount, setDisplayCount] = useState(6);
 
   const { lang } = useLanguage();
-  const t = (path: any) => path[lang];
+  const t = useT();
 
   const filterOptions = useMemo(() => [
     { id: 'all' as const, label: t(ui.portfolio.filters.all) },
@@ -26,7 +27,7 @@ export default function Portfolio() {
     { id: 'real' as const, label: t(ui.portfolio.filters.real) },
     { id: 'particular' as const, label: t(ui.portfolio.filters.particular) },
     { id: 'career' as const, label: t(ui.portfolio.filters.career) },
-  ], [lang]);
+  ], [t]);
 
   const typeLabelMap: Record<CaseStudy['type'], string> = useMemo(() => ({
     personal: t(ui.portfolio.filters.personal),
@@ -34,7 +35,7 @@ export default function Portfolio() {
     real: t(ui.portfolio.filters.real),
     particular: t(ui.portfolio.filters.particular),
     career: t(ui.portfolio.filters.career),
-  }), [lang]);
+  }), [t]);
 
   const allProjects = useMemo(() =>
     caseStudies.map(p => lang === 'en' ? (getProjectEn(p.id) || p) : p),
@@ -54,7 +55,7 @@ export default function Portfolio() {
         project.investigation.toLowerCase().includes(query);
       return matchesType && matchesSearch;
     });
-  }, [searchQuery, typeFilter]);
+  }, [searchQuery, typeFilter, allProjects]);
 
   const shownProjects = useMemo(
     () => filteredProjects.slice(0, displayCount),
@@ -176,7 +177,6 @@ export default function Portfolio() {
                   </p>
 
                   {project.metric && (() => {
-                    const isEn = lang === 'en';
                     const antesMatch = project.metric.match(/Antes:\s*(.+?)(?:\s*Después:|\s*After:)/);
                     const beforeMatch = project.metric.match(/Before:\s*(.+?)(?:\s*After:)/);
                     const antes = antesMatch?.[1] || beforeMatch?.[1] || '';
@@ -239,7 +239,7 @@ export default function Portfolio() {
                 onClick={() => setDisplayCount(d => d + 6)}
                 className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[#f9f7f2] bg-[#a84432] hover:bg-[#a84432]/90 px-6 py-3 rounded-sm transition-colors"
               >
-                {lang === 'es' ? 'Cargar más proyectos' : 'Load more projects'}
+                {t(ui.portfolio.loadMore)}
                 <ChevronDown size={14} />
               </button>
             </div>

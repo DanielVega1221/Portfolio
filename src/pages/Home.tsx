@@ -6,14 +6,15 @@ import { caseStudies } from '../data/projects';
 import { getProjectEn } from '../data/projects-en-lookup';
 import ProjectImage from '../components/ProjectImage';
 import { journalEntries } from '../data/journal';
-import { useLanguage } from '../i18n/LanguageContext';
+import { useLanguage } from '../i18n/useLanguage';
+import { useT } from '../i18n/useT';
 import { ui } from '../i18n/translations';
 
 const FEATURED_IDS = ['zabira-studio', 'patagenda', 'electropower'];
 
 export default function Home() {
   const { lang } = useLanguage();
-  const t = (path: any) => path[lang];
+  const t = useT();
 
   const featuredProjects = useMemo(
     () => FEATURED_IDS

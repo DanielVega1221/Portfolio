@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
-import { useLanguage } from '../i18n/LanguageContext';
+import { useLanguage } from '../i18n/useLanguage';
+import { useT } from '../i18n/useT';
 import { ui } from '../i18n/translations';
 import {
   Library, Layers, BookOpen, User, Mail,
@@ -11,7 +12,7 @@ import StudioTapes from './StudioTapes';
 export default function Layout() {
   const location = useLocation();
   const { lang, toggleLang } = useLanguage();
-  const t = (p: any) => p[lang];
+  const t = useT();
 
   const navItems = [
     { path: '/', label: t(ui.nav.home), icon: BookOpen },
@@ -21,17 +22,6 @@ export default function Layout() {
     { path: '/dialogo', label: t(ui.nav.contact), icon: Mail },
   ] as const;
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-  const getCurrentTab = (): string => {
-    const path = location.pathname;
-    if (path.startsWith('/proyectos')) return 'portfolio';
-    if (path.startsWith('/journal')) return 'journal';
-    if (path.startsWith('/sobre-mi')) return 'about';
-    if (path.startsWith('/dialogo')) return 'contact';
-    return 'home';
-  };
-
-  const currentTab = getCurrentTab();
 
   return (
     <div className="min-h-screen relative flex flex-col selection:bg-amber-100 selection:text-amber-900" id="app-root">
@@ -109,7 +99,7 @@ export default function Layout() {
         </div>
       </footer>
 
-      <StudioTapes currentTab={currentTab} />
+      <StudioTapes />
     </div>
   );
 }
