@@ -1,16 +1,13 @@
 import { useCallback, useEffect, useRef, type ReactNode } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { LangContext, localizePath, type Lang } from './useLanguage';
+import { safeGet, safeSet } from '../lib/safeStorage';
 
 function preferredLanguage(): Lang {
-  try {
-    const saved = localStorage.getItem('lang');
-    if (saved === 'en' || saved === 'es') return saved;
-    const nav = navigator.language?.toLowerCase() || '';
-    return nav.startsWith('es') ? 'es' : 'en';
-  } catch {
-    return 'es';
-  }
+  const saved = safeGet('lang');
+  if (saved === 'en' || saved === 'es') return saved;
+  const nav = navigator.language?.toLowerCase() || '';
+  return nav.startsWith('en') ? 'en' : 'es';
 }
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
@@ -29,9 +26,9 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
 
   const toggleLang = useCallback(() => {
     const next: Lang = lang === 'es' ? 'en' : 'es';
-    localStorage.setItem('lang', next);
-    navigate(localizePath(location.pathname + location.search, next));
-  }, [lang, location.pathname, location.search, navigate]);
+    safeSet('lang', next);
+    navigate(localizePath(location.pathname + location.search + location.hash, next));
+  }, [lang, location.pathname, location.search, location.hash, navigate]);
 
   return (
     <LangContext.Provider value={{ lang, toggleLang }}>

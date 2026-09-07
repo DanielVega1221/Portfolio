@@ -17,7 +17,7 @@ export function useLanguage() {
 }
 
 export function localizePath(path: string, targetLang: Lang): string {
-  const base = path.replace(/^\/en(?=\/|$)/, '') || '/';
+  const base = path.replace(/^\/en(?=\/|$|\?|#)/, '') || '/';
   if (targetLang === 'es') return base;
   if (base === '/') return '/en';
   return `/en${base}`;

@@ -4,6 +4,7 @@ import { useT } from '../i18n/useT';
 import { ui } from '../i18n/translations';
 import { motion, AnimatePresence, type PanInfo } from 'motion/react';
 import { studioTapes, Tape } from '../data/studioTapes';
+import { safeGet, safeSet, safeRemove } from '../lib/safeStorage';
 
 // Procedural Analog Sound Synthesizer for buttons, tapes, and ambient warm tape hiss
 class AnalogSynth {
@@ -171,10 +172,25 @@ class AnalogSynth {
       this.hissGain = null;
     }
   }
+
+  dispose() {
+    try {
+      if (this.hissSource) {
+        this.hissSource.stop();
+        this.hissSource = null;
+        this.hissGain = null;
+      }
+      if (this.ctx) {
+        void this.ctx.close();
+        this.ctx = null;
+      }
+    } catch { /* ignore */ }
+  }
 }
 
-// Module-level: survive React Strict Mode double-mount in dev
-let _setupAttempted = false;
+// Module-level: createMediaElementSource can only bind to a given <audio> element once.
+// Track the element we wired so a genuine remount (new element) is wired again.
+let _wiredElement: HTMLAudioElement | null = null;
 
 // Global single instance of our synthesizer
 const synth = new AnalogSynth();
@@ -212,6 +228,16 @@ export default function StudioTapes() {
     return () => window.removeEventListener('resize', check);
   }, []);
 
+  // Close the drawer with Escape
+  useEffect(() => {
+    if (!isOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setIsOpen(false);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [isOpen]);
+
   // Clear insertion timer on unmount
   useEffect(() => {
     return () => {
@@ -223,9 +249,9 @@ export default function StudioTapes() {
 
   // Load state from localStorage on init
   useEffect(() => {
-    const savedTapeId = localStorage.getItem('st_tape_id');
-    const savedTime = localStorage.getItem('st_time');
-    const savedVolume = localStorage.getItem('st_volume');
+    const savedTapeId = safeGet('st_tape_id');
+    const savedTime = safeGet('st_time');
+    const savedVolume = safeGet('st_volume');
 
     if (savedTapeId) {
       const tape = studioTapes.find(t => t.id === savedTapeId);
@@ -244,31 +270,35 @@ export default function StudioTapes() {
   // Persist values on change
   useEffect(() => {
     if (activeTape) {
-      localStorage.setItem('st_tape_id', activeTape.id);
+      safeSet('st_tape_id', activeTape.id);
     } else {
-      localStorage.removeItem('st_tape_id');
+      safeRemove('st_tape_id');
     }
   }, [activeTape]);
 
   useEffect(() => {
-    localStorage.setItem('st_time', currentTime.toString());
+    safeSet('st_time', currentTime.toString());
   }, [currentTime]);
 
   useEffect(() => {
-    localStorage.setItem('st_volume', volume.toString());
+    safeSet('st_volume', volume.toString());
     if (audioRef.current) {
       audioRef.current.volume = volume;
     }
   }, [volume]);
 
-  // Init AudioContext + MediaElementSource once (survives Strict Mode remount via module-level vars)
+  // Wire an AudioContext + MediaElementSource to the <audio> once. The element guard
+  // skips already-wired elements (Strict Mode dev remount) and re-wires new elements
+  // after a genuine remount, then tears everything down on unmount.
   useEffect(() => {
     const audio = audioRef.current;
-    if (!audio || _setupAttempted) return;
-    _setupAttempted = true;
+    if (!audio || _wiredElement === audio) return;
+
+    const AudioCtor = window.AudioContext ?? (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+    if (!AudioCtor) return;
 
     try {
-      const ctx = new (window.AudioContext || (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext)();
+      const ctx = new AudioCtor();
       const source = ctx.createMediaElementSource(audio);
       const analyser = ctx.createAnalyser();
       analyser.fftSize = 128;
@@ -279,8 +309,9 @@ export default function StudioTapes() {
       audioCtxRef.current = ctx;
       sourceRef.current = source;
       analyserRef.current = analyser;
+      _wiredElement = audio;
     } catch {
-      // Strict Mode: audio already connected. Visualizer won't work in dev, native audio works fine.
+      // Strict Mode dev remount: element already connected. Native audio works fine.
     }
 
     return () => {
@@ -288,6 +319,15 @@ export default function StudioTapes() {
         cancelAnimationFrame(animFrameRef.current);
         animFrameRef.current = null;
       }
+      const ctx = audioCtxRef.current;
+      if (ctx) {
+        void ctx.close();
+        audioCtxRef.current = null;
+        sourceRef.current = null;
+        analyserRef.current = null;
+        _wiredElement = null;
+      }
+      synth.dispose();
     };
   }, []);
 
@@ -564,6 +604,9 @@ export default function StudioTapes() {
             className="fixed bottom-0 left-0 right-0 z-40 bg-[#f9f7f2] border-t border-[#e5e2de] shadow-xl overflow-hidden"
             id="studio-tapes-drawer"
             style={{ maxHeight: '85vh' }}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Studio Tapes"
           >
             {/* Wooden top-lip or paper craft border accent */}
             <div className="h-1 bg-[#a84432]" />
@@ -590,6 +633,8 @@ export default function StudioTapes() {
                       synth.playClick();
                       setIsOpen(false);
                     }}
+                    aria-label={t(ui.a11y.close)}
+                    autoFocus
                     className="w-5 h-5 md:w-6 md:h-6 rounded-full border border-[#1a1a1a]/10 flex items-center justify-center text-[#666] hover:text-[#1a1a1a] hover:bg-[#1a1a1a]/5 text-[9px] md:text-[10px] transition-all"
                     id="close-drawer-btn"
                   >
@@ -820,6 +865,15 @@ export default function StudioTapes() {
                         <div
                           key={tape.id}
                           onClick={() => handleInsertTape(tape)}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                              e.preventDefault();
+                              handleInsertTape(tape);
+                            }
+                          }}
+                          role="button"
+                          tabIndex={0}
+                          aria-label={`${t(ui.a11y.insertTape)}: ${tape.subtitle}`}
                           className={`relative p-3 md:p-4 rounded-sm border transition-all duration-300 select-none cursor-pointer ${
                             isActive 
                               ? 'border-[#a84432]/40 opacity-50 bg-[#1a1a1a]/5' 

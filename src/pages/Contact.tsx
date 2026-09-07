@@ -6,7 +6,7 @@ import { ui } from '../i18n/translations';
 
 export default function Contact() {
   const [contactName, setContactName] = useState('');
-  const [contactReason, setContactReason] = useState('');
+  const [contactReasonIdx, setContactReasonIdx] = useState<number | null>(null);
   const [contactEmail, setContactEmail] = useState('');
   const [contactMessage, setContactMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -22,10 +22,19 @@ export default function Contact() {
     };
   }, []);
 
+  const armFeedbackTimer = () => {
+    if (feedbackTimerRef.current !== null) {
+      clearTimeout(feedbackTimerRef.current);
+    }
+    feedbackTimerRef.current = window.setTimeout(() => setFeedback(null), 6000);
+  };
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    if (!contactReason) {
+    if (isSubmitting) return;
+    if (contactReasonIdx === null) {
       setFeedback({ type: 'error', text: t(ui.contact.errorReason) });
+      armFeedbackTimer();
       return;
     }
     setIsSubmitting(true);
@@ -37,7 +46,7 @@ export default function Contact() {
         body: JSON.stringify({
           name: contactName,
           email: contactEmail,
-          reason: contactReason,
+          reason: t(ui.contact.reasons[contactReasonIdx]),
           message: contactMessage,
         }),
       });
@@ -47,17 +56,14 @@ export default function Contact() {
       }
       setFeedback({ type: 'success', text: t(ui.contact.success) });
       setContactName('');
-      setContactReason('');
+      setContactReasonIdx(null);
       setContactEmail('');
       setContactMessage('');
     } catch (err) {
       setFeedback({ type: 'error', text: err instanceof Error ? err.message : t(ui.contact.errorGeneric) });
     } finally {
       setIsSubmitting(false);
-      if (feedbackTimerRef.current !== null) {
-        clearTimeout(feedbackTimerRef.current);
-      }
-      feedbackTimerRef.current = window.setTimeout(() => setFeedback(null), 6000);
+      armFeedbackTimer();
     }
   };
 
@@ -96,13 +102,13 @@ export default function Contact() {
             <div className="space-y-3">
               <label className="font-mono text-sm text-[#666] uppercase tracking-wider block">{t(ui.contact.reasonLabel)}</label>
               <div className="flex flex-wrap gap-2">
-                {ui.contact.reasons.map((reason) => (
+                {ui.contact.reasons.map((reason, idx) => (
                   <button
                     key={reason.es}
                     type="button"
-                    onClick={() => setContactReason(t(reason))}
+                    onClick={() => setContactReasonIdx(idx)}
                     className={`px-3 py-1.5 rounded-sm text-xs font-mono border tracking-wide transition-all cursor-pointer ${
-                      contactReason === t(reason)
+                      contactReasonIdx === idx
                         ? 'bg-[#a84432] border-[#a84432] text-[#f9f7f2]'
                         : 'bg-[#fffef0] border-[#e5e2de] text-[#666] hover:border-[#a84432]/40'
                     }`}

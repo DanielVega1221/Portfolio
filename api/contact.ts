@@ -1,6 +1,19 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { Resend } from 'resend';
 
+function escapeHtml(value: string): string {
+  return value
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
+}
+
+function stripCrLf(value: string): string {
+  return value.replace(/[\r\n]+/g, ' ').trim();
+}
+
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Método no permitido' });
@@ -22,16 +35,16 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const result = await resend.emails.send({
       from: 'Portfolio GDV <onboarding@resend.dev>',
       to: 'dvega6442@gmail.com',
-      subject: `[Portfolio] ${reason || 'Consulta'} — ${name || email}`,
+      subject: `[Portfolio] ${stripCrLf(reason || 'Consulta')} — ${stripCrLf(name || email)}`,
       html: `
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
           <h2 style="color: #a84432;">Nueva consulta desde el portfolio</h2>
           <hr style="border: 1px solid #e5e2de;" />
-          <p><strong>Nombre:</strong> ${name || 'No especificado'}</p>
-          <p><strong>Email:</strong> ${email}</p>
-          <p><strong>Motivo:</strong> ${reason || 'No especificado'}</p>
+          <p><strong>Nombre:</strong> ${escapeHtml(name || 'No especificado')}</p>
+          <p><strong>Email:</strong> ${escapeHtml(email)}</p>
+          <p><strong>Motivo:</strong> ${escapeHtml(reason || 'No especificado')}</p>
           <hr style="border: 1px solid #e5e2de;" />
-          <p style="white-space: pre-wrap;">${message}</p>
+          <p style="white-space: pre-wrap;">${escapeHtml(message)}</p>
           <hr style="border: 1px solid #e5e2de;" />
           <p style="color: #999; font-size: 12px;">Enviado desde el formulario de contacto del portfolio.</p>
         </div>

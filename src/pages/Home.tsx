@@ -9,6 +9,7 @@ import { journalEntries } from '../data/journal';
 import { useLanguage, localizePath } from '../i18n/useLanguage';
 import { useT } from '../i18n/useT';
 import { ui } from '../i18n/translations';
+import type { CaseStudy } from '../types';
 
 const FEATURED_IDS = ['zabira-studio', 'patagenda', 'electropower'];
 
@@ -23,7 +24,7 @@ export default function Home() {
         if (!project) return null;
         return lang === 'en' ? (getProjectEn(project.id) || project) : project;
       })
-      .filter(Boolean),
+      .filter((p): p is CaseStudy => p !== null),
     [lang]
   );
 
@@ -81,6 +82,7 @@ export default function Home() {
               <a
                 href={lang === 'es' ? '/cv-es.pdf' : '/cv-en.pdf'}
                 target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[#f9f7f2] bg-[#a84432] hover:bg-[#a84432]/90 px-4 py-2.5 rounded-sm transition-colors"
               >
                 <Download size={14} />
@@ -111,31 +113,31 @@ export default function Home() {
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 {featuredProjects.map((project) => (
                   <Link
-                    key={project!.id}
-                    to={localizePath(`/proyectos/${project!.id}`, lang)}
+                    key={project.id}
+                    to={localizePath(`/proyectos/${project.id}`, lang)}
                     className="group bg-[#fffef0] border border-[#e5e2de] hover:border-[#a84432]/40 rounded-xs overflow-hidden transition-all duration-200 hover:shadow-xs"
                   >
                     <ProjectImage
-                      title={project!.title}
-                      subtitle={project!.subtitle}
-                      chapterNumber={project!.chapterNumber}
-                      type={project!.type}
-                      projectId={project!.id}
-                      url={project!.url}
+                      title={project.title}
+                      subtitle={project.subtitle}
+                      chapterNumber={project.chapterNumber}
+                      type={project.type}
+                      projectId={project.id}
+                      url={project.url}
                       className="border-0 rounded-none"
                     />
                     <div className="p-4">
                       <h4 className="font-serif text-base font-semibold text-[#1a1a1a] group-hover:text-[#a84432] transition-colors leading-snug mb-1">
-                        {project!.title}
+                        {project.title}
                       </h4>
                       <p className="font-mono text-[10px] text-[#a84432] uppercase tracking-wider mb-2">
-                        {project!.subtitle}
+                        {project.subtitle}
                       </p>
                     <p className="text-xs text-[#555] leading-relaxed font-light mb-2 line-clamp-2">
-                      {project!.tagline}
+                      {project.tagline}
                     </p>
                     <div className="flex flex-wrap gap-1 mt-auto">
-                      {project!.tools.slice(0, 3).map(tool => (
+                      {project.tools.slice(0, 3).map(tool => (
                         <span key={tool} className="text-[10px] font-mono bg-[#efede8] text-[#555] px-1.5 py-0.5 rounded-xs">
                           {tool}
                         </span>

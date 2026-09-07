@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { Search, HelpCircle, ChevronDown, Github } from 'lucide-react';
@@ -64,9 +64,7 @@ export default function Portfolio() {
 
   const hasMore = displayCount < filteredProjects.length;
 
-  useEffect(() => {
-    setDisplayCount(6);
-  }, [searchQuery, typeFilter]);
+  const resetDisplay = () => setDisplayCount(6);
 
   return (
     <motion.div
@@ -93,7 +91,10 @@ export default function Portfolio() {
               <input
                 type="text"
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value);
+                  resetDisplay();
+                }}
                 placeholder={t(ui.portfolio.searchPlaceholder)}
                 className="w-full bg-[#fffef0] border border-[#e5e2de] pl-10 pr-4 py-2.5 text-sm font-mono rounded-sm focus:outline-none focus:border-[#a84432] text-[#1a1a1a] transition-colors"
               />
@@ -103,7 +104,10 @@ export default function Portfolio() {
             {filterOptions.map((filter) => (
               <button
                 key={filter.id}
-                onClick={() => setTypeFilter(filter.id)}
+                onClick={() => {
+                  setTypeFilter(filter.id);
+                  resetDisplay();
+                }}
                 className={`px-3 py-1.5 rounded-sm text-xs font-mono tracking-wider transition-all duration-150 uppercase cursor-pointer ${
                   typeFilter === filter.id
                     ? 'bg-[#a84432] text-[#f9f7f2]'
@@ -122,7 +126,11 @@ export default function Portfolio() {
               <HelpCircle className="mx-auto text-[#a84432] mb-4" size={32} />
               <p className="font-mono text-sm text-[#777]">{t(ui.portfolio.emptyTitle)}</p>
               <button
-                onClick={() => { setSearchQuery(''); setTypeFilter('all'); }}
+                onClick={() => {
+                  setSearchQuery('');
+                  setTypeFilter('all');
+                  resetDisplay();
+                }}
                 className="mt-4 text-xs font-mono uppercase tracking-wider underline text-[#a84432] hover:opacity-80"
               >
                 {t(ui.portfolio.resetButton)}
