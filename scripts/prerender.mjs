@@ -1,43 +1,50 @@
 import { chromium } from 'playwright';
-import { execSync } from 'child_process';
 import http from 'http';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-
-// Ensure Chromium is installed
-try {
-  execSync('npx playwright install chromium', { stdio: 'pipe', timeout: 60000 });
-} catch {
-  console.log('Chromium install skipped (already present or failed).');
-}
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DIST = path.resolve(__dirname, '..', 'dist');
 const PORT = 4173;
 const BASE = `http://localhost:${PORT}`;
 
-const ROUTES = [
-  '/',
+const PROJECTS = [
+  'brunn-studio',
+  'lumen',
+  'marea',
+  'stro-atelier',
+  'zabira-studio',
+  'content-studio',
+  'uxnicorp-academy',
+  'la-pagina-de-uxnicorp',
+  'myvisor',
+  'electropower',
+  'jimena-vilte',
+  'patagenda',
+  'ducksale',
+  'comercial-rio-hondo',
+  'isdep',
+];
+
+const JOURNAL = [
+  'como-empece-a-programar',
+  'de-la-facultad-a-productos',
+  'hablar-con-clientes',
+];
+
+const PAGES = [
+  '',
   '/proyectos',
   '/journal',
   '/sobre-mi',
   '/dialogo',
-  '/proyectos/brunn-studio',
-  '/proyectos/lumen',
-  '/proyectos/marea',
-  '/proyectos/stro-atelier',
-  '/proyectos/zabira-studio',
-  '/proyectos/content-studio',
-  '/proyectos/uxnicorp-academy',
-  '/proyectos/la-pagina-de-uxnicorp',
-  '/proyectos/myvisor',
-  '/proyectos/electropower',
-  '/proyectos/jimena-vilte',
-  '/proyectos/patagenda',
-  '/proyectos/ducksale',
-  '/proyectos/comercial-rio-hondo',
-  '/proyectos/isdep',
+];
+
+const ROUTES = [
+  ...PAGES,
+  ...PROJECTS.map(p => `/proyectos/${p}`),
+  ...JOURNAL.map(j => `/journal/${j}`),
 ];
 
 const MIME = {
@@ -60,7 +67,6 @@ function startServer() {
       const filePath = path.join(DIST, urlPath);
       const ext = path.extname(filePath);
 
-      // If it's a file request (js, css, images, etc.), serve it directly
       if (ext && ext !== '.html') {
         fs.readFile(filePath, (err, data) => {
           if (err) {
@@ -72,7 +78,6 @@ function startServer() {
           }
         });
       } else {
-        // HTML route — serve index.html for SPA routing
         fs.readFile(path.join(DIST, 'index.html'), (err, data) => {
           if (err) {
             res.writeHead(404);
@@ -105,30 +110,41 @@ async function prerender() {
     ],
   });
 
-  for (let i = 0; i < ROUTES.length; i++) {
-    const route = ROUTES[i];
-    const page = await browser.newPage();
+  const variants = [
+    { prefix: '', lang: 'es', locale: 'es-ES' },
+    { prefix: '/en', lang: 'en', locale: 'en-US' },
+  ];
 
-    try {
-      await page.goto(`${BASE}${route}`, { waitUntil: 'networkidle', timeout: 30000 });
-      await page.waitForSelector('#app-root', { timeout: 10000 });
-      // Wait for React to finish rendering content
-      await page.waitForFunction(() => {
-        const root = document.getElementById('app-root');
-        return root && root.textContent && root.textContent.trim().length > 100;
-      }, { timeout: 10000 });
-      await page.waitForTimeout(500);
+  for (const variant of variants) {
+    for (const route of ROUTES) {
+      const fullRoute = `${variant.prefix}${route}`;
+      const page = await browser.newPage({ locale: variant.locale });
 
-      const html = await page.content();
-      const outDir = path.join(DIST, route);
-      fs.mkdirSync(outDir, { recursive: true });
-      fs.writeFileSync(path.join(outDir, 'index.html'), html);
+      try {
+        await page.goto(`${BASE}${fullRoute}`, { waitUntil: 'networkidle', timeout: 30000 });
+        await page.waitForSelector('#app-root', { timeout: 10000 });
+        await page.waitForFunction(() => {
+          const root = document.getElementById('app-root');
+          return root && root.textContent && root.textContent.trim().length > 100;
+        }, { timeout: 10000 });
+        await page.waitForFunction(
+          (expectedLang) => document.documentElement.lang === expectedLang,
+          variant.lang,
+          { timeout: 10000 }
+        );
+        await page.waitForTimeout(500);
 
-      console.log(`  ✓ ${route || '/'}`);
-    } catch (err) {
-      console.log(`  ✗ ${route || '/'}: ${err.message}`);
-    } finally {
-      await page.close();
+        const html = await page.content();
+        const outDir = path.join(DIST, fullRoute);
+        fs.mkdirSync(outDir, { recursive: true });
+        fs.writeFileSync(path.join(outDir, 'index.html'), html);
+
+        console.log(`  ✓ ${fullRoute}`);
+      } catch (err) {
+        console.log(`  ✗ ${fullRoute}: ${err.message}`);
+      } finally {
+        await page.close();
+      }
     }
   }
 
