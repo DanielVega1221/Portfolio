@@ -1,4 +1,14 @@
 export const ui = {
+  // ── Accessibility labels ──
+  a11y: {
+    close: { es: 'Cerrar', en: 'Close' },
+    previous: { es: 'Anterior', en: 'Previous' },
+    next: { es: 'Siguiente', en: 'Next' },
+    openGallery: { es: 'Abrir galería', en: 'Open gallery' },
+    insertTape: { es: 'Insertar cinta', en: 'Insert tape' },
+    openImage: { es: 'Ampliar imagen', en: 'Enlarge image' },
+  },
+
   // ── Navbar ──
   nav: {
     home: { es: 'Inicio', en: 'Home' },

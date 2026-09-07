@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { ArrowLeft, Calendar, CheckCircle2, AlertTriangle, RefreshCw, Award, Anchor, ExternalLink, Github, FolderKanban, X } from 'lucide-react';
@@ -12,14 +12,28 @@ import ProjectImage from './ProjectImage';
 
 export default function ProjectDetail() {
   const { id } = useParams<{ id: string }>();
+  const pid = id ?? '';
   const navigate = useNavigate();
-  const project = caseStudies.find(p => p.id === id);
+  const project = caseStudies.find(p => p.id === pid);
   const { lang } = useLanguage();
   const t = useT();
-  const projectData = (lang === 'en' ? (getProjectEn(id!) || project) : project) ?? null;
+  const projectData = (lang === 'en' ? (getProjectEn(pid) || project) : project) ?? null;
   const [showGallery, setShowGallery] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [failedImages, setFailedImages] = useState<Set<number>>(new Set());
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== 'Escape') return;
+      if (lightboxIndex !== null) {
+        setLightboxIndex(null);
+      } else if (showGallery) {
+        setShowGallery(false);
+      }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [showGallery, lightboxIndex]);
 
   if (!project || !projectData) {
     return (
@@ -352,14 +366,25 @@ export default function ProjectDetail() {
       </div>
 
       {showGallery && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#1a1a1a]/60 backdrop-blur-sm" onClick={() => setShowGallery(false)}>
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#1a1a1a]/60 backdrop-blur-sm"
+          onClick={() => setShowGallery(false)}
+          role="dialog"
+          aria-modal="true"
+          aria-label={t(ui.projectDetail.galleryTitle)}
+        >
           <div className="bg-[#fffef0] border border-[#e5e2de] rounded-sm p-6 md:p-8 max-w-2xl w-full max-h-[85vh] overflow-y-auto shadow-xl" onClick={e => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-6">
               <div>
                 <span className="font-mono text-[10px] uppercase tracking-widest text-[#a84432] font-semibold block">{t(ui.projectDetail.galleryTitle)}</span>
                 <h3 className="font-serif text-xl font-light text-[#1a1a1a]">{projectData.title}</h3>
               </div>
-              <button onClick={() => setShowGallery(false)} className="text-[#888] hover:text-[#1a1a1a] cursor-pointer">
+              <button
+                onClick={() => setShowGallery(false)}
+                aria-label={t(ui.a11y.close)}
+                autoFocus
+                className="text-[#888] hover:text-[#1a1a1a] cursor-pointer"
+              >
                 <X size={20} />
               </button>
             </div>
@@ -368,12 +393,14 @@ export default function ProjectDetail() {
               {[1, 2, 3].map((n) => {
                 const failed = failedImages.has(n);
                 return (
-                <div
+                <button
                   key={n}
-                  className="aspect-[4/3] bg-[#efede8] border border-[#e5e2de] rounded-xs flex items-center justify-center relative overflow-hidden cursor-pointer hover:border-[#a84432]/40 transition-colors group"
+                  type="button"
                   onClick={() => setLightboxIndex(n - 1)}
+                  aria-label={`${t(ui.a11y.openImage)} ${projectData.title} ${String(n).padStart(2, '0')}`}
+                  className="aspect-[4/3] bg-[#efede8] border border-[#e5e2de] rounded-xs flex items-center justify-center relative overflow-hidden cursor-pointer hover:border-[#a84432]/40 transition-colors group p-0"
                 >
-                  <div className="absolute inset-0 bg-[#1a1a1a]/0 group-hover:bg-[#1a1a1a]/5 transition-colors z-10 flex items-center justify-center">
+                  <div className="absolute inset-0 bg-[#1a1a1a]/0 group-hover:bg-[#1a1a1a]/5 transition-colors z-10 flex items-center justify-center pointer-events-none">
                     <span className="text-white opacity-0 group-hover:opacity-100 transition-opacity font-mono text-[11px] uppercase tracking-wider bg-[#1a1a1a]/60 px-2 py-1 rounded-xs">
                       {t(ui.projectDetail.amplify)}
                     </span>
@@ -397,14 +424,14 @@ export default function ProjectDetail() {
                     />
                   )}
                   {failed && (
-                    <div className="text-center space-y-2">
+                    <div className="text-center space-y-2 pointer-events-none">
                       <FolderKanban size={24} className="text-[#1a1a1a]/15 mx-auto" />
                       <p className="font-mono text-[10px] text-[#1a1a1a]/20 uppercase tracking-wider">
                         {projectData.title} — {String(n).padStart(2, '0')}
                       </p>
                     </div>
                   )}
-                </div>
+                </button>
                 );
               })}
             </div>
@@ -420,9 +447,14 @@ export default function ProjectDetail() {
         <div
           className="fixed inset-0 z-[60] flex items-center justify-center bg-[#1a1a1a]/90 backdrop-blur-sm"
           onClick={() => setLightboxIndex(null)}
+          role="dialog"
+          aria-modal="true"
+          aria-label={`${projectData.title} — ${lightboxIndex + 1} / 3`}
         >
           <button
             onClick={() => setLightboxIndex(null)}
+            aria-label={t(ui.a11y.close)}
+            autoFocus
             className="absolute top-4 right-4 text-white/60 hover:text-white z-10 cursor-pointer"
           >
             <X size={28} />
@@ -430,6 +462,7 @@ export default function ProjectDetail() {
 
           <button
             onClick={(e) => { e.stopPropagation(); setLightboxIndex(i => Math.max(0, (i ?? 0) - 1)); }}
+            aria-label={t(ui.a11y.previous)}
             className="absolute left-4 top-1/2 -translate-y-1/2 text-white/50 hover:text-white disabled:opacity-20 z-10 cursor-pointer"
             disabled={lightboxIndex === 0}
           >
@@ -447,6 +480,7 @@ export default function ProjectDetail() {
 
           <button
             onClick={(e) => { e.stopPropagation(); setLightboxIndex(i => Math.min(2, (i ?? 0) + 1)); }}
+            aria-label={t(ui.a11y.next)}
             className="absolute right-4 top-1/2 -translate-y-1/2 text-white/50 hover:text-white disabled:opacity-20 z-10 cursor-pointer"
             disabled={lightboxIndex === 2}
           >
