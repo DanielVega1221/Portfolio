@@ -26,26 +26,33 @@ function LazyPage({ children }: { children: ReactNode }) {
   return <Suspense fallback={<PageLoader />}>{children}</Suspense>;
 }
 
+function buildRoutes(prefix: string) {
+  return (
+    <Route path={prefix} element={<Layout />}>
+      <Route index element={<Home />} />
+      <Route path="proyectos" element={<LazyPage><Portfolio /></LazyPage>} />
+      <Route path="proyectos/:id" element={<LazyPage><ProjectDetail /></LazyPage>} />
+      <Route path="journal" element={<LazyPage><Journal /></LazyPage>} />
+      <Route path="journal/:id" element={<LazyPage><JournalDetail /></LazyPage>} />
+      <Route path="sobre-mi" element={<LazyPage><About /></LazyPage>} />
+      <Route path="dialogo" element={<LazyPage><Contact /></LazyPage>} />
+      <Route path="*" element={<LazyPage><NotFound /></LazyPage>} />
+    </Route>
+  );
+}
+
 export default function App() {
   return (
     <ErrorBoundary>
-      <LanguageProvider>
-        <BrowserRouter>
+      <BrowserRouter>
+        <LanguageProvider>
           <PageMeta />
           <Routes>
-          <Route element={<Layout />}>
-            <Route index element={<Home />} />
-            <Route path="proyectos" element={<LazyPage><Portfolio /></LazyPage>} />
-            <Route path="proyectos/:id" element={<LazyPage><ProjectDetail /></LazyPage>} />
-            <Route path="journal" element={<LazyPage><Journal /></LazyPage>} />
-            <Route path="journal/:id" element={<LazyPage><JournalDetail /></LazyPage>} />
-            <Route path="sobre-mi" element={<LazyPage><About /></LazyPage>} />
-            <Route path="dialogo" element={<LazyPage><Contact /></LazyPage>} />
-            <Route path="*" element={<LazyPage><NotFound /></LazyPage>} />
-          </Route>
-        </Routes>
-        </BrowserRouter>
-      </LanguageProvider>
+            {buildRoutes('')}
+            {buildRoutes('/en')}
+          </Routes>
+        </LanguageProvider>
+      </BrowserRouter>
     </ErrorBoundary>
   );
 }

@@ -15,3 +15,10 @@ export const LangContext = createContext<LangContextType>({
 export function useLanguage() {
   return useContext(LangContext);
 }
+
+export function localizePath(path: string, targetLang: Lang): string {
+  const base = path.replace(/^\/en(?=\/|$)/, '') || '/';
+  if (targetLang === 'es') return base;
+  if (base === '/') return '/en';
+  return `/en${base}`;
+}

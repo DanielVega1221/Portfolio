@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { Calendar, Clock, BookOpen } from 'lucide-react';
-import { useLanguage } from '../i18n/useLanguage';
+import { useLanguage, localizePath } from '../i18n/useLanguage';
 import { useT } from '../i18n/useT';
 import { ui } from '../i18n/translations';
 import { journalEntries } from '../data/journal';
@@ -65,7 +65,7 @@ export default function Journal() {
                 </div>
 
                 <div className="lg:col-span-9 space-y-4">
-                  <Link to={`/journal/${entry.id}`}>
+                  <Link to={localizePath(`/journal/${entry.id}`, lang)}>
                     <h3 className="text-serif text-2xl md:text-3xl font-light text-[#1a1a1a] group-hover:text-[#a84432] transition-colors cursor-pointer leading-snug">
                       {lang === 'en' && entry.titleEn ? entry.titleEn : entry.title}
                     </h3>
@@ -77,7 +77,7 @@ export default function Journal() {
 
                   <div className="pt-2">
                     <Link
-                      to={`/journal/${entry.id}`}
+                      to={localizePath(`/journal/${entry.id}`, lang)}
                       className="inline-flex items-center gap-1 font-mono text-xs uppercase tracking-widest text-[#a84432] hover:text-[#1a1a1a] font-bold"
                     >
                       {t(ui.journal.readMore)}
@@ -110,7 +110,7 @@ export default function Journal() {
                 </div>
 
                 <div className="lg:col-span-9 space-y-4">
-                  <Link to={`/journal/${entry.id}`}>
+                  <Link to={localizePath(`/journal/${entry.id}`, lang)}>
                     <h3 className="text-serif text-2xl md:text-3xl font-light text-[#1a1a1a] group-hover:text-[#a84432] transition-colors cursor-pointer leading-snug">
                       {lang === 'en' && entry.titleEn ? entry.titleEn : entry.title}
                     </h3>
@@ -122,7 +122,7 @@ export default function Journal() {
 
                   <div className="pt-2">
                     <Link
-                      to={`/journal/${entry.id}`}
+                      to={localizePath(`/journal/${entry.id}`, lang)}
                       className="inline-flex items-center gap-1 font-mono text-xs uppercase tracking-widest text-[#a84432] hover:text-[#1a1a1a] font-bold"
                     >
                       {t(ui.journal.readMore)}

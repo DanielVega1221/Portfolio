@@ -6,7 +6,7 @@ import { caseStudies } from '../data/projects';
 import { getProjectEn } from '../data/projects-en-lookup';
 import ProjectImage from '../components/ProjectImage';
 import { journalEntries } from '../data/journal';
-import { useLanguage } from '../i18n/useLanguage';
+import { useLanguage, localizePath } from '../i18n/useLanguage';
 import { useT } from '../i18n/useT';
 import { ui } from '../i18n/translations';
 
@@ -87,13 +87,13 @@ export default function Home() {
                 {t(ui.home.downloadCV)}
               </a>
               <Link
-                to="/proyectos"
+                to={localizePath('/proyectos', lang)}
                 className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[#a84432] border border-[#a84432] hover:bg-[#a84432]/5 px-4 py-2.5 rounded-sm transition-colors"
               >
                 {t(ui.nav.projects)}
               </Link>
               <Link
-                to="/dialogo"
+                to={localizePath('/dialogo', lang)}
                 className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[#555] border border-[#1a1a1a]/20 hover:border-[#a84432]/40 px-4 py-2.5 rounded-sm transition-colors"
               >
                 {t(ui.nav.contact)}
@@ -112,7 +112,7 @@ export default function Home() {
                 {featuredProjects.map((project) => (
                   <Link
                     key={project!.id}
-                    to={`/proyectos/${project!.id}`}
+                    to={localizePath(`/proyectos/${project!.id}`, lang)}
                     className="group bg-[#fffef0] border border-[#e5e2de] hover:border-[#a84432]/40 rounded-xs overflow-hidden transition-all duration-200 hover:shadow-xs"
                   >
                     <ProjectImage
@@ -148,7 +148,7 @@ export default function Home() {
 
               <div className="pt-1">
                 <Link
-                  to="/proyectos"
+                  to={localizePath('/proyectos', lang)}
                   className="inline-flex items-center gap-1 font-mono text-xs text-[#a84432] hover:text-[#1a1a1a] font-bold uppercase tracking-wider"
                 >
                   {t(ui.home.featuredViewAll)}
@@ -187,28 +187,28 @@ export default function Home() {
               <p className="font-mono text-xs uppercase tracking-widest text-[#a84432] font-bold">{t(ui.home.index)}</p>
 
               <nav className="flex flex-col gap-6">
-                <Link to="/proyectos" className="group cursor-pointer flex justify-between items-baseline text-left w-full border-none bg-transparent p-0 text-[#1a1a1a] focus:outline-none">
+                <Link to={localizePath('/proyectos', lang)} className="group cursor-pointer flex justify-between items-baseline text-left w-full border-none bg-transparent p-0 text-[#1a1a1a] focus:outline-none">
                   <span className="font-mono text-[11px] uppercase tracking-[0.3em] text-[#a84432] font-semibold">01.</span>
                   <span className="text-2xl font-light border-b border-transparent group-hover:border-[#a84432] pb-1 transition-all text-serif">{t(ui.nav.projects)}</span>
                   <span className="flex-1 border-b border-dotted border-[#1a1a1a]/20 mx-4"></span>
                   <span className="font-mono text-[11px] uppercase opacity-50">{t(ui.home.indexProjects)}</span>
                 </Link>
 
-                <Link to="/journal" className="group cursor-pointer flex justify-between items-baseline text-left w-full border-none bg-transparent p-0 text-[#1a1a1a] focus:outline-none">
+                <Link to={localizePath('/journal', lang)} className="group cursor-pointer flex justify-between items-baseline text-left w-full border-none bg-transparent p-0 text-[#1a1a1a] focus:outline-none">
                   <span className="font-mono text-[11px] uppercase tracking-[0.3em] text-[#a84432] font-semibold">02.</span>
                   <span className="text-2xl font-light border-b border-transparent group-hover:border-[#a84432] pb-1 transition-all text-serif">{t(ui.nav.journal)}</span>
                   <span className="flex-1 border-b border-dotted border-[#1a1a1a]/20 mx-4"></span>
                   <span className="font-mono text-[11px] uppercase opacity-50">{t(ui.home.indexJournal)}</span>
                 </Link>
 
-                <Link to="/sobre-mi" className="group cursor-pointer flex justify-between items-baseline text-left w-full border-none bg-transparent p-0 text-[#1a1a1a] focus:outline-none">
+                <Link to={localizePath('/sobre-mi', lang)} className="group cursor-pointer flex justify-between items-baseline text-left w-full border-none bg-transparent p-0 text-[#1a1a1a] focus:outline-none">
                   <span className="font-mono text-[11px] uppercase tracking-[0.3em] text-[#a84432] font-semibold">03.</span>
                   <span className="text-2xl font-light border-b border-transparent group-hover:border-[#a84432] pb-1 transition-all text-serif">{t(ui.nav.about)}</span>
                   <span className="flex-1 border-b border-dotted border-[#1a1a1a]/20 mx-4"></span>
                   <span className="font-mono text-[11px] uppercase opacity-50">{t(ui.home.indexAbout)}</span>
                 </Link>
 
-                <Link to="/dialogo" className="group cursor-pointer flex justify-between items-baseline text-left w-full border-none bg-transparent p-0 text-[#1a1a1a] focus:outline-none">
+                <Link to={localizePath('/dialogo', lang)} className="group cursor-pointer flex justify-between items-baseline text-left w-full border-none bg-transparent p-0 text-[#1a1a1a] focus:outline-none">
                   <span className="font-mono text-[11px] uppercase tracking-[0.3em] text-[#a84432] font-semibold">04.</span>
                   <span className="text-2xl font-light border-b border-transparent group-hover:border-[#a84432] pb-1 transition-all text-serif">{t(ui.nav.contact)}</span>
                   <span className="flex-1 border-b border-dotted border-[#1a1a1a]/20 mx-4"></span>
@@ -229,7 +229,7 @@ export default function Home() {
                   </p>
                   <div className="pt-2">
                     <Link
-                      to={`/journal/${latestJournalEntry.id}`}
+                      to={localizePath(`/journal/${latestJournalEntry.id}`, lang)}
                       className="font-mono text-[11px] text-[#a84432] hover:text-[#1a1a1a] font-bold uppercase tracking-wider underline flex items-center gap-1 cursor-pointer"
                     >
                       {t(ui.home.readNote)}

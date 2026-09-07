@@ -4,7 +4,7 @@ import { motion } from 'motion/react';
 import { ArrowLeft, Calendar, CheckCircle2, AlertTriangle, RefreshCw, Award, Anchor, ExternalLink, Github, FolderKanban, X } from 'lucide-react';
 import { caseStudies } from '../data/projects';
 import { CaseStudy } from '../types';
-import { useLanguage } from '../i18n/useLanguage';
+import { useLanguage, localizePath } from '../i18n/useLanguage';
 import { useT } from '../i18n/useT';
 import { ui } from '../i18n/translations';
 import { getProjectEn } from '../data/projects-en-lookup';
@@ -26,7 +26,7 @@ export default function ProjectDetail() {
       <div className="max-w-5xl mx-auto px-6 py-24 text-center">
         <p className="font-mono text-sm text-[#777]">{t(ui.projectDetail.notFound)}</p>
         <button
-          onClick={() => navigate('/proyectos')}
+          onClick={() => navigate(localizePath('/proyectos', lang))}
           className="mt-4 font-mono text-xs text-[#a84432] underline uppercase tracking-wider"
         >
           {t(ui.projectDetail.back)}
@@ -45,7 +45,7 @@ export default function ProjectDetail() {
   const badgeColor = projectData.type === 'personal'
     ? 'border-[#a84432]/20 text-[#a84432] bg-[#a84432]/5'
     : 'border-[#1a1a1a]/10 text-[#444] bg-[#1a1a1a]/5';
-  const onBack = () => navigate('/proyectos');
+  const onBack = () => navigate(localizePath('/proyectos', lang));
 
   return (
     <motion.article

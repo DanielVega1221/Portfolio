@@ -6,7 +6,7 @@ import { caseStudies } from '../data/projects';
 import { getProjectEn } from '../data/projects-en-lookup';
 import ProjectImage from '../components/ProjectImage';
 import type { CaseStudy } from '../types';
-import { useLanguage } from '../i18n/useLanguage';
+import { useLanguage, localizePath } from '../i18n/useLanguage';
 import { useT } from '../i18n/useT';
 import { ui } from '../i18n/translations';
 
@@ -140,7 +140,7 @@ export default function Portfolio() {
                 className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start"
               >
                 <div className="lg:col-span-6 group cursor-pointer">
-                  <Link to={`/proyectos/${project.id}`}>
+                  <Link to={localizePath(`/proyectos/${project.id}`, lang)}>
                     <ProjectImage
                       title={project.title}
                       subtitle={project.subtitle}
@@ -162,7 +162,7 @@ export default function Portfolio() {
                     <span className="text-[#444] font-semibold">{typeLabelMap[project.type]}</span>
                   </div>
 
-                  <Link to={`/proyectos/${project.id}`}>
+                  <Link to={localizePath(`/proyectos/${project.id}`, lang)}>
                     <h3 className="text-serif text-3xl sm:text-4xl font-light text-[#1a1a1a] hover:text-[#a84432] tracking-tight leading-tight transition-colors cursor-pointer">
                       {project.title}
                     </h3>
@@ -222,7 +222,7 @@ export default function Portfolio() {
                       )}
                     </div>
                     <Link
-                      to={`/proyectos/${project.id}`}
+                      to={localizePath(`/proyectos/${project.id}`, lang)}
                       className="inline-flex items-center gap-1 font-mono text-xs uppercase tracking-widest text-[#a84432] hover:text-[#1a1a1a] hover:underline font-bold"
                     >
                       {t(ui.portfolio.studyLink)}

@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { ArrowLeft, Clock, Calendar, Quote, Info, Feather } from 'lucide-react';
-import { useLanguage } from '../i18n/useLanguage';
+import { useLanguage, localizePath } from '../i18n/useLanguage';
 import { useT } from '../i18n/useT';
 import { ui } from '../i18n/translations';
 import { journalEntries } from '../data/journal';
@@ -18,7 +18,7 @@ export default function JournalDetail() {
       <div className="max-w-3xl mx-auto px-6 py-24 text-center">
         <p className="font-mono text-sm text-[#777]">{t(ui.journal.notFound)}</p>
         <button
-          onClick={() => navigate('/journal')}
+          onClick={() => navigate(localizePath('/journal', lang))}
           className="mt-4 font-mono text-xs text-[#a84432] underline uppercase tracking-wider"
         >
           {t(ui.journal.backToJournal)}
@@ -27,7 +27,7 @@ export default function JournalDetail() {
     );
   }
 
-  const onBack = () => navigate('/journal');
+  const onBack = () => navigate(localizePath('/journal', lang));
 
   const renderParagraphs = (text: string) => {
     return text.split('\n\n').map((paragraph, index) => {

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
-import { useLanguage } from '../i18n/useLanguage';
+import { useLanguage, localizePath } from '../i18n/useLanguage';
 import { useT } from '../i18n/useT';
 import { ui } from '../i18n/translations';
 import {
@@ -31,7 +31,7 @@ export default function Layout() {
         <div className="max-w-6xl mx-auto px-6 py-5 flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="flex flex-col md:flex-row md:items-baseline gap-3">
             <Link
-              to="/"
+              to={localizePath('/', lang)}
               className="text-serif text-lg font-bold tracking-tighter uppercase hover:opacity-80 transition-opacity text-[#1a1a1a]"
             >
               GONZALO DANIEL VEGA
@@ -51,11 +51,12 @@ export default function Layout() {
           <nav className={`${mobileMenuOpen ? 'flex' : 'hidden'} md:flex flex-wrap justify-center gap-1 sm:gap-2`} role="navigation">
             {navItems.map((item) => {
               const IconComp = item.icon;
-              const isActive = location.pathname === item.path;
+              const linkTo = localizePath(item.path, lang);
+              const isActive = location.pathname === linkTo;
               return (
                 <Link
                   key={item.path}
-                  to={item.path}
+                  to={linkTo}
                   onClick={() => setMobileMenuOpen(false)}
                   className={`px-3 py-1.5 rounded-sm text-xs font-mono tracking-wider transition-all duration-200 uppercase flex items-center gap-1.5 ${
                     isActive
