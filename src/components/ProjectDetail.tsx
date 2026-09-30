@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { ArrowLeft, Calendar, CheckCircle2, AlertTriangle, RefreshCw, Award, Anchor, ExternalLink, Github, FolderKanban, X } from 'lucide-react';
+// GITHUB: sacar este comentario del import para volver a usar el icono.
+// import { ArrowLeft, Calendar, CheckCircle2, AlertTriangle, RefreshCw, Award, Anchor, ExternalLink, Github, FolderKanban, X } from 'lucide-react';
+import { ArrowLeft, Calendar, CheckCircle2, AlertTriangle, RefreshCw, Award, Anchor, ExternalLink, FolderKanban, X } from 'lucide-react';
 import { caseStudies } from '../data/projects';
 import { CaseStudy } from '../types';
 import { useLanguage, localizePath } from '../i18n/useLanguage';
@@ -326,6 +328,7 @@ export default function ProjectDetail() {
                       <ExternalLink size={11} /> {t(ui.projectDetail.viewProject)}
                     </a>
                   )}
+                  {/* GITHUB: sacar este comentario para volver a mostrar los repos.
                   {projectData.repoFront && (
                     <a href={projectData.repoFront} target="_blank" rel="noopener noreferrer"
                       className="flex items-center gap-1.5 font-mono text-[11px] text-[#a84432] hover:text-[#1a1a1a] font-semibold uppercase tracking-wider transition-colors">
@@ -337,7 +340,7 @@ export default function ProjectDetail() {
                       className="flex items-center gap-1.5 font-mono text-[11px] text-[#a84432] hover:text-[#1a1a1a] font-semibold uppercase tracking-wider transition-colors">
                       <Github size={11} /> {t(ui.projectDetail.repoBack)}
                     </a>
-                  )}
+                  )} */}
                 </div>
               )}
 

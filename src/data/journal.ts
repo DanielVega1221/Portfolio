@@ -28,6 +28,120 @@
 
 export const journalEntries: JournalEntry[] = [
   {
+    id: 'el-problema-de-terminar',
+    title: 'No tengo 70 proyectos. Tengo 15, y a algunos no los pidió nadie',
+    titleEn: "I don't have 70 projects. I have 15. Some of them nobody asked for",
+    date: '2026-09-10',
+    readingTime: '5 min de lectura',
+    readingTimeEn: '5 min read',
+    category: 'Producto',
+    categoryEn: 'Product',
+    tagline: 'En mi portfolio hay demos que nadie pagó y un sistema de reservas con pagos que quedó sin un solo usuario. Esto es lo que aprendí sobre "terminar" un proyecto.',
+    taglineEn: "My portfolio has demos nobody paid for and a booking system with payments that ended up with zero users. Here's what I learned about \"finishing\" a project.",
+    content: `Casi todo el mundo te dice que un junior necesita muchos proyectos para que lo miren. Diez, veinte, cincuenta. Cuantos más, mejor.
+
+Yo tengo quince. Y cuatro de esos son demos conceptuales de arquitectura, interiorismo y un café que nadie me pidió ni pagó. Hay otra que es una plataforma de reservas con pagos de verdad, roles, bases de datos y un sistema de concurrencia que quedó muy bien armado. Esa tampoco tiene un solo usuario, porque el cliente se bajó por presupuesto antes del lanzamiento.
+
+Por un tiempo me obsesioné con eso. Sentía que quince no alcanzaba, que el número quedaba corto, que un recruiter iba a abrir la lista, ver demos lindas de arquitectura y preguntarse qué tenía que ver eso con la programación web.
+
+Después entendí que el problema no era la cantidad. Era que yo no sabía bien para qué existía cada proyecto. Y cuando lo descubrí, todo lo que parecía un fracaso cambió de lado.
+
+### El juego de contar proyectos
+
+Cuando empecé a armar el portfolio hice el ejercicio que hace todo el mundo: contar. Sumar demos, sumar proyectos de la facultad, sumar lo que fuera para que el número subiera.
+
+El número miente. Porque una demo, una herramienta y un producto para un cliente se cuentan igual, pero no pesan igual ni demuestran lo mismo. Una demo demuestra **criterio**. Una herramienta demuestra que **la usás**. Un producto demuestra que **alguien confió, pagó y quedó conforme**. Son tres cosas distintas que el conteo aplasta en una sola unidad.
+
+Y lo peor: cuando contás solo para inflar el número, terminás publicando cosas que vos mismo no sabés por qué están ahí. Esas sí que son señal de humo.
+
+### El día que entendí qué era "terminar"
+
+En mi portfolio cada proyecto tiene una etiqueta: Demo Conceptual, Demo Funcional, Herramienta, Recurso Abierto, Sistema en Producción, Producción Real. Al principio la usé como clasificación técnica, para ordenar la página. Después me di cuenta de que era otra cosa: era mi definición de "terminado".
+
+Porque **terminar no es publicar**. No es que el botón funcione ni que se vea lindo. Terminar es cumplir el objetivo para el que el proyecto existía. Y según cuál sea ese objetivo, "terminado" significa cosas muy distintas.
+
+Una demo está terminada cuando transmite el criterio que querías transmitir, no cuando tiene usuarios. Una herramienta está terminada cuando la usás, aunque la use una sola persona. Un sistema está terminado cuando un cliente real lo usa todos los días para facturar, reservar o coordinar. La página de proyectos lo dice exactamente así.
+
+### Los post-mortems cortos
+
+Cuatro de mis proyectos son demos conceptuales: BRÜNN, un estudio de arquitectura; LÜMEN, uno de interiorismo; MAREA, un café, bar y cocina; y STRØ, arquitectura de autor. Nadie las pidió. Ninguna tiene usuarios reales ni métricas de uso. Si contás proyectos para impresionar, son lastre.
+
+Pero no son lastre. Son demos. Su objetivo era investigar un rubro, entender cómo piensa un estudio, aprender a transmitir criterio. Y ese objetivo lo cumplieron. MAREA incluso dejó a mitad de camino el concepto más fuerte que tenía, el del espacio que cambia según el horario. Lo dejé anotado en la ficha del proyecto, sin esconderlo. Eso es lo que hay que mirar de una demo: no la demo en sí, sino que yo sé exactamente hasta dónde llegué y por qué.
+
+El caso que más me enseñó es el que no figura como demo. **Zabira** es una plataforma de reservas para un estudio de pilates: landing premium, dashboard con roles, reservas atómicas sobre una base de datos con concurrencia, membresías activadas por webhooks de Mercado Pago y autenticación con JWT. Es el sistema más completo que armé hasta acá.
+
+No tiene un solo usuario. El cliente se bajó por presupuesto antes del lanzamiento.
+
+Hubo un momento en que me pregunté si esa plataforma había sido una pérdida de tiempo. Después lo vi distinto: el objetivo nunca fue operarla con ese cliente; el objetivo fue demostrar que podíamos construir algo así, y quedó demostrado. Aprendí a pensar la reserva de un turno como un momento de ansiedad para el cliente, a separar una landing que vende de un dashboard que opera, y a trabajar con concurrencia real. Hoy puedo explicarlo. Lo publiqué como una demo completa y pulida, no como un fracaso.
+
+**DuckSale** es otra cosa: una demo de e-commerce que armamos para que un cliente potencial recorriera su tienda como si ya existiera, con carrito, cupones, checkout y panel de administración. No es un producto, es un arma de venta. Y **MyVisor** es un lector de Markdown que uso para mis propios apuntes. Lo usa una persona: yo. Y está perfecto así.
+
+> Terminar no es publicar. Es saber para qué existía cada cosa.
+
+### Lo que dejé de hacer
+
+Lo que cambió mi forma de trabajar fue dejar de contar proyectos y empezar a decidir para qué existe cada uno **antes** de construirlo. Y cuando se termina, etiquetarlo con el criterio que corresponde. Si es una demo, que sea clara como demo. Si es una herramienta, que se note que la uso. Si es un sistema en producción, que tenga usuarios reales.
+
+Esa categoría no está en la web para el recruiter. Está para mí. Es el mecanismo que me dice cuándo parar. Ningún proyecto se "termina de verdad": siempre hay algo que haría distinto hoy, y de hecho todas las fichas de la página lo dicen. Pero se terminan cuando cumplen lo suyo. El resto del tiempo estás puliendo y no te das cuenta de que ya estás apilando señal de humo.
+
+### Cierre
+
+Si estás armando tu portfolio, dejá de hacerte la pregunta equivocada. No preguntes "cuántos proyectos tengo". Preguntate para qué existe cada uno. El día que sepas para qué existe, vas a saber si está terminado.
+
+Y si mirás mi lista y ves demos que nadie pidió y un sistema completo sin usuarios, ahora sabés leerla. No son fracasos. Son, cada uno, exactamente lo que tenían que ser. El único proyecto que no se termina nunca es este journal: hoy publico esto, y mañana seguramente lo complete.`,
+    contentEn: `Everyone tells you a junior needs lots of projects to get noticed. Ten, twenty, fifty. The more the better.
+
+I have fifteen. Four of them are conceptual demos of architecture, interior design and a café that nobody asked me for or paid for. Another one is a booking platform with real payments, roles, databases and a concurrency system that turned out really well built. That one doesn't have a single user either, because the client walked away over budget before launch.
+
+For a while I was obsessed with that. I felt fifteen wasn't enough, that the number fell short, that a recruiter would open the list, see pretty architecture demos and wonder what that had to do with web development.
+
+Then I understood the problem wasn't the quantity. It was that I didn't really know what each project existed for. And once I figured that out, everything that looked like a failure turned around.
+
+### The project counting game
+
+When I started building my portfolio I did the exercise everyone does: count. Add up demos, add up university assignments, add up anything to make the number go up.
+
+The number lies. Because a demo, a tool and a client product all count the same, but they don't weigh the same and they don't prove the same thing. A demo proves **judgment**. A tool proves **you use it**. A product proves **someone trusted you, paid you and was happy**. Three different things flattened into a single unit by the count.
+
+And the worst part: when you count just to inflate the number, you end up publishing things you don't even know why they're there. Those are actual smoke signals.
+
+### The day I understood what "finishing" meant
+
+In my portfolio every project has a label: Conceptual Demo, Functional Demo, Tool, Open Resource, System in Production, Real Production. At first I used it as a technical classification, to organize the page. Then I realized it was something else: it was my definition of "finished".
+
+Because **finishing isn't publishing**. It's not that the button works or that it looks nice. Finishing is fulfilling the goal the project existed for. And depending on what that goal is, "finished" means very different things.
+
+A demo is finished when it communicates the judgment you wanted to communicate, not when it has users. A tool is finished when you use it, even if a single person does. A system is finished when a real client uses it every day to invoice, book or coordinate. The projects page says exactly that.
+
+### The short post-mortems
+
+Four of my projects are conceptual demos: BRÜNN, an architecture studio; LÜMEN, an interior design one; MAREA, a café, bar and kitchen; and STRØ, author architecture. Nobody asked for them. None of them has real users or usage metrics. If you're counting projects to impress, they're dead weight.
+
+But they're not dead weight. They're demos. Their goal was to research an industry, understand how a studio thinks, learn to communicate judgment. And they fulfilled that goal. MAREA even left halfway its strongest concept, the space that changes depending on the time of day. I wrote it down on the project's page, without hiding it. That's what you should look at in a demo: not the demo itself, but that I know exactly how far I got and why.
+
+The case that taught me the most is the one that doesn't show up as a demo. **Zabira** is a booking platform for a pilates studio: premium landing, dashboard with roles, atomic bookings on a database with concurrency, memberships activated by Mercado Pago webhooks and JWT authentication. It's the most complete system I've built so far.
+
+It has zero users. The client walked away over budget before launch.
+
+There was a moment when I wondered if that platform had been a waste of time. Then I saw it differently: the goal was never to run it with that client; the goal was to prove we could build something like it, and it was proven. I learned to think of booking a class as a moment of anxiety for the client, to separate a landing that sells from a dashboard that operates, and to work with real concurrency. Today I can explain it. I published it as a complete, polished demo, not as a failure.
+
+**DuckSale** is something else: an e-commerce demo we built so a potential client could walk through their store as if it already existed, with cart, coupons, checkout and an admin panel. It's not a product, it's a sales weapon. And **MyVisor** is a Markdown reader I use for my own notes. One person uses it: me. And it's perfect that way.
+
+> Finishing isn't publishing. It's knowing what each thing existed for.
+
+### What I stopped doing
+
+What changed how I work was stopping to count projects and starting to decide what each one exists for **before** building it. And when it's done, labeling it with the right criterion. If it's a demo, let it be clearly a demo. If it's a tool, let it show that I use it. If it's a system in production, let it have real users.
+
+That label isn't on the website for the recruiter. It's for me. It's the mechanism that tells me when to stop. No project is ever "truly finished": there's always something I'd do differently today, and in fact every project page says so. But they're finished when they fulfill their purpose. The rest of the time you're polishing and you don't realize you're already stacking smoke signals.
+
+### Closing
+
+If you're building your portfolio, stop asking yourself the wrong question. Don't ask "how many projects do I have". Ask yourself what each one exists for. The day you know what it exists for, you'll know if it's finished.
+
+And if you look at my list and see demos nobody asked for and a complete system with no users, now you know how to read it. They're not failures. They're, each one, exactly what they needed to be. The only project that never finishes is this journal: today I publish this, and tomorrow I'll probably complete it.`,
+  },
+  {
     id: 'como-empece-a-programar',
     title: 'Cómo empecé a programar (y por qué no paré)',
     titleEn: 'How I started coding (and why I never stopped)',

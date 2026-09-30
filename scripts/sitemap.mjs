@@ -1,7 +1,8 @@
-import { writeFileSync, existsSync } from 'fs';
+import { readFileSync, writeFileSync, existsSync } from 'fs';
 import { PAGES, PROJECTS, JOURNAL, NO_COVER_PROJECTS } from './routes.mjs';
 
-const BASE = 'https://gonzalodanielvega.com.ar';
+const site = JSON.parse(readFileSync(new URL('../site.config.json', import.meta.url), 'utf8'));
+const BASE = site.url.replace(/\/+$/, '');
 const LASTMOD = new Date().toISOString().slice(0, 10);
 
 // Guard: every project must have a cover .jpg or an explicit no-cover fallback,
@@ -68,3 +69,32 @@ ${esPaths.map(hangul).join('\n')}
 
 writeFileSync('public/sitemap.xml', sitemap);
 console.log('Sitemap generated.');
+
+// Generated next to the sitemap so the domain can never drift from site.config.json.
+const robots = `User-agent: *
+Allow: /
+Disallow: /api/
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+Sitemap: ${BASE}/sitemap.xml
+`;
+
+writeFileSync('public/robots.txt', robots);
+console.log('robots.txt generated.');

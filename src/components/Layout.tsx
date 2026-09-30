@@ -3,6 +3,7 @@ import { Outlet, Link, useLocation } from 'react-router-dom';
 import { useLanguage, localizePath } from '../i18n/useLanguage';
 import { useT } from '../i18n/useT';
 import { ui } from '../i18n/translations';
+// GITHUB: import { profile } from '../data/profile';  <- Importar de nuevo al reactivar el link del footer.
 import {
   Library, Layers, BookOpen, User, Mail,
   Menu, X,
@@ -91,8 +92,13 @@ export default function Layout() {
           </div>
           <div className="flex gap-4">
             <a href="https://www.linkedin.com/in/gonzalo-daniel-vega/" target="_blank" rel="noopener noreferrer" className="hover:text-[#a84432] transition-colors">LINKEDIN</a>
-            <span>•</span>
-            <a href="https://github.com/DanielVega1221" target="_blank" rel="noopener noreferrer" className="hover:text-[#a84432] transition-colors">GITHUB</a>
+            {/* GITHUB: sacar este comentario para volver a mostrar el link del footer.
+            {(
+              <>
+                <span>•</span>
+                <a href={profile.github} target="_blank" rel="noopener noreferrer" className="hover:text-[#a84432] transition-colors">GITHUB</a>
+              </>
+            )} */}
             <span>•</span>
             <a href={lang === 'es' ? '/cv-es.pdf' : '/cv-en.pdf'} target="_blank" rel="noopener noreferrer" className="hover:text-[#a84432] transition-colors">{t(ui.footer.cv)}</a>
             <span>•</span>

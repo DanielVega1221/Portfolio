@@ -3,8 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { caseStudies } from '../data/projects';
 import { getProjectEn } from '../data/projects-en-lookup';
 import { journalEntries } from '../data/journal';
-
-const BASE_URL = 'https://gonzalodanielvega.com.ar';
+import { SITE_URL as BASE_URL } from '../data/site';
 
 // Projects whose cover .jpg is not published; fall back to the portrait photo.
 const NO_COVER_PROJECTS = new Set(['content-studio']);
@@ -125,6 +124,17 @@ const defaults: Record<string, { es: PageMetaInfo; en: PageMetaInfo }> = {
 
 function roundPath(pathname: string): string {
   return pathname.replace(/^\/en/, '') || '/';
+}
+
+// Unknown paths render NotFound but still answer with a 200 status, because the SPA
+// catch-all rewrite in vercel.json sends everything to index.html. Without noindex,
+// typo'd URLs get indexed as duplicates of the page they fall back to.
+function isIndexable(pathname: string): boolean {
+  const base = roundPath(pathname);
+  if (base === '/' || ['/proyectos', '/journal', '/sobre-mi', '/dialogo'].includes(base)) return true;
+  if (base.startsWith('/proyectos/')) return caseStudies.some(p => p.id === base.slice('/proyectos/'.length));
+  if (base.startsWith('/journal/')) return journalEntries.some(e => e.id === base.slice('/journal/'.length));
+  return false;
 }
 
 function getMeta(pathname: string, lang: Lang): PageMetaInfo {
@@ -261,8 +271,11 @@ export default function PageMeta() {
   useEffect(() => {
     const pathname = location.pathname;
     const meta = getMeta(pathname, lang);
-    const base = roundPath(pathname);
-    const canonicalUrl = pathname === '/' ? BASE_URL : `${BASE_URL}${pathname}`;
+    const indexable = isIndexable(pathname);
+    // Unknown paths collapse onto the homepage, so no self-referencing canonical
+    // and no hreflang pointing at a URL that should not exist.
+    const base = indexable ? roundPath(pathname) : '/';
+    const canonicalUrl = !indexable || pathname === '/' ? BASE_URL : `${BASE_URL}${pathname}`;
     const alternateEs = base === '/' ? BASE_URL : `${BASE_URL}${base}`;
     const alternateEn = base === '/' ? `${BASE_URL}/en` : `${BASE_URL}/en${base}`;
 
@@ -270,6 +283,7 @@ export default function PageMeta() {
     document.title = meta.title;
 
     upsertMeta('name', 'description', meta.description);
+    upsertMeta('name', 'robots', isIndexable(pathname) ? 'index, follow' : 'noindex, follow');
     upsertMeta('property', 'og:title', meta.title);
     upsertMeta('property', 'og:description', meta.description);
     upsertMeta('property', 'og:url', canonicalUrl);

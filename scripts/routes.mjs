@@ -16,6 +16,7 @@ export const PROJECTS = [
 ];
 
 export const JOURNAL = [
+  'el-problema-de-terminar',
   'como-empece-a-programar',
   'de-la-facultad-a-productos',
   'hablar-con-clientes',

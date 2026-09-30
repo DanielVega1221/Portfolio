@@ -1,7 +1,9 @@
 import { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { Search, HelpCircle, ChevronDown, Github } from 'lucide-react';
+// GITHUB: sacar este comentario del import para volver a usar el icono.
+// import { Search, HelpCircle, ChevronDown, Github } from 'lucide-react';
+import { Search, HelpCircle, ChevronDown } from 'lucide-react';
 import { caseStudies } from '../data/projects';
 import { getProjectEn } from '../data/projects-en-lookup';
 import ProjectImage from '../components/ProjectImage';
@@ -216,6 +218,7 @@ export default function Portfolio() {
                       <span className="font-mono text-[10px] text-[#888] uppercase tracking-widest">
                         REG-{project.id.substring(0, 8).toUpperCase()}
                       </span>
+                      {/* GITHUB: sacar este comentario para volver a mostrar los repos.
                       {project.repoFront && (
                         <a href={project.repoFront} target="_blank" rel="noopener noreferrer"
                           className="inline-flex items-center gap-1 font-mono text-[10px] text-[#a84432] hover:text-[#1a1a1a] font-semibold uppercase tracking-wider transition-colors">
@@ -227,7 +230,7 @@ export default function Portfolio() {
                           className="inline-flex items-center gap-1 font-mono text-[10px] text-[#a84432] hover:text-[#1a1a1a] font-semibold uppercase tracking-wider transition-colors">
                           <Github size={11} /> Back
                         </a>
-                      )}
+                      )} */}
                     </div>
                     <Link
                       to={localizePath(`/proyectos/${project.id}`, lang)}

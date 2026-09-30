@@ -159,6 +159,28 @@ export const ui = {
     },
   },
 
+  // ── Dev badge (credential on the About page) ──
+  badge: {
+    lanyardText: { es: 'PORTFOLIO 2026', en: 'PORTFOLIO 2026' },
+    headerLabel: { es: 'DEVELOPER', en: 'DEVELOPER' },
+    openToWork: { es: 'Open to work', en: 'Open to work' },
+    role: { es: 'Full Stack Developer', en: 'Full Stack Developer' },
+    company: { es: 'UXnicorp', en: 'UXnicorp' },
+    location: { es: 'Catamarca, AR', en: 'Catamarca, AR' },
+    cvTitle: { es: 'CURRICULUM VITAE', en: 'CURRICULUM VITAE' },
+    scanLabel: { es: 'ESCANEA EL CV', en: 'SCAN THE CV' },
+    openResume: { es: 'Descargar Curriculum Vitae', en: 'Download Resume' },
+    linkedinLabel: { es: 'LinkedIn', en: 'LinkedIn' },
+    emailLabel: { es: 'Email', en: 'Email' },
+    linkedinCta: { es: 'Ver perfil', en: 'View profile' },
+    copyEmail: { es: 'Copiar', en: 'Copy' },
+    copiedEmail: { es: '¡Email copiado!', en: 'Email copied!' },
+    flipFront: { es: 'Clic para voltear', en: 'Click to flip' },
+    flipBack: { es: 'Clic para volver', en: 'Click to go back' },
+    flipAria: { es: 'Voltear credencial para ver Curriculum Vitae y LinkedIn', en: 'Flip the badge to see the resume and LinkedIn' },
+    shakeAria: { es: 'Sacudir la credencial', en: 'Shake the badge' },
+  },
+
   // ── Contact ──
   contact: {
     chapter: { es: 'CAPÍTULO V — DIÁLOGO HONESTO', en: 'CHAPTER V — HONEST CONVERSATION' },

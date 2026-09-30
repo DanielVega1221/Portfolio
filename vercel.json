@@ -7,6 +7,14 @@
   ],
   "headers": [
     {
+      "source": "/cv-es.pdf?dl=1",
+      "headers": [{ "key": "Content-Disposition", "value": "attachment; filename=\"CV-Gonzalo-Daniel-Vega-ES.pdf\"" }]
+    },
+    {
+      "source": "/cv-en.pdf?dl=1",
+      "headers": [{ "key": "Content-Disposition", "value": "attachment; filename=\"CV-Gonzalo-Daniel-Vega-EN.pdf\"" }]
+    },
+    {
       "source": "/assets/(.*)",
       "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
     },
@@ -20,6 +28,10 @@
     },
     {
       "source": "/foto.webp",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=86400" }]
+    },
+    {
+      "source": "/foto-badge.webp",
       "headers": [{ "key": "Cache-Control", "value": "public, max-age=86400" }]
     }
   ]

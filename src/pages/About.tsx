@@ -1,10 +1,14 @@
 import { motion } from 'motion/react';
 import { Palette, Code, Users, Megaphone, GraduationCap, Briefcase, MapPin } from 'lucide-react';
+import DevBadge from '../components/DevBadge';
+import { profile, absoluteCvDownloadUrl } from '../data/profile';
+import { useLanguage } from '../i18n/useLanguage';
 import { useT } from '../i18n/useT';
 import { ui } from '../i18n/translations';
 
 export default function About() {
   const t = useT();
+  const { lang } = useLanguage();
 
   return (
     <motion.div
@@ -16,8 +20,8 @@ export default function About() {
     >
       <div id="about-view" className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
 
-        {/* Left Column: Headline and Polaroid Stamp */}
-        <div className="lg:col-span-5 space-y-8 lg:sticky lg:top-24">
+        {/* Left Column: Headline and Credential */}
+        <div className="lg:col-span-5 space-y-8">
           <p className="font-mono text-xs uppercase tracking-widest text-[#a84432] font-bold">{t(ui.about.chapter)}</p>
 
           <h2 className="text-serif text-4xl sm:text-5xl font-light text-[#1a1a1a] tracking-tight leading-[1.1]">
@@ -28,20 +32,21 @@ export default function About() {
             {t(ui.about.tag)}
           </p>
 
-          {/* Polaroid Styled Stamp */}
-          <div className="bg-[#fffef0] border border-[#e5e2de] p-5 shadow-xs max-w-sm mx-auto lg:mx-0 rotate-1 hover:rotate-0 transition-transform duration-500 ease-out">
-            <div className="aspect-square bg-[#efede8] border border-[#e5e2de]/50 flex items-center justify-center relative overflow-hidden group">
-              <img
-                src="/foto.webp"
-                alt="Gonzalo Daniel Vega"
-                width={400}
-                height={400}
-                className="absolute inset-0 w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-105 group-hover:saturate-110"
-              />
-              <div className="absolute inset-0 bg-[#1a1a1a]/0 group-hover:bg-[#1a1a1a]/5 transition-colors duration-500" />
-            </div>
-            <p className="font-mono text-[11px] text-center text-[#777] mt-4">Gonzalo Daniel Vega — SFV Catamarca, AR</p>
-          </div>
+          {/* Credential: click to flip it, click the lanyard to swing it */}
+          <DevBadge
+            profile={{
+              name: profile.name,
+              role: t(ui.badge.role),
+              company: t(ui.badge.company),
+              location: t(ui.badge.location),
+              isOpenToWork: profile.isOpenToWork,
+              avatarUrl: profile.avatarUrl,
+              shortQuote: t(ui.about.pullQuote),
+              resumeUrl: absoluteCvDownloadUrl(lang),
+              linkedin: profile.linkedin,
+              email: profile.email,
+            }}
+          />
         </div>
 
         {/* Right Column: Content */}
